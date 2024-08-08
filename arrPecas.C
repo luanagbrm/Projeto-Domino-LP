@@ -27,6 +27,8 @@ void criarCarta(Carta domino[28]){
 
 void mostrarCartas(Carta domino[28]){	
 	for(int i = 0; i < 28; i++){
+	    if(i%7 == 0 )
+	        printf("\n");
 		printf("[%d | %d]", domino[i].ladoA, domino[i].ladoB);
 	}
 }
