@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+//structure sobre as informações de cada carta do dominó
 typedef struct{
 	int ladoA;
 	int ladoB;
 	int status;
 }Carta;
 
+//função para criar cartas
 void criarCarta(Carta domino[28]){
 	Carta peca;
 	int j = 0;
@@ -24,7 +25,7 @@ void criarCarta(Carta domino[28]){
 }
 
 
-
+//Função para mostrar todas as cartas do jogo
 void mostrarCartas(Carta domino[28]){	
 	for(int i = 0; i < 28; i++){
 	    if(i%7 == 0 )
@@ -33,6 +34,7 @@ void mostrarCartas(Carta domino[28]){
 	}
 }
 
+//Função para embaralhar as cartas
 void embaralharPecas(Carta domino[28]){
 	Carta peca2;
 	int p;
