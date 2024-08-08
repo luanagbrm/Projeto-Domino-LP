@@ -31,14 +31,13 @@ void mostrarCartas(Carta domino[28]){
 	}
 }
 
-void random(Carta domino[28]){
+void embaralharPecas(Carta domino[28]){
 	Carta peca2;
 	int p;
 	
 	for(int i = 0; i < 28;i++){
 		peca2 = domino[i];
 		p = rand() % 28;
-		
 		domino[i] = domino[p];
 		domino[p] = peca2; 
 	}
@@ -51,16 +50,12 @@ int main(){
 	criarCarta(domino);
 	
 	mostrarCartas(domino);
+	embaralharPecas(domino);
+	printf("\n");
+	mostrarCartas(domino);
+	embaralharPecas(domino);
 	printf("\n");
 	mostrarCartas(domino);
 	
 	return 0;
 }
-
-
-
-
-
-
-
-
