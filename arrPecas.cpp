@@ -1,35 +1,66 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 
 typedef struct{
 	int ladoA;
 	int ladoB;
 	int status;
-}Peca;
+}Carta;
 
-void criarPecas(Peca array[28]){
-	Peca peca;
+void criarCarta(Carta domino[28]){
+	Carta peca;
 	int j = 0;
 	
 	for(int i = 0; i <= 6; i++){
 		for(int k = i; k <= 6; k++){
 			peca.ladoA = i;
 			peca.ladoB = k;
-			array[j] = peca;
+			domino[j] = peca;
 			j++;
 		}
 	}
 }
 
-void mostrarPecas(Peca array[28]){	
+
+
+void mostrarCartas(Carta domino[28]){	
 	for(int i = 0; i < 28; i++){
-		printf("[%d | %d]", array[i].ladoA, array[i].ladoB);
+		printf("[%d | %d]", domino[i].ladoA, domino[i].ladoB);
+	}
+}
+
+void random(Carta domino[28]){
+	Carta peca2;
+	int p;
+	
+	for(int i = 0; i < 28;i++){
+		peca2 = domino[i];
+		p = rand() % 28;
+		
+		domino[i] = domino[p];
+		domino[p] = peca2; 
 	}
 }
 
 int main(){
-	Peca array[28];
+ 	srand( (unsigned)time(0) );
+	Carta domino[28];
+		
+	criarCarta(domino);
 	
-	criarPecas(array);
-	mostrarPecas(array);
+	mostrarCartas(domino);
+	printf("\n");
+	mostrarCartas(domino);
+	
 	return 0;
 }
+
+
+
+
+
+
+
+
