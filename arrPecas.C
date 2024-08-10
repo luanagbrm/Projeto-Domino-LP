@@ -1,3 +1,13 @@
+/*DomGame-Código-Projeto Dominó-Fase 1
+10/08/2024-Grupo:BGLL
+Nome de todos os integrantes:
+
+-Beatriz Lima Morais
+-Grazielle Batista de Almeida
+-Luana Gabrielle Macedo Gomes
+-Lucas Ferri dos Santos*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
