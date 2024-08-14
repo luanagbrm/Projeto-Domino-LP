@@ -98,23 +98,58 @@ void showHandPieces(Player players[2], int numPlayers){
 }
 
 int main(){
- 	srand( (unsigned)time(0) );
+ 	
+ 	int opcao;
+	srand( (unsigned)time(NULL) );
+	
 	Carta domino[28];
-		
-	Player players[2];
-	
 	criarCarta(domino);
-	embaralharPecas(domino);
-	int numPlayer = playerNumber();//Variável para a chamada da função playerNumber()
-		
-	pieceGiveAway(domino, players, numPlayer);
-	printf("\n");	
-	showHandPieces(players, numPlayer);
-	printf("\n");
 	mostrarCartas(domino);
-//	embaralharPecas(domino);
-//	printf("\n");
-//	mostrarCartas(domino);
+	printf("\n");	
+	embaralharPecas(domino);
+	mostrarCartas(domino);
+	printf("\n");
+	embaralharPecas(domino);
+	mostrarCartas(domino);
+	printf("\n");
+	embaralharPecas(domino);
+	mostrarCartas(domino);
+	printf("\n");
+		
+	printf("Jogo Domino");
 	
+	
+	
+	do{
+           //Menu de funcionalidades do jogo
+	     printf("\n---------------------------------------\n");
+            printf("MENU - Escolha uma opcao: \n");
+            printf("1 - Mostrar cartas\n");
+            printf("2 - Embaralhar cartas\n");
+            printf("3 - Sair\n");
+            printf("\n---------------------------------------\n");
+	     scanf("%d",&opcao);
+       
+       
+       switch(opcao) 
+       {
+           case 1:
+               mostrarCartas(domino);;
+               printf("\n\nCartas disponiveis do jogo");
+		break;
+           case 2:
+               embaralharPecas(domino);
+               mostrarCartas(domino);
+               printf("\n\nCartas embaralhadas");
+               break;
+           case 3:
+               printf("Saindo do jogo");
+               break;
+           default:
+               printf("Opcao invalida. Tente novamente.\n");
+       }
+       
+   }while(opcao != 3);
+
 	return 0;
 }
