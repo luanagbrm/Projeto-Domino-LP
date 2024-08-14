@@ -49,7 +49,7 @@ int main(){
 	mostrarCartas(domino);
 	printf("\n");
 		
-	printf("Jogo Domino");
+	//printf("Jogo Domino");
 	
 	
 //	
