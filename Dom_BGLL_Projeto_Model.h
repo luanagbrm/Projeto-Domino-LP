@@ -1,0 +1,1 @@
+void criarCarta(Carta domino[28]);
