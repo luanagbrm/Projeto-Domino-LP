@@ -1,3 +1,4 @@
+//O arquivo Model integra toda a logica do programa para gerenciar dados(ex: as estruturas/func para as pecas do domino e os jogadores)
 
 #include "Dom_BGLL_Projeto_Model.h"
 #include <stdlib.h>
