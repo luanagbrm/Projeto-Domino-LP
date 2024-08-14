@@ -36,11 +36,11 @@ int playerNumber(void){
 	
 	int numPlayer;
 	
-	printf("Digite o número de jogadores para a partida(1 ou 2)");
+	printf("Digite o número de jogadores para a partida(1 ou 2)"); //**** o usuário deve poder sair do loop
 	
 	scanf("%d",&numPlayer);
 	
-	while(numPlayer <1||numPlayer > 2 ){//O loop não deixa o usuário prosseguir até que o mesmo digite um dado válido
+	while(numPlayer <1||numPlayer > 2 ){//O loop não deixa o usuário prosseguir até que o mesmo digite um dado válido  **** o usuário deve poder sair do loop
 		printf("O número de jogadores escolhido é inválido. Digite 1 ou 2");
 		scanf("%d",&numPlayer);
 	}
