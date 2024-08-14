@@ -13,8 +13,12 @@ typedef struct{
 typedef struct{
 	Carta hand[7];//hand é um array da estrutura "Cartas"
 	int numPieces;//variavel para saber a qtd de cartas na mão de cada player
-	
 }Player;
+
+typedef struct{
+    Carta mesa[28];//assegura todas as 28 pecas da mesa
+    int pecaMesa;//guarda o numero de pecas jogadas/na mesa no momento
+}Mesa;
 
 //função para criar cartas
 void criarCarta(Carta domino[28]){
@@ -36,11 +40,11 @@ int playerNumber(void){
 	
 	int numPlayer;
 	
-	printf("Digite o número de jogadores para a partida(1 ou 2)"); //**** o usuário deve poder sair do loop
+	printf("Digite o número de jogadores para a partida(1 ou 2)");
 	
 	scanf("%d",&numPlayer);
 	
-	while(numPlayer <1||numPlayer > 2 ){//O loop não deixa o usuário prosseguir até que o mesmo digite um dado válido  **** o usuário deve poder sair do loop
+	while(numPlayer <1||numPlayer > 2 ){//O loop não deixa o usuário prosseguir até que o mesmo digite um dado válido
 		printf("O número de jogadores escolhido é inválido. Digite 1 ou 2");
 		scanf("%d",&numPlayer);
 	}
@@ -96,60 +100,36 @@ void showHandPieces(Player players[2], int numPlayers){
 		printf("\n");
 	}
 }
+//Perguntar para a luana como fazer passagem por referencia sem usar "->"
+void inciaMesa(Mesa mesaDoJogo){
+	mesaDoJogo.pecaMesa = 0;// Inicia o jogo com 0 pecas na mesa
+
+
+	for(int k = 0; k < 28;k++ ){
+		mesaDoJogo.mesa[k].ladoA = -7; // -7 e uma sentinela para o lugar da peca 
+		mesaDoJogo.mesa[k].ladoB = -7;
+	}
+}
+
 
 int main(){
- 	
- 	int opcao;
-	srand( (unsigned)time(NULL) );
-	
+ 	srand( (unsigned)time(0) );
 	Carta domino[28];
-	criarCarta(domino);
-	mostrarCartas(domino);
-	printf("\n");	
-	embaralharPecas(domino);
-	mostrarCartas(domino);
-	printf("\n");
-	embaralharPecas(domino);
-	mostrarCartas(domino);
-	printf("\n");
-	embaralharPecas(domino);
-	mostrarCartas(domino);
-	printf("\n");
 		
-	printf("Jogo Domino");
+	Player players[2];
 	
+	criarCarta(domino);
+	embaralharPecas(domino);
+	int numPlayer = playerNumber();//Variável para a chamada da função playerNumber()
+		
+	pieceGiveAway(domino, players, numPlayer);
+	printf("\n");	
+	showHandPieces(players, numPlayer);
+	printf("\n");
+	mostrarCartas(domino);
+//	embaralharPecas(domino);
+//	printf("\n");
+//	mostrarCartas(domino);
 	
-	
-	do{
-           //Menu de funcionalidades do jogo
-	     printf("\n---------------------------------------\n");
-            printf("MENU - Escolha uma opcao: \n");
-            printf("1 - Mostrar cartas\n");
-            printf("2 - Embaralhar cartas\n");
-            printf("3 - Sair\n");
-            printf("\n---------------------------------------\n");
-	     scanf("%d",&opcao);
-       
-       
-       switch(opcao) 
-       {
-           case 1:
-               mostrarCartas(domino);;
-               printf("\n\nCartas disponiveis do jogo");
-		break;
-           case 2:
-               embaralharPecas(domino);
-               mostrarCartas(domino);
-               printf("\n\nCartas embaralhadas");
-               break;
-           case 3:
-               printf("Saindo do jogo");
-               break;
-           default:
-               printf("Opcao invalida. Tente novamente.\n");
-       }
-       
-   }while(opcao != 3);
-
 	return 0;
 }
