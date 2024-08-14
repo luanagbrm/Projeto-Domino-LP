@@ -1,3 +1,6 @@
+//O view e responsavel pela visualizacao dos dados
+
+
 #include "Dom_BGLL_Projeto_View.h"
 
 int opcao;
