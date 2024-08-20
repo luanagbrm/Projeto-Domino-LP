@@ -1,8 +1,18 @@
-//O view e responsavel pela visualizacao dos dados
+/*
+DOM-BGLL - Projeto Dominó - Etapa 2
+20/08/2024 - Grupo:BGLL
 
+Nome dos integrantes:
+
+- Beatriz Lima Morais
+- Grazielle Batista de Almeida
+- Luana Gabrielle Rodrigues Macedo
+- Lucas Ferri dos Santos
+
+ O View e responsável pela visualização dos dados e interação com o usuário.
+*/
 
 #include "DOM_BGLL_Projeto_View.h"
-
 #include <stdio.h>
 
 int opcao;
@@ -15,38 +25,3 @@ void mostrarCartas(Carta domino[28]){
 	    printf("[%d | %d]", domino[i].ladoA, domino[i].ladoB);
 	}
 }
-
-/*
- //Menu de funcionalidades do jogo
-void mostrarMenu(){
-	do{
-	     printf("\n---------------------------------------\n");
-             printf("MENU - Escolha uma opcao: \n");
-             printf("1 - Mostrar cartas\n");
-             printf("2 - Embaralhar cartas\n");
-             printf("3 - Sair\n");
-             printf("\n---------------------------------------\n");
-	     scanf("%d",&opcao);
-        
-        
-        switch(opcao) 
-        {
-            case 1:
-                mostrarCartas(domino);          erro nessa linha
-                printf("\n\nCartas disponiveis do jogo");
-		break;
-            case 2:
-                embaralharPecas(domino);
-                mostrarCartas(domino);
-                printf("\n\nCartas embaralhadas");
-                break;
-            case 3:
-                printf("Saindo do jogo");
-                break;
-            default:
-                printf("Opcao invalida. Tente novamente.\n");
-        }
-        
-    }while(opcao != 3);
-}
-*/
