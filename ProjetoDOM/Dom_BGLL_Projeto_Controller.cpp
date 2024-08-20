@@ -36,19 +36,6 @@ void embaralharPecas(Carta domino[28]){
 	}
 }
 
-void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers) {
-    int pieceAssign = 0;
-
-    for (int i = 0; i < numPlayers; i++) {
-        players[i].numPieces = 0;
-
-        for (int k = 0; k < 7 && pieceAssign < 28; k++) {
-            players[i].hand[k] = totalPieces[pieceAssign++];
-            players[i].numPieces++;
-        }
-    }
-}
-
 void jogar(){
 
 	gerarSeed();
