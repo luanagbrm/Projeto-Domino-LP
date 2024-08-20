@@ -16,5 +16,4 @@ A parte destinada à funcionalidade do programa está destinada a pasta Controll
 
 void gerarSeed();
 void embaralharPecas(Carta domino[28]);
-void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers);
 void jogar();
