@@ -1,6 +1,6 @@
 /*
 DOM-BGLL - Projeto Dominó - Etapa 2
-14/08/2024 - Grupo:BGLL
+20/08/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -9,15 +9,12 @@ Nome dos integrantes:
 - Luana Gabrielle Rodrigues Macedo
 - Lucas Ferri dos Santos
 
-A Etapa 2 consiste de criar 7 arquivos com a finalidade de separar o projeto de acordo com seu proposito.
-A parte destinada à funcionalidade do programa está destinada a pasta Controller, a qual irá embaralhar as peças do jogo.
-
+A parte destinada à funcionalidade do programa está destinada a pasta Controller, ele é o mediador entre o Model e o View.
 */
 
 #include "Dom_BGLL_Projeto_Controller.h"
 #include "Dom_BGLL_Projeto_View.cpp"
 #include <time.h>
-//#include "Dom_BGLL_Projeto_Model.cpp"
 
 void gerarSeed(){
 	srand( (unsigned)time(0) );
