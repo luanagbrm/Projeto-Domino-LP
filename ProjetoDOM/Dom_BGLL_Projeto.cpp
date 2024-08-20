@@ -17,18 +17,6 @@ A Etapa 2 consiste de criar 7 arquivos com a finalidade de separar o projeto de 
 
 int main()
 {
-    gerarSeed();
-    criarCarta(domino);
-    mostrarCartas(domino);
-    printf("\n");
-    embaralharPecas(domino);
-    mostrarCartas(domino);
-    printf("\n");
-    embaralharPecas(domino);
-    mostrarCartas(domino);
-    printf("\n");
-    embaralharPecas(domino);
-    mostrarCartas(domino);
-
+    jogar();
     return 0;
 }

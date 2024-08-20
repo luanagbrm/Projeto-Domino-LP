@@ -16,6 +16,7 @@ A parte destinada à funcionalidade do programa está destinada a pasta Controll
 
 #include "Dom_BGLL_Projeto_Controller.h"
 #include "Dom_BGLL_Projeto_View.cpp"
+#include <time.h>
 //#include "Dom_BGLL_Projeto_Model.cpp"
 
 void gerarSeed(){
@@ -46,4 +47,21 @@ void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers) {
             players[i].numPieces++;
         }
     }
+}
+
+void jogar(){
+
+	gerarSeed();
+	criarCarta(domino);
+    mostrarCartas(domino);
+    printf("\n");
+    embaralharPecas(domino);
+    mostrarCartas(domino);
+    printf("\n");
+    embaralharPecas(domino);
+    mostrarCartas(domino);
+    printf("\n");
+    embaralharPecas(domino);
+    mostrarCartas(domino);
+
 }

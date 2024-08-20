@@ -11,3 +11,4 @@ typedef struct {
 
 Carta domino[28];
 
+//Carta mesa[28];

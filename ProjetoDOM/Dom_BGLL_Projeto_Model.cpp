@@ -1,7 +1,6 @@
 #include "Dom_BGLL_Projeto_Model.h"
 
 #include <stdlib.h>
-#include <time.h>
 
 void criarCarta(Carta domino[28]) {
     Carta peca;
