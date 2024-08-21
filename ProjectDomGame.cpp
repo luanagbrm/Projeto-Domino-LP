@@ -11,8 +11,8 @@ typedef struct{
 
 
 typedef struct{
-	int ladoA;
-	int ladoB;
+	int ladoE;
+	int ladoD;
 //	char status;//status "M","1", and"2"
 }Mesa[28];
 
@@ -41,10 +41,10 @@ typedef struct{
 //	
 //}
 
-typedef struct{
-    Carta mesa[28];//assegura todas as 28 pecas da mesa
-    int pecaMesa;//guarda o numero de pecas jogadas/na mesa no momento
-}Mesa;
+//typedef struct{
+//    Carta mesa[28];//assegura todas as 28 pecas da mesa
+//   int pecaMesa;//guarda o numero de pecas jogadas/na mesa no momento
+//}Mesa;
 
 
 //função para criar cartas
@@ -117,7 +117,42 @@ void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers){
 }
 //Fazer uma function para cada coisa do iniciar jogadores
 
-int findGreastePiece(Carta totalPieces[28],Player numPieces; Player HandPieces ){
+int encontrarDupla(Player player[2]){
+		
+	for(int k = 6; k >= 0; k--){
+		for(int i = 0; i < 7; i++){
+			if((player[0].hand[i].ladoA == k) && (player[0].hand[i].ladoB == k))
+				return 1;
+			
+			if((player[1].hand[i].ladoA == k) && (player[1].hand[i].ladoB == k))
+				return 2;
+		}
+	}
+		
+	return -1;
+}
+
+int encontrarMaior(Player player[2]){	
+		for(int k = 11; k >= 0; k--){
+			for(int i = 0; i < 7; i++){
+				if((player[0].hand[i].ladoA + player[0].hand[i].ladoB) == k){
+					printf("[%d|%d]",player[0].hand[i].ladoA,player[0].hand[i].ladoB);
+					return 1;
+				}
+			
+				if((player[1].hand[i].ladoA + player[1].hand[i].ladoB) == k){
+					printf("[%d|%d]",player[1].hand[i].ladoA,player[1].hand[i].ladoB);
+					return 2;
+				}
+					
+			}
+		}
+		
+	return -1;
+}
+
+
+/*int findGreastePiece(Carta totalPieces[28],Player numPieces, Player HandPieces ){
 	
 	int doublePiece = 0;
 	int greastePiece = - 7;
@@ -133,10 +168,7 @@ int findGreastePiece(Carta totalPieces[28],Player numPieces; Player HandPieces )
 				}
 			}
 		}
-	
-
-	
-}
+}*/
 
 void showHandPieces(Player players[2], int numPlayers){
 
@@ -150,7 +182,7 @@ void showHandPieces(Player players[2], int numPlayers){
 	}
 }
 //Perguntar para a luana como fazer passagem por referencia sem usar "->"
-void inciaMesa(Mesa mesaDoJogo){
+/*void inciaMesa(Mesa mesaDoJogo){
 	mesaDoJogo.pecaMesa = 0;// Inicia o jogo com 0 pecas na mesa
 
 
@@ -158,7 +190,9 @@ void inciaMesa(Mesa mesaDoJogo){
 		mesaDoJogo.mesa[k].ladoA = -7; // -7 e uma sentinela para o lugar da peca 
 		mesaDoJogo.mesa[k].ladoB = -7;
 	}
-}
+}*/
+
+
 
 
 
@@ -177,6 +211,8 @@ int main(){
 	showHandPieces(players, numPlayer);
 	printf("\n");
 	mostrarCartas(domino);
+	
+	printf("%d", encontrarMaior(players));
 //	embaralharPecas(domino);
 //	printf("\n");
 //	mostrarCartas(domino);
