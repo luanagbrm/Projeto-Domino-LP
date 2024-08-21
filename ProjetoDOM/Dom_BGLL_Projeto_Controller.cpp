@@ -40,12 +40,29 @@ void jogar(){
     mostrarCartas(domino);
     printf("\n");
     embaralharPecas(domino);
-    mostrarCartas(domino);
-    printf("\n");
-    embaralharPecas(domino);
-    mostrarCartas(domino);
-    printf("\n");
-    embaralharPecas(domino);
-    mostrarCartas(domino);
 
+}
+ //Menu de funcionalidades do jogo
+void mostrarMenu(){
+	do{
+        switch(opcao) 
+        {
+            case 1:
+                mostrarCartas(domino);        
+                printf("\n");
+                mostrar
+	         	break;
+            //case 2:
+               // embaralharPecas(domino);
+                //mostrarCartas(domino);
+                //printf("\n\nCartas embaralhadas");
+               // break;
+            //ase 3:
+               // printf("Saindo do jogo");
+                //break;
+            //default:
+                //printf("Opcao invalida. Tente novamente.\n");
+        }
+        
+    }while(opcao != 1);
 }
