@@ -2,12 +2,19 @@
 #include <stdlib.h>
 #include <time.h>
 
-//structure sobre as informações de cada carta do dominó
+//structure sobre as informaçr3ões de cada carta do dominó
 typedef struct{
 	int ladoA;
 	int ladoB;
-	int status;
+	char status;
 }Carta;
+
+
+typedef struct{
+	int ladoA;
+	int ladoB;
+	char status;//status "M","1", and"2"
+}pecas[28];
 
 //Structure que representa cada jogador 
 typedef struct{
