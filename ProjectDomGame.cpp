@@ -13,8 +13,8 @@ typedef struct{
 typedef struct{
 	int ladoA;
 	int ladoB;
-	char status;//status "M","1", and"2"
-}pecas[28];
+//	char status;//status "M","1", and"2"
+}Mesa[28];
 
 //Structure que representa cada jogador 
 typedef struct{
@@ -22,10 +22,30 @@ typedef struct{
 	int numPieces;//variavel para saber a qtd de cartas na mão de cada player
 }Player;
 
+//int iniciaJogador(Carta totalPieces[28], Player players[2], int numPlayers){
+//	
+//	int incialPlayer = -7;
+//	int doublePiece = 0; 
+//	int greatestPiece = -7;
+//	
+//	for(i = 0; i < numPlayers; i++){
+//		for(k = 0; k < 7; k++){
+//			if(numPlayers[i].ladoA[k] == players[i].ladoB[k]){
+//				doublePiece  = numPlayers[i].ladoA[k]; 
+//				if(greatestPiece <  )
+//					
+//			}
+//		}
+//	}
+//
+//	
+//}
+
 typedef struct{
     Carta mesa[28];//assegura todas as 28 pecas da mesa
     int pecaMesa;//guarda o numero de pecas jogadas/na mesa no momento
 }Mesa;
+
 
 //função para criar cartas
 void criarCarta(Carta domino[28]){
@@ -95,6 +115,28 @@ void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers){
 		}
 	}
 }
+//Fazer uma function para cada coisa do iniciar jogadores
+
+int findGreastePiece(Carta totalPieces[28],Player numPieces; Player HandPieces ){
+	
+	int doublePiece = 0;
+	int greastePiece = - 7;
+	
+	pieceGiveAway();
+	
+	for(int i = 0 ; i < numPlayers ; i++){
+		for(int j = 0; j < 7 ; j++){
+			if(players[i].ladoA[k] == players[i].ladoB[k]){
+				doublePiece = players[i].ladoA[k];
+				if(greastePiece < doublePiece){
+					greastePiece = doublePiece;
+				}
+			}
+		}
+	
+
+	
+}
 
 void showHandPieces(Player players[2], int numPlayers){
 
@@ -117,6 +159,7 @@ void inciaMesa(Mesa mesaDoJogo){
 		mesaDoJogo.mesa[k].ladoB = -7;
 	}
 }
+
 
 
 int main(){
