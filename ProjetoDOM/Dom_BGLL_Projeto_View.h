@@ -13,4 +13,13 @@ Nome dos integrantes:
 */
 
 void mostrarCartas(Carta domino[28]);
-void mostrarMenu();
+//void mostrarMenu(){
+//	 printf("\n---------------------------------------\n");
+//             printf("MENU - Escolha uma opcao: \n");
+//             printf("1 - Iniciar jogo\n");
+             //printf("2 - Mostrar\n");
+             //printf("3 - Sair\n");
+ //            printf("\n---------------------------------------\n");
+//	     scanf("%d",&opcao);
+
+//}
