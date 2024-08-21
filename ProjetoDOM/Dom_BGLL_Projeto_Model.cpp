@@ -29,3 +29,13 @@ void criarCarta(Carta domino[28]) {
         }
     }
 }
+
+void inciaMesa(Mesa mesaDoJogo){
+	mesaDoJogo.pecaMesa = 0;// Inicia o jogo com 0 pecas na mesa
+
+
+	for(int k = 0; k < 28;k++ ){
+		mesaDoJogo.mesa[k].ladoA = -7; // -7 e uma sentinela para o lugar da peca 
+		mesaDoJogo.mesa[k].ladoB = -7;
+	}
+}

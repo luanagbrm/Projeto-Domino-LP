@@ -17,6 +17,7 @@ A Etapa 2 consiste de criar 7 arquivos com a finalidade de separar o projeto de 
 
 int main()
 {
-    jogar();
+	int numPlayer = playerNumber();//Variável para a chamada da função playerNumber()
+    menu();
     return 0;
 }

@@ -19,3 +19,7 @@ typedef struct{
 } Carta;
 
 Carta domino[28];
+
+void criarCarta(Carta domino[28]);
+
+void inciaMesa(Mesa mesaDoJogo);

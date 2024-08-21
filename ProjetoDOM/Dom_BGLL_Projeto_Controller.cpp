@@ -37,21 +37,21 @@ void jogar(){
 
 	gerarSeed();
 	criarCarta(domino);
-    mostrarCartas(domino);
-    printf("\n");
     embaralharPecas(domino);
-
+    pieceGiveAway(domino, player, numPlayer);
+    showHandPieces(players, numPlayer);
+    mostrarCartas(domino);
+    
 }
+
  //Menu de funcionalidades do jogo
-void mostrarMenu(){
+void menu(){
+	mostrarMenu();
 	do{
         switch(opcao) 
         {
             case 1:
-                mostrarCartas(domino);        
-                printf("\n");
-                mostrar
-	         	break;
+            	jogar();
             //case 2:
                // embaralharPecas(domino);
                 //mostrarCartas(domino);
