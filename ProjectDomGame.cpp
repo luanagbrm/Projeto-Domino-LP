@@ -205,18 +205,29 @@ void showHandPieces(Player players[2], int numPlayers){
   }
 }*/
 
-// funcao para comprar cartas caso a peca tenha status M
-// int buyCards(Carta totalPieces[28], Player *players){
-  
-//    pieceGiveAway( totalPieces, players, int numPlayers);
+// funcao para comprar cartas caso a peca tenha status M, retorn 1 se a peca for comprada e 0 se nao ha pecas para a compra
+int buyCards(Carta totalPieces[28], Player players[2], int numPlayers){
 
-//   for(k = 0; k < 28; k++){
-//     if( totalPieces[k].status = 'M'){
-//       player.hand
-//     }
-//   }
+  // int pecaComprada = 0;
   
-// }
+   // pieceGiveAway( totalPieces, players, int numPlayers);
+
+  for(int k = 0; k < 28; k++){
+    if( totalPieces[k].status == 'M'){
+      for(int i = 0; i < numPlayers; i++){
+        if (players[i].numPieces < 7) {
+          players[i].hand[players[i].numPieces++] = totalPieces[k];
+          players[i].hand[players[i].numPieces - 1].status = '1' + i;
+          totalPieces[k].status = '1' + i;
+          printf("\nO jogadoe %d comprou uma peca com sucesso\n", i + 1);
+          return 1;//comrpra feita 
+      }
+    }
+    }
+  }
+    printf("Nao ha pecas para comprar");
+     return 0;//nao foi possivel fazer a compra
+}
 
 
 
