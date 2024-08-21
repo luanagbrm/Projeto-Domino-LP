@@ -7,7 +7,7 @@
   - Apresentar Mesa 
 
 ## Concluídas:
-  - Definir o número de jogadores
+  - [ ] Definir o número de jogadores
   - Definir as peças para cada jogador
   - Criar a mesa vazia (array[28})
   - Definir o jogador que vai iniciar
