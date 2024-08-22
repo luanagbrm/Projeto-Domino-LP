@@ -2,7 +2,7 @@
 
 ## Pendente:
   - Definir os status das peças ('M' =  mesa, '1' = jogador 1 , '2 = jogador 2)
-  - Permitir comprar as peças com status 'M'
+  - Permitir comprar as peças com status 'NULL'
   - Verificar se a jogada feita pelo usuário é válida (comparar com a última peça da array)
   - Apresentar Mesa 
 
