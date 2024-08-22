@@ -121,19 +121,27 @@ void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers){
 }
 //Fazer uma function para cada coisa do iniciar jogadores
 
+// Função para encontrar a maior peça cujo ambos os lados são iguais na mão de cada jogador, retornando '1' caso esteja com o jogador 1, ou '2' caso esteja com o jogador 2'
 int encontrarDupla(Player player[2]){
+  for(int k = 6; k >= 0; k--){ 
+    // Verifica simultaneamente cada peça da mão do jogador 1 e do jogador 2
+    // buscando a peça cujo ambos os lados tem valor igual a k
+    for(int i = 0; i < 7; i++){ 
+      if((player[0].hand[i].ladoA == k) && (player[0].hand[i].ladoB == k)){
+        player[0].hand[i].status = 'M'; //Altera o status da peça para 'M', indicando que ela foi jogada
+        return 1; // Encerra a busca no momento que encontra a maior peça dupla presente em ambas as mãos
+      }
 
-  for(int k = 6; k >= 0; k--){
-    for(int i = 0; i < 7; i++){
-      if((player[0].hand[i].ladoA == k) && (player[0].hand[i].ladoB == k))
-        return 1;
+      //Caso não encontre a peça dupla na mão do jogador 1, a função busca na mão do jogador 2
 
-      if((player[1].hand[i].ladoA == k) && (player[1].hand[i].ladoB == k))
+      if((player[1].hand[i].ladoA == k) && (player[1].hand[i].ladoB == k)){
+        player[1].hand[i].status = 'M';
         return 2;
+      }
     }
   }
 
-  return -1;
+  return -1; // Retorna -1 se não encontrar nenhuma peça dupla na mão de ambos
 }
 
 int encontrarMaior(Player player[2]){	
@@ -141,6 +149,7 @@ int encontrarMaior(Player player[2]){
       for(int i = 0; i < 7; i++){
         if((player[0].hand[i].ladoA + player[0].hand[i].ladoB) == k){
           printf("[%d|%d]",player[0].hand[i].ladoA,player[0].hand[i].ladoB);
+          
           return 1;
         }
 
@@ -209,7 +218,7 @@ void showHandPieces(Player players[2], int numPlayers){
 int buyCards(Carta totalPieces[28], Player players[2], int numPlayers){
 
   // int pecaComprada = 0;
-  
+
    // pieceGiveAway( totalPieces, players, int numPlayers);
 
   for(int k = 0; k < 28; k++){
@@ -228,8 +237,6 @@ int buyCards(Carta totalPieces[28], Player players[2], int numPlayers){
     printf("Nao ha pecas para comprar");
      return 0;//nao foi possivel fazer a compra
 }
-
-
 
 int main(){
   srand( (unsigned)time(0) );
