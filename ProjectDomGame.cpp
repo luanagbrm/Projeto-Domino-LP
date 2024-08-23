@@ -14,7 +14,7 @@ typedef struct{
   int ladoE;
   int ladoD;
 //	char status;//status "M","1", and"2"
-}Mesa[28];
+}Mesa;
 
 //Structure que representa cada jogador 
 typedef struct{
@@ -43,7 +43,9 @@ typedef struct{
 
 //typedef struct{
 //    Carta mesa[28];//assegura todas as 28 pecas da mesa
-//   int pecaMesa;//guarda o numero de pecas jogadas/na mesa no momento
+//   int pecaMesa;//gua
+
+// rda o numero de pecas jogadas/na mesa no momento
 //}Mesa;
 
 
@@ -149,7 +151,7 @@ int encontrarMaior(Player player[2]){
       for(int i = 0; i < 7; i++){
         if((player[0].hand[i].ladoA + player[0].hand[i].ladoB) == k){
           printf("[%d|%d]",player[0].hand[i].ladoA,player[0].hand[i].ladoB);
-          
+
           return 1;
         }
 
@@ -164,16 +166,28 @@ int encontrarMaior(Player player[2]){
   return -1;
 }
 
-int primeiroJogador(Player players[2]){
+int primeiroJogador(Player players[2], Mesa *mesa) {
+  
+    int jogador1 = encontrarDupla(players);
 
-  int jogador1 = encontrarDupla(players);
+  
+    if (jogador1 == -1) { 
+        jogador1 = encontrarMaior(players);
+    }
 
-  if(jogador1 ==  -1){ 
-      jogador1 = encontrarMaior(players);
-  }
+    if (jogador1 != -1) {
+        for (int k = 0; k < players[jogador1 - 1].numPieces; k++) {
+            if (players[jogador1 - 1].hand[k].ladoA == players[jogador1 - 1].hand[k].ladoB) {
+                mesa->ladoE = players[jogador1 - 1].hand[k].ladoA;
+                mesa->ladoD = players[jogador1 - 1].hand[k].ladoB;
+                players[jogador1 - 1].hand[k].status = 'M';
+            }
+        }
+    }
 
-  return jogador1;
+    return jogador1;
 }
+
 /*int findGreastePiece(Carta totalPieces[28],Player numPieces, Player HandPieces ){
 
   int doublePiece = 0;
@@ -203,6 +217,14 @@ void showHandPieces(Player players[2], int numPlayers){
     printf("\n");
   }
 }
+
+//Funcao para inciar a mesa como vazia
+
+void inciaMesa(Mesa *mesa){
+   mesa->ladoE = -7;//-7 e uma sentinela 
+   mesa->ladoD = -7;
+}
+
 //Perguntar para a luana como fazer passagem por referencia sem usar "->"
 /*void inciaMesa(Mesa mesaDoJogo){
   mesaDoJogo.pecaMesa = 0;// Inicia o jogo com 0 pecas na mesa
@@ -215,47 +237,54 @@ void showHandPieces(Player players[2], int numPlayers){
 }*/
 
 // funcao para comprar cartas caso a peca tenha status M, retorn 1 se a peca for comprada e 0 se nao ha pecas para a compra
-int buyCards(Carta totalPieces[28], Player players[2], int numPlayers){
+int buyCards(Carta totalPieces[28], Player *player) {
+  
+    for (int k = 0; k < 28; k++) {
+      
+        if (totalPieces[k].status == 'M') {
+          
+            if (player->numPieces < 7) {
+                player->hand[player->numPieces++] = totalPieces[k];
 
-  // int pecaComprada = 0;
+                //Troca os status dependendo do jogador
+                if (player == &player[0]) {
+                    totalPieces[k].status = '1';
+                } else {
+                    totalPieces[k].status = '2';
+                }
 
-   // pieceGiveAway( totalPieces, players, int numPlayers);
-
-  for(int k = 0; k < 28; k++){
-    if( totalPieces[k].status == 'M'){
-      for(int i = 0; i < numPlayers; i++){
-        if (players[i].numPieces < 7) {
-          players[i].hand[players[i].numPieces++] = totalPieces[k];
-          players[i].hand[players[i].numPieces - 1].status = '1' + i;
-          totalPieces[k].status = '1' + i;
-          printf("\nO jogadoe %d comprou uma peca com sucesso\n", i + 1);
-          return 1;//comrpra feita 
-      }
+                printf("\nCompra feita com sucesso\n");
+                return 1; // Compra feita
+            }
+        }
     }
-    }
-  }
+
     printf("Nao ha pecas para comprar");
-     return 0;//nao foi possivel fazer a compra
+    return 0; // Nao foi possivel fazer a compra
 }
+
 
 int main(){
   srand( (unsigned)time(0) );
   Carta domino[28];
-
+  Mesa mesa;
   Player players[2];
 
   criarCarta(domino);
   embaralharPecas(domino);
+  inciaMesa(&mesa);//incia antes de pedir a quantidade de jogadores
+  
   int numPlayer = playerNumber();//Variável para a chamada da função playerNumber()
 
   pieceGiveAway(domino, players, numPlayer);
+  
   printf("\n");	
   showHandPieces(players, numPlayer);
   printf("\n");
   mostrarCartas(domino);
 
-  int firstPlayer = primeiroJogador(players);
-  printf("\n\nA partida comeca com o jogador %d\n", primeiroJogador(players));
+  int firstPlayer = primeiroJogador(players, &mesa);//faz passagem por referencia
+  printf("\n\nA partida comeca com o jogador %d\n",firstPlayer);
 
 //	embaralharPecas(domino);
 //	printf("\n");
