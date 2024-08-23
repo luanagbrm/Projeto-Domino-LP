@@ -212,8 +212,8 @@ void showHandPieces(Player players[2], int numPlayers){
     printf("Jogador %d: \n", i + 1);//o i = 1 numera corretamente cada player
     for(int k = 0 ; k < players[i].numPieces; k++){
       printf("[%d|%d]",players[i].hand[k].ladoA,players[i].hand[k].ladoB);
-
     }
+  
     printf("\n");
   }
 }
@@ -281,6 +281,7 @@ int main(){
   printf("\n");	
   showHandPieces(players, numPlayer);
   printf("\n");
+  printf("\nTodas as cartas do jogo\n");
   mostrarCartas(domino);
 
   int firstPlayer = primeiroJogador(players, &mesa);//faz passagem por referencia
