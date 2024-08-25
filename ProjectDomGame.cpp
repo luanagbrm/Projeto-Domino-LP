@@ -14,6 +14,8 @@ typedef struct{
 
 
 typedef struct{
+  int playedCards;
+  Carta played[28];
   int ladoE;
   int ladoD;
 //	char status;//status "M","1", and"2"
@@ -127,50 +129,51 @@ void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers){
       players[i].numPieces++;
     }
   }
-  
+
   for(int j = 0; j < pieceAssign;j++){
     totalPieces[j].status = 'M';
   }
 }
 
 int checarJogadaValida(Mesa *mesa, Player players[2], int player, int pos) {
-	Carta pecaJogada = players[player].hand[pos];
-	int ladoD = mesa->ladoD;
-	int ladoE = mesa->ladoE;
-	
-	if(pecaJogada.ladoA == ladoD){
-		mesa->ladoD = pecaJogada.ladoB;
-		return 1;
-	} else if(pecaJogada.ladoB == ladoD){
-		mesa->ladoD = pecaJogada.ladoA;
-		return 1;
-	} else if(pecaJogada.ladoA == ladoE){
-		mesa->ladoE = pecaJogada.ladoB;
-		return 1;
-	} else if(pecaJogada.ladoB == ladoE){
-		mesa->ladoE = pecaJogada.ladoA;
-		return 1;
-	} 
-	
-	return -1;
-    
-    
+  Carta pecaJogada = players[player].hand[pos];
+  int ladoD = mesa->ladoD;
+  int ladoE = mesa->ladoE;
+
+  if(pecaJogada.ladoA == ladoD){
+    mesa->ladoD = pecaJogada.ladoB;
+    return 1;
+  } else if(pecaJogada.ladoB == ladoD){
+    mesa->ladoD = pecaJogada.ladoA;
+    return 1;
+  } else if(pecaJogada.ladoA == ladoE){
+    mesa->ladoE = pecaJogada.ladoB;
+    return 1;
+  } else if(pecaJogada.ladoB == ladoE){
+    mesa->ladoE = pecaJogada.ladoA;
+    return 1;
+  } 
+
+  return -1;
+
+
     printf("[%d|%d]\n", mesa->ladoE, mesa->ladoD);
 }
 
 void jogarPeca(Mesa *mesa, Player players[2], int player, int pos) {
-	players[player].hand[pos].status = 'M'; //Altera o status da peÃ§a para 'M', indicando que ela foi jogada
-	
-	if(mesa->ladoD == -7 && mesa->ladoE == -7){
-		mesa->ladoE = players[player].hand[pos].ladoA;
-    	mesa->ladoD = players[player].hand[pos].ladoA;
-	} else {
-		if(checarJogadaValida(mesa, players, player, pos) == -1){
-			return;
-		}
-	}
-}
+  players[player].hand[pos].status = 'M'; //Altera o status da peÃ§a para 'M', indicando que ela foi jogada
 
+  if(mesa->ladoD == -7 && mesa->ladoE == -7){
+    mesa->ladoE = players[player].hand[pos].ladoA;
+      mesa->ladoD = players[player].hand[pos].ladoA;
+  } else {
+    if(checarJogadaValida(mesa, players, player, pos) == -1){
+      return;
+    }
+  }
+  mesa -> played[mesa->playedCards++] = players[player].hand[pos];//adiciona a peca jogada no array
+  mesa->playedCards++;//aumentaaquantidade de pecas jogadas
+}
 
 
 
@@ -220,10 +223,10 @@ int encontrarMaior(Player player[2]){
 }
 
 int primeiroJogador(Player players[2], Mesa *mesa) {
-  
+
     int jogador1 = encontrarDupla(players, mesa);
 
-  
+
     if (jogador1 == -1) { 
         jogador1 = encontrarMaior(players);
     }
@@ -266,7 +269,7 @@ void showHandPieces(Player players[2], int numPlayers){
     for(int k = 0 ; k < players[i].numPieces; k++){
       printf("[%d|%d]",players[i].hand[k].ladoA,players[i].hand[k].ladoB);
     }
-  
+
     printf("\n");
   }
 }
@@ -290,45 +293,41 @@ void inciaMesa(Mesa *mesa){
 }*/
 
 // funcao para comprar cartas caso a peca tenha status M, retorn 1 se a peca for comprada e 0 se nao ha pecas para a compra
-int buyCards(Carta totalPieces[28], Player *player) {
-  
-    for (int k = 0; k < 28; k++) {
-      
-        if (totalPieces[k].status == 'M') {
-          
-            if (player->numPieces < 7) {
-                player->hand[player->numPieces++] = totalPieces[k];
+int buyCards(Carta totalPieces[28], Player *player, int playerNum) {
+      for (int k = 0; k < 28; k++) {
+          if (totalPieces[k].status == 'M') {
+              if (player->numPieces < 7) {
+                  player->hand[player->numPieces++] = totalPieces[k];
+                  totalPieces[k].status = '1' + playerNum;
+                  printf("\nCompra feita com sucesso\n");
+                  return 1; // Compra feita
+              }
+          }
+      }
+      printf("Nao ha pecas para comprar");
+      return 0; // Nao foi possivel fazer a compra
+  }
 
-                //Troca os status dependendo do jogador
-                if (player == &player[0]) {
-                    totalPieces[k].status = '1';
-                } else {
-                    totalPieces[k].status = '2';
-                }
-
-                printf("\nCompra feita com sucesso\n");
-                return 1; // Compra feita
-            }
-        }
-    }
-
-    printf("Nao ha pecas para comprar");
-    return 0; // Nao foi possivel fazer a compra
+//Mostra todas as pecas da mesa
+void showTablePieces(Mesa *mesa){
+   printf("\nMesa do Jogo: \n");
+  for(int i = 0; i < mesa -> playedCards; i++)
+     printf("[%d|%d]", mesa -> played[i].ladoA,mesa -> played[i].ladoB);
+  printf("\n");
 }
-
 
 int main(){
   srand( (unsigned)time(0) );
-  
+
 
   criarCarta(domino);
   embaralharPecas(domino);
   inciaMesa(&mesa);//incia antes de pedir a quantidade de jogadores
-  
+
   int numPlayer = playerNumber();//VariÃ¡vel para a chamada da funÃ§Ã£o playerNumber()
 
   pieceGiveAway(domino, players, numPlayer);
-  
+
   printf("\n");	
   showHandPieces(players, numPlayer);
   printf("\n");
@@ -336,12 +335,9 @@ int main(){
   mostrarCartas(domino);
 
   int firstPlayer = primeiroJogador(players, &mesa);//faz passagem por referencia
-  printf("\n\nA partida comeca com o jogador %d\n",firstPlayer);
-  printf("%d | %d", mesa.ladoE, mesa.ladoD);
+  printf("\n\nA partida começa com o jogador %d com a peca [%d|%d]\n",firstPlayer, mesa.ladoE, mesa.ladoD);
 
-//	embaralharPecas(domino);
-//	printf("\n");
-//	mostrarCartas(domino);
+  showTablePieces(&mesa);
 
   return 0;
 }
