@@ -310,7 +310,7 @@ int buyCards(Carta totalPieces[28], Player *player, int playerNum) {
 
 //Mostra todas as pecas da mesa
 void showTablePieces(Mesa *mesa){
-   printf("\nMesa do Jogo: \n");
+   printf("\nMesa do Jogo: \n\n");
   for(int i = 0; i < mesa -> playedCards; i++)
      printf("[%d|%d]", mesa -> played[i].ladoA,mesa -> played[i].ladoB);
   printf("\n");
