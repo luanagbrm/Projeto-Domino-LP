@@ -17,8 +17,8 @@ typedef struct{
 
 
 typedef struct{
-  int playedCards;//é utilizado como contador  paraas cartas jogadas
-  Carta played[NUM_PECAS];//array para guardar as pecas jogadas
+  int playedCards;
+  Carta played[NUM_PECAS];
   int ladoE;
   int ladoD;
 //	char status;//status "M","1", and"2"
@@ -27,7 +27,7 @@ typedef struct{
 //Structure que representa cada jogador 
 typedef struct{
   Carta hand[HAND_PECAS];//hand Ã© um array da estrutura "Cartas"
-  int numPieces;//variavel para saber a qtd de cartas na mao  de cada player
+  int numPieces;//variavel para saber a qtd de cartas na mÃ£o de cada player
 }Player;
 
 Carta domino[NUM_PECAS];
@@ -174,8 +174,8 @@ void jogarPeca(Mesa *mesa, Player players[NUM_JOGADORES], int player, int pos) {
       return;
     }
   }
-  mesa -> played[mesa->playedCards++] = players[player].hand[pos];//adiciona a peca jogada no array
-  mesa->playedCards++;//aumentaaquantidade de pecas jogadas
+  mesa->played[mesa->playedCards++] = players[player].hand[pos]; //adiciona a peca jogada no array
+  //mesa->playedCards++;//aumenta a quantidade de pecas jogadas
 }
 
 
@@ -307,10 +307,10 @@ void showTablePieces(Mesa *mesa){
   
     printf("\n");
 }
+  
 
 int main(){
   srand( (unsigned)time(0) );
-
 
   criarCarta(domino);
   embaralharPecas(domino);
