@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+//Variaveis globais
+#define NUM_PECAS 28
+#define HAND_PECAS 7
+#define NUM_JOGADORES 2
 
 //structure sobre as informaÃ§r3Ãµes de cada carta do dominÃ³
 typedef struct{
@@ -15,7 +18,7 @@ typedef struct{
 
 typedef struct{
   int playedCards;
-  Carta played[28];
+  Carta played[NUM_PECAS];
   int ladoE;
   int ladoD;
 //	char status;//status "M","1", and"2"
@@ -23,11 +26,11 @@ typedef struct{
 
 //Structure que representa cada jogador 
 typedef struct{
-  Carta hand[7];//hand Ã© um array da estrutura "Cartas"
+  Carta hand[HAND_PECAS];//hand Ã© um array da estrutura "Cartas"
   int numPieces;//variavel para saber a qtd de cartas na mÃ£o de cada player
 }Player;
 
-Carta domino[28];
+Carta domino[NUM_PECAS];
 Mesa mesa;
 Player players[2];
 
@@ -60,7 +63,7 @@ Player players[2];
 
 
 //funÃ§Ã£o para criar cartas
-void criarCarta(Carta domino[28]){
+void criarCarta(Carta domino[NUM_PECAS]){
   Carta peca;
   int j = 0;
 
@@ -95,8 +98,8 @@ int playerNumber(void){
 
 
 //FunÃ§Ã£o para mostrar todas as cartas do jogo
-void mostrarCartas(Carta domino[28]){
-  for(int i = 0; i < 28; i++){
+void mostrarCartas(Carta domino[NUM_PECAS]){
+  for(int i = 0; i < NUM_PECAS; i++){
       if(i%7 == 0 )
           printf("\n");
     printf("[%d|%d]", domino[i].ladoA, domino[i].ladoB);
@@ -104,7 +107,7 @@ void mostrarCartas(Carta domino[28]){
 }
 
 //FunÃ§Ã£o para embaralhar as cartas
-void embaralharPecas(Carta domino[28]){
+void embaralharPecas(Carta domino[NUM_PECAS]){
   Carta peca2;
   int p;
 
@@ -116,14 +119,14 @@ void embaralharPecas(Carta domino[28]){
   }
 }
 //Update da funcao para que seja Ãºtil na questao dos status
-void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers){
+void pieceGiveAway(Carta totalPieces[28], Player players[NUM_JOGADORES], int numPlayers){
 
   int pieceAssign = 0;//acessa todas as peÃ§as  uma por uma e distribui para um jogador
 
   for(int i = 0; i < numPlayers; i++){
     players[i].numPieces = 0; // parte necessÃ¡ria para inicializaÃ§Ã£o do num de peÃ§as dadas
 
-    for(int k = 0; k < 7  && pieceAssign < 28; k++){
+    for(int k = 0; k < HAND_PECAS  && pieceAssign < NUM_PECAS; k++){
       players[i].hand[k] = totalPieces[pieceAssign++];
       players[i].hand[k].status = '1' + i;
       players[i].numPieces++;
@@ -135,7 +138,7 @@ void pieceGiveAway(Carta totalPieces[28], Player players[2], int numPlayers){
   }
 }
 
-int checarJogadaValida(Mesa *mesa, Player players[2], int player, int pos) {
+int checarJogadaValida(Mesa *mesa, Player players[NUM_JOGADORES], int player, int pos) {
   Carta pecaJogada = players[player].hand[pos];
   int ladoD = mesa->ladoD;
   int ladoE = mesa->ladoE;
@@ -160,7 +163,7 @@ int checarJogadaValida(Mesa *mesa, Player players[2], int player, int pos) {
     printf("[%d|%d]\n", mesa->ladoE, mesa->ladoD);
 }
 
-void jogarPeca(Mesa *mesa, Player players[2], int player, int pos) {
+void jogarPeca(Mesa *mesa, Player players[NUM_JOGADORES], int player, int pos) {
   players[player].hand[pos].status = 'M'; //Altera o status da peÃ§a para 'M', indicando que ela foi jogada
 
   if(mesa->ladoD == -7 && mesa->ladoE == -7){
@@ -180,7 +183,7 @@ void jogarPeca(Mesa *mesa, Player players[2], int player, int pos) {
 //Fazer uma function para cada coisa do iniciar jogadores
 
 // FunÃ§Ã£o para encontrar a maior peÃ§a cujo ambos os lados sÃ£o iguais na mÃ£o de cada jogador, retornando '1' caso esteja com o jogador 1, ou '2' caso esteja com o jogador 2'
-int encontrarDupla(Player player[2], Mesa *mesa){
+int encontrarDupla(Player player[NUM_JOGADORES], Mesa *mesa){
   for(int k = 6; k >= 0; k--){ 
     // Verifica simultaneamente cada peÃ§a da mÃ£o do jogador 1 e do jogador 2
     // buscando a peÃ§a cujo ambos os lados tem valor igual a k
@@ -202,7 +205,7 @@ int encontrarDupla(Player player[2], Mesa *mesa){
   return -1; // Retorna -1 se nÃ£o encontrar nenhuma peÃ§a dupla na mÃ£o de ambos
 }
 
-int encontrarMaior(Player player[2]){	
+int encontrarMaior(Player player[NUM_JOGADORES]){	
     for(int k = 11; k >= 0; k--){
       for(int i = 0; i < 7; i++){
         if((player[0].hand[i].ladoA + player[0].hand[i].ladoB) == k){
@@ -222,7 +225,7 @@ int encontrarMaior(Player player[2]){
   return -1;
 }
 
-int primeiroJogador(Player players[2], Mesa *mesa) {
+int primeiroJogador(Player players[NUM_JOGADORES], Mesa *mesa) {
 
     int jogador1 = encontrarDupla(players, mesa);
 
@@ -262,7 +265,7 @@ int primeiroJogador(Player players[2], Mesa *mesa) {
     }
 }*/
 
-void showHandPieces(Player players[2], int numPlayers){
+void showHandPieces(Player players[NUM_JOGADORES], int numPlayers){
 
   for(int i = 0; i < numPlayers; i++){
     printf("Jogador %d: \n", i + 1);//o i = 1 numera corretamente cada player
@@ -275,28 +278,16 @@ void showHandPieces(Player players[2], int numPlayers){
 }
 
 //Funcao para inciar a mesa como vazia
-
 void inciaMesa(Mesa *mesa){
    mesa->ladoE = -7;//-7 e uma sentinela 
    mesa->ladoD = -7;
 }
 
-//Perguntar para a luana como fazer passagem por referencia sem usar "->"
-/*void inciaMesa(Mesa mesaDoJogo){
-  mesaDoJogo.pecaMesa = 0;// Inicia o jogo com 0 pecas na mesa
-
-
-  for(int k = 0; k < 28;k++ ){
-    mesaDoJogo.mesa[k].ladoA = -7; // -7 e uma sentinela para o lugar da peca 
-    mesaDoJogo.mesa[k].ladoB = -7;
-  }
-}*/
-
 // funcao para comprar cartas caso a peca tenha status M, retorn 1 se a peca for comprada e 0 se nao ha pecas para a compra
-int buyCards(Carta totalPieces[28], Player *player, int playerNum) {
-      for (int k = 0; k < 28; k++) {
+int buyCards(Carta totalPieces[NUM_PECAS], Player *player, int playerNum) {
+      for (int k = 0; k < NUM_PECAS; k++) {
           if (totalPieces[k].status == 'M') {
-              if (player->numPieces < 7) {
+              if (player->numPieces < HAND_PECAS) {
                   player->hand[player->numPieces++] = totalPieces[k];
                   totalPieces[k].status = '1' + playerNum;
                   printf("\nCompra feita com sucesso\n");
