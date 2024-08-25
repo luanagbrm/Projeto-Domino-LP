@@ -52,40 +52,42 @@ int main(){
 	//printf("Jogo Domino");
 	
 	
-//	
-//	do{
-//            //Menu de funcionalidades do jogo
-//	     printf("\n---------------------------------------\n");
-//             printf("MENU - Escolha uma opcao: \n");
-//             printf("1 - Mostrar cartas\n");
-//             printf("2 - Embaralhar cartas\n");
-//             printf("3 - Sair\n");
-//             printf("\n---------------------------------------\n");
-//	     scanf("%d",&opcao);
-//        
-//        
-//        switch(opcao) 
-//        {
-//            case 1:
-//                mostrarCartas(domino);;
-//                printf("\n\nCartas disponiveis do jogo");
-//		break;
-//            case 2:
-//                embaralharPecas(domino);
-//                mostrarCartas(domino);
-//                printf("\n\nCartas embaralhadas");
-//                break;
-//            case 3:
-//                printf("Saindo do jogo");
-//                break;
-//            default:
-//                printf("Opcao invalida. Tente novamente.\n");
-//        }
-//        
-//    }while(opcao != 3);
+//do{
+  //            //Menu de funcionalidades do jogo
+  //	     printf("\n---------------------------------------\n");
+                 // printf("JOGO DOMINÓ \n\n");
+  //             printf("MENU - Escolha uma opcao: \n");
+  //             printf("1 - Começar Jogo(2 jogadores)\n");
+  //             printf("2 - Começar Jogo(Contra Computador)\n");
+              // printf("3 - Retornar ao Jogo Interrompido \n");
+  //             printf("4 - Regras Gerais do Jogo \n");
+  //             printf("5 - Recuperar o Jogo Salvo \n");
+  //             printf("6 - Retornar ao Jogo Interrompido: \n");
+  //             printf("0 - Sair do Jogo\n");
+  //             printf("\n---------------------------------------\n");
+  //	     scanf("%d",&opcao);
+  //        
+  //        
+  //        switch(opcao) 
+  //        {
+  //            case 1:
+  //                mostrarCartas(domino);;
+  //                printf("\n\nCartas disponiveis do jogo");
+  //		break;
+  //            case 2:
+  //                embaralharPecas(domino);
+  //                mostrarCartas(domino);
+  //                printf("\n\nCartas embaralhadas");
+  //                break;
+  //            case 3:
+  //                printf("Saindo do jogo");
+  //                break;
+  //            default:
+  //                printf("Opcao invalida. Tente novamente.\n");
+  //        }
+  //        
+  //    }while(opcao != 3);
 
-	return 0;
-}
 //função para criar cartas
 void criarCarta(Carta domino[28]){
 	Carta peca;
