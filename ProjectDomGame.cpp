@@ -27,7 +27,7 @@ typedef struct{
 //Structure que representa cada jogador 
 typedef struct{
   Carta hand[HAND_PECAS];//hand Ã© um array da estrutura "Cartas"
-  int numPieces;//variavel para saber a qtd de cartas na mÃ£o de cada player
+  int numPieces;//variavel para saber a qtd de cartas na mao  de cada player
 }Player;
 
 Carta domino[NUM_PECAS];
