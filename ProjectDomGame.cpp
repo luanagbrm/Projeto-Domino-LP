@@ -17,8 +17,8 @@ typedef struct{
 
 
 typedef struct{
-  int playedCards;
-  Carta played[NUM_PECAS];
+  int playedCards;//é utilizado como contador  paraas cartas jogadas
+  Carta played[NUM_PECAS];//array para guardar as pecas jogadas
   int ladoE;
   int ladoD;
 //	char status;//status "M","1", and"2"
