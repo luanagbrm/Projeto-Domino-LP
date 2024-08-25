@@ -32,7 +32,7 @@ typedef struct{
 
 Carta domino[NUM_PECAS];
 Mesa mesa;
-Player players[2];
+Player players[NUM_JOGADORES];
 
 
 //int iniciaJogador(Carta totalPieces[28], Player players[2], int numPlayers){
