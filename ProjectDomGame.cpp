@@ -332,13 +332,14 @@ int main(){
   printf("\n");	
   showHandPieces(players, numPlayer);
   printf("\n");
-  printf("\nTodas as cartas do jogo\n");
-  mostrarCartas(domino);
 
   int firstPlayer = primeiroJogador(players, &mesa);//faz passagem por referencia
   printf("\n\nA partida começa com o jogador %d com a peca [%d|%d]\n",firstPlayer, mesa.ladoE, mesa.ladoD);
 
   showTablePieces(&mesa);
+
+  printf("\nTodas as cartas do jogo\n");
+  mostrarCartas(domino);
 
   return 0;
 }
