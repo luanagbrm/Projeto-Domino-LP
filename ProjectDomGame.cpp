@@ -301,13 +301,17 @@ int buyCards(Carta totalPieces[NUM_PECAS], Player *player, int playerNum) {
 
 //Mostra todas as pecas da mesa
 void showTablePieces(Mesa *mesa){
+
    printf("\nMesa do Jogo: \n\n");
+   printf("-------------------\n");
    for(int k  = 0; k < mesa -> playedCards; k++)
         printf("[%d|%d]", mesa -> played[k].ladoA,mesa -> played[k].ladoB);
+
   
+    printf("\n-------------------");
     printf("\n");
 }
-  
+
 
 int main(){
   srand( (unsigned)time(0) );
