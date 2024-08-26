@@ -311,6 +311,72 @@ void showTablePieces(Mesa *mesa){
     printf("\n-------------------");
     printf("\n");
 }
+/*
+void clearBuffer() 
+{ 
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+void iniciaJogo(){
+	criarCarta(domino);
+    embaralharPecas(domino);
+    iniciaMesa(&mesa);//incia antes de pedir a quantidade de jogadores
+
+    int numPlayer = playerNumber();//Variavel para a chamada da funÃ§Ã£o playerNumber()
+    pieceGiveAway(domino, players, numPlayer);
+
+    printf("\n");	
+    showHandPieces(players, numPlayer);
+    printf("\n");
+
+    int firstPlayer = primeiroJogador(players, &mesa);//faz passagem por referencia
+    printf("\n\nA partida inicia com o jogador %d com a peca [%d|%d]\n",firstPlayer, mesa.ladoE, mesa.ladoD);
+
+    showTablePieces(&mesa);
+    clearBuffer();
+    printf("\nTodas as cartas do jogo\n");
+    mostrarCartas(domino);
+    
+}
+
+// Função para exibir o menu principal
+int exibirMenu(){
+    int opcao;
+    printf("\n--- Menu Principal ---\n");
+    printf("1. Iniciar Novo Jogo\n");
+    printf("2. Sair\n");
+    printf("\n-------------------\n");
+    printf("Escolha uma opcao: ");
+    scanf("%d", &opcao);
+    return opcao;
+}
+
+
+int main(){
+    srand( (unsigned)time(0) );
+  
+    int opcao;
+    do {
+        opcao = exibirMenu();
+        
+         switch(opcao) 
+        {
+           case 1:
+                iniciaJogo();
+                break;
+            case 2:
+                printf("Saindo do jogo");
+                break;
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
+        }
+        
+    }while(opcao != 2);
+    
+    return 0;
+}
+*/
 
 
 int main(){
