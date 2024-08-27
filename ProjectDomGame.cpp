@@ -387,8 +387,8 @@ int menuJogador(Player players[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
                 break;
 
             case 3:
-                printf("Saindo do menu do jogador...\n");
-                return 0;
+                printf("Saindo do jogo...\n");
+                exit(0); // Encerra o programa;
             default:
                 printf("Opção inválida!\n");
                 break;
