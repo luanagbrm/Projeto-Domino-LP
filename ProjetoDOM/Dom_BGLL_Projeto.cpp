@@ -1,23 +1,53 @@
-/*
-DOM-BGLL - Projeto Dominó - Etapa 2
-20/08/2024 - Grupo:BGLL
-
-Nome dos integrantes:
-
-- Beatriz Lima Morais
-- Grazielle Batista de Almeida
-- Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri dos Santos
-
-A Etapa 2 consiste de criar 7 arquivos com a finalidade de separar o projeto de acordo com o Padrão MVC.
-*/
-
-#include "Dom_BGLL_Projeto_Model.cpp"
 #include "Dom_BGLL_Projeto_Controller.cpp"
 
-int main()
-{
-	int numPlayer = playerNumber();//Variável para a chamada da função playerNumber()
-    menu();
-    return 0;
+
+int main(){
+  srand( (unsigned)time(0) );
+  int carta;
+
+  criarCarta(domino);
+  embaralharPecas(domino);
+  iniciaMesa(mesa);//incia antes de pedir a quantidade de jogadores
+
+  int numPlayer = playerNumber();//Variavel para a chamada da funcao playerNumber()
+
+  pieceGiveAway(domino, players, numPlayer);
+
+  printf("\n");	
+  showHandPieces(players, numPlayer);
+  printf("\n");
+
+  int firstPlayer = primeiroJogador(players, mesa);//faz passagem por referencia
+  jogadorAtual = firstPlayer - 1;
+  printf("\n\nA partida começa com o jogador %d com a peca [%d|%d]\n",firstPlayer, mesa[0].ladoE, mesa[0].ladoD);
+  
+  showHandPieces(players, numPlayer);
+  showTablePieces(mesa);
+  
+  printf("\nfala uma peça ai pai %d\n", jogadorAtual);
+  scanf("%d", &carta);
+  jogarPeca(mesa, players, jogadorAtual, carta - 1);
+
+  showTablePieces(mesa);
+  showHandPieces(players, numPlayer);
+  
+  printf("\nfala uma peça ai pai %d\n", jogadorAtual);
+  scanf("%d", &carta);
+  jogarPeca(mesa, players, jogadorAtual, carta - 1);
+  
+  
+  showTablePieces(mesa);
+  showHandPieces(players, numPlayer);
+  
+  printf("\nfala uma peça ai pai %d\n", jogadorAtual);
+  scanf("%d", &carta);
+  jogarPeca(mesa, players, jogadorAtual, carta - 1);
+  
+  showTablePieces(mesa);
+  showHandPieces(players, numPlayer);
+
+  printf("\nTodas as cartas do jogo\n");
+  mostrarCartas(domino);
+
+  return 0;
 }

@@ -1,17 +1,11 @@
-/*
-DOM-BGLL - Projeto Dominó - Etapa 2
-20/08/2024 - Grupo:BGLL
+#ifndef DOM_BGLL_PROJETO_VIEW
+#define DOM_BGLL_PROJETO_VIEW
 
-Nome dos integrantes:
+#include "Dom_BGLL_Projeto_Model.h"
+#include <stdio.h>
 
-- Beatriz Lima Morais
-- Grazielle Batista de Almeida
-- Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri dos Santos
+void mostrarCartas(Carta domino[NUM_PECAS]);
+void showHandPieces(Player players[NUM_JOGADORES], int numPlayers);
+void showTablePieces(Mesa mesa[]);
 
- O View.h contém os protótipos das funções responsaveis pela visualização dos dados e interação com o usuário.
-*/
-
-void mostrarCartas(Carta domino[28]);
-void mostrarMenu();
-void showHandPieces(Player players[2], int numPlayers);
+#endif
