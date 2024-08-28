@@ -26,8 +26,17 @@ void showHandPieces(Player players[NUM_JOGADORES], int numPlayers){
 void showTablePieces(Mesa mesa[]){
    	printf("\nMesa do Jogo: \n\n");
    	printf("-------------------\n");
-    for(int k  = 0; k < index; k++)
+    for(int k  = 0; k < myIndex; k++)
         printf("[%d|%d]", mesa[k].ladoE, mesa[k].ladoD);
 	printf("\n-------------------");
     printf("\n");
+}
+
+void mostrarMenu(){
+        printf("\n--- Menu do Jogador %d ---\n", jogadorAtual + 1);
+        printf("1. Escolher peça para jogar\n");
+        printf("2. Comprar peça\n");
+        printf("3. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
 }

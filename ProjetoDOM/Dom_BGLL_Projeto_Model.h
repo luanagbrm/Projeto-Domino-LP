@@ -29,7 +29,7 @@ Carta domino[28];
 Mesa limitesMesa;
 Mesa mesa[28];
 Player players[2];
-int index = 0;
+int myIndex =0;
 int jogadorAtual = 0;
 
 void criarCarta(Carta domino[NUM_PECAS]);

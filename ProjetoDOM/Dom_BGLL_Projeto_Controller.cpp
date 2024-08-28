@@ -58,7 +58,7 @@ int checarJogadaValida(Player players[NUM_JOGADORES], int player, int pos) {
   int ladoD = limitesMesa.ladoD;
   int ladoE = limitesMesa.ladoE;
   
-  	if (index == 0) { //A primeira jogada sempre será válida
+  	if (myIndex == 0) { //A primeira jogada sempre será válida
 		limitesMesa.ladoE = pecaJogada.ladoA;
         limitesMesa.ladoD = pecaJogada.ladoB;
         return 1;
@@ -180,18 +180,70 @@ void jogarPeca(Mesa mesa[28], Player players[NUM_JOGADORES], int player, int pos
   int posicaoOriginal =  players[player].hand[pos].pos;
   
 
-  if(validadeJogada == 1 || mesa[index].ladoD == -7 && mesa[index].ladoE == -7){
+  if(validadeJogada == 1 || mesa[myIndex].ladoD == -7 && mesa[myIndex].ladoE == -7){
 	players[player].hand[pos].status = 'M'; //Altera o status da peÃ§a para 'M', indicando que ela foi jogada
-    mesa[index].ladoE = players[player].hand[pos].ladoA;
-    mesa[index].ladoD = players[player].hand[pos].ladoB;
+    mesa[myIndex].ladoE = players[player].hand[pos].ladoA;
+    mesa[myIndex].ladoD = players[player].hand[pos].ladoB;
     domino[posicaoOriginal].status = 'M';
-    index++;
+    myIndex++;
   } 
   
   removerPecaJogada(&players[player], pos);
   
   definirJogadorAtual();
 }
+
+void definirProximoJogador() {
+    jogadorAtual = (jogadorAtual + 1) % NUM_JOGADORES;
+}
+
+void jogarPecaNaMesa(Mesa mesa[28], Player players[NUM_JOGADORES], int pos) {
+    int validadeJogada = checarJogadaValida(players, jogadorAtual, pos);
+
+    if (validadeJogada == 1) {
+        mesa[myIndex].ladoE = players[jogadorAtual].hand[pos].ladoA;
+        mesa[myIndex].ladoD = players[jogadorAtual].hand[pos].ladoB;
+        players[jogadorAtual].hand[pos].status = 'M';  // Marca a peça como jogada na mesa
+        myIndex++;
+        removerPecaJogada(&players[jogadorAtual], pos);  // Remove a peça jogada da mão do jogador
+        definirProximoJogador();  // Passa para o próximo jogador
+    } else {
+        printf("Jogada inválida! A peça [%d|%d] não combina com a mesa.\n", 
+               players[jogadorAtual].hand[pos].ladoA, 
+               players[jogadorAtual].hand[pos].ladoB);
+    }
+}
+
+/*int teste(escolha){
+  do{
+
+    switch (escolha){
+
+      case 1:
+        showHandPieces(players, NUM_JOGADORES);
+        printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", players[jogadorAtual].numPieces);
+        scanf("%d", &posicao);
+        if(posicao > 0 && posicao <= players[jogadorAtual].numPieces) {
+          jogarPecaNaMesa(mesa, players, posicao - 1);
+          showTablePieces(mesa);
+        }else{
+          printf("posicao invalida!\n");
+        }
+        break;
+      case 2:
+        if(buyCards(domino, &players[jogadorAtual], jogadorAtual)){
+          showHandPieces(players, NUM_JOGADORES);
+        }
+        break;
+      case 3:
+        printf("saindo do jogo...\n");
+        exit(0);
+      default:
+        break;
+      }
+  } while (escolha != 3);
+  return 1;
+}*/
 
 /*
 void iniciaJogo(){
