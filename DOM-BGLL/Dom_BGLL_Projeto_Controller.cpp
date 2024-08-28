@@ -61,7 +61,7 @@ void removerPecaJogada(Jogador *jogador, int pos) {
 
 void jogarLadoEsquerdo(Mesa mesa[]) {
     for (int i = qtdPecasMesa; i >= 0; i--) { //recebe a posicao da peca que foi jogada
-        mesa[i] = mesa[i + 1];//e diminui em 1 a posicao de todas as pecas que estão a direita dela
+        mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estão a direita dela
     }
     
     qtdPecasMesa++;
