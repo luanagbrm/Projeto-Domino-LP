@@ -1,14 +1,6 @@
-# Etapa 3
+# Etapa 4
 
-## Pendente:
-  - Definir os status das peças ('M' =  mesa, '1' = jogador 1 , '2 = jogador 2)
-  - Permitir comprar as peças com status 'NULL'
-  - Verificar se a jogada feita pelo usuário é válida (comparar com a última peça da array)
-  - Apresentar Mesa 
-
-## Concluídas:
-  - [ ] Definir o número de jogadores
-  - Definir as peças para cada jogador
-  - Criar a mesa vazia (array[28})
-  - Definir o jogador que vai iniciar
-
+ ## Pendente
+  - [x] Permitir que o jogador visualize apenas suas cartas (ta meio feito)
+  - [x] Criar uma variavel global para permitir jogar as pecas do outro lado da mesa (tambem ta feito)
+  - [ ] alterar a array de acordo com a extremidade jogada (ajustar a função validar peças e jogar peças (a lógica esta feita em removerPecasJogadas)
