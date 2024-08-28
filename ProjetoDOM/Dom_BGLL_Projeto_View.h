@@ -9,6 +9,6 @@ int escolha;
 void mostrarCartas(Carta domino[NUM_PECAS]);
 void showHandPieces(Player players[NUM_JOGADORES], int numPlayers);
 void showTablePieces(Mesa mesa[]);
-void mostrarMenu();
+int exibirMenu();
 
 #endif

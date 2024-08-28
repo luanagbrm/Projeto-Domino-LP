@@ -32,11 +32,13 @@ void showTablePieces(Mesa mesa[]){
     printf("\n");
 }
 
-void mostrarMenu(){
-        printf("\n--- Menu do Jogador %d ---\n", jogadorAtual + 1);
-        printf("1. Escolher peça para jogar\n");
-        printf("2. Comprar peça\n");
-        printf("3. Sair\n");
-        printf("Escolha uma opção: ");
-        scanf("%d", &escolha);
+int exibirMenu() {
+    int opcao;
+    printf("\n--- Menu Principal ---\n");
+    printf("1. Iniciar Novo Jogo\n");
+    printf("2. Sair\n");
+    printf("\n-------------------\n");
+    printf("Escolha uma opcao: ");
+    scanf("%d", &opcao);
+    return opcao;
 }

@@ -214,70 +214,37 @@ void jogarPecaNaMesa(Mesa mesa[28], Player players[NUM_JOGADORES], int pos) {
     }
 }
 
-/*int teste(escolha){
-  do{
+void iniciaJogo() {
+    srand(time(NULL));
+    criarCarta(domino);
+    embaralharPecas(domino);
+    pieceGiveAway(domino, players, NUM_JOGADORES);
+    iniciaMesa(mesa);
+    primeiroJogador(players, mesa);
 
-    switch (escolha){
+    int posicaoEscolhida = 0;
+    int jogadaValida = 1;
 
-      case 1:
+    while (1) {
         showHandPieces(players, NUM_JOGADORES);
-        printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", players[jogadorAtual].numPieces);
-        scanf("%d", &posicao);
-        if(posicao > 0 && posicao <= players[jogadorAtual].numPieces) {
-          jogarPecaNaMesa(mesa, players, posicao - 1);
-          showTablePieces(mesa);
-        }else{
-          printf("posicao invalida!\n");
+        showTablePieces(mesa);
+
+        printf("\nJogador %d, escolha a posicao da sua peca (0 para comprar): ", jogadorAtual + 1);
+        scanf("%d", &posicaoEscolhida);
+
+        if (posicaoEscolhida == 0) {
+            jogadaValida = buyCards(domino, &players[jogadorAtual], jogadorAtual);
+            if (jogadaValida == 1) {
+                continue;
+            } else {
+                break;
+            }
         }
-        break;
-      case 2:
-        if(buyCards(domino, &players[jogadorAtual], jogadorAtual)){
-          showHandPieces(players, NUM_JOGADORES);
+
+        if (posicaoEscolhida <= players[jogadorAtual].numPieces) {
+            jogarPeca(mesa, players, jogadorAtual, posicaoEscolhida - 1);
+        } else {
+            printf("\nJogada invalida. Tente novamente.\n");
         }
-        break;
-      case 3:
-        printf("saindo do jogo...\n");
-        exit(0);
-      default:
-        break;
-      }
-  } while (escolha != 3);
-  return 1;
-}*/
-
-/*
-void iniciaJogo(){
-  gerarSeed();
-  criarCarta(domino);
-  embaralharPecas(domino);
-  iniciaMesa(mesa);
-  pieceGiveAway(domino, players, numPlayer);
-  printf("\n");
-  showHandPieces(players, numPlayer);
-  printf("\n");
-  int firstPlayer = primeiroJogador(players, mesa);
-  jogadorAtual = firstPlayer - 1;
-  printf("\n\nA partida começa com o jogador %d com a peca [%d|%d]\n",firstPlayer, mesa[0].ladoE, mesa[0].ladoD);
-  
-  showTablePieces(mesa);
-  showHandPieces(players, numPlayer);
-
-  printf("\nfala uma peça ai pai %d\n", jogadorAtual);
-  scanf("%d", &carta);
-  jogarPeca(mesa, players, jogadorAtual, carta - 1);
-  
-  
-  showTablePieces(mesa);
-  showHandPieces(players, numPlayer);
-  
-  printf("\nfala uma peça ai pai %d\n", jogadorAtual);
-  scanf("%d", &carta);
-  jogarPeca(mesa, players, jogadorAtual, carta - 1);
-  
-  showTablePieces(mesa);
-  showHandPieces(players, numPlayer);
-
-  printf("\nTodas as cartas do jogo\n");
-  mostrarCartas(domino);
+    }
 }
-*/

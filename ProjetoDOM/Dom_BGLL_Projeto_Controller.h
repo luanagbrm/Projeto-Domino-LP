@@ -23,7 +23,7 @@ int primeiroJogador(Player players[NUM_JOGADORES], Mesa mesa[28]);
 int buyCards(Carta totalPieces[NUM_PECAS], Player *player, int playerNum);
 void definirProximoJogador();
 void jogarPecaNaMesa(Mesa mesa[28], Player players[NUM_JOGADORES], int pos);
-int teste(escolha);
+void iniciaJogo();
 //void iniciaJogo();
 
 #endif
