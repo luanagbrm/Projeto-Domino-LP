@@ -1,5 +1,5 @@
 /*
-DOM-BGLL - Projeto Dominó - Etapa 3
+DOM-BGLL - Projeto DominÃ³ - Etapa 3
 27/08/2024 - Grupo:BGLL
 
 Nome dos integrantes:
@@ -7,7 +7,7 @@ Nome dos integrantes:
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri dos Santos
+- Lucas FerriÂ dosÂ Santos
 */
 
 #include "Dom_BGLL_Projeto_View.h"
@@ -50,13 +50,13 @@ void mostrarPecasJogadorInd(Jogador jogadores[NUM_JOGADORES], int numJogador){
 void mostrarPecasMesa(Mesa mesa[]){
    	printf("\nMesa do Jogo: \n\n");
    	printf("-------------------\n");
-    for(int k  = 0; k < index; k++)
+    for(int k  = 0; k < qtdPecasMesa; k++)
         printf("[%d|%d]", mesa[k].ladoE, mesa[k].ladoD);
 	printf("\n-------------------");
     printf("\n");
 }
 
-//Define o número de jogadores de acordo com o informado pelo usuário
+//Define o nÃºmero de jogadores de acordo com o informado pelo usuÃ¡rio
 int numeroJogadores(void){
   int numJogadores;
   
@@ -65,7 +65,7 @@ int numeroJogadores(void){
 
   scanf("%d",&numJogadores);
 
-  while(numJogadores <1||numJogadores > 2 ){//O loop nao deixa o usuário prosseguir ate que o mesmo digite um dado valido
+  while(numJogadores <1||numJogadores > 2 ){//O loop nao deixa o usuÃ¡rio prosseguir ate que o mesmo digite um dado valido
     printf("O numero de jogadores escolhido e' invalido. Digite 1 ou 2");
     scanf("%d",&numJogadores);
   }
@@ -81,7 +81,7 @@ void statusCompra(int status){
 		printf("Nao ha pecas para comprar");
 }
 
-//Opções do menu principal do jogo
+//OpÃ§Ãµes do menu principal do jogo
 int menuPrincipal() {
     int opcao;
     printf("\n--- Menu Principal ---\n");
@@ -92,9 +92,11 @@ int menuPrincipal() {
     return opcao;
 }
 
-//Opções do menu de ações do jogador durante o jogo
+//OpÃ§Ãµes do menu de aÃ§Ãµes do jogador durante o jogo
 int menuPrincipalJogador() {
     int escolha;
+    //system("cls||clear");
+    mostrarPecasMesa(mesa);
     printf("\n------ VEZ DO JOGADOR %d ------\n", jogadorAtual + 1);
     mostrarPecasJogadorInd(jogadores, jogadorAtual);
     printf("\n--- Menu do Jogador %d ---\n", jogadorAtual + 1);
@@ -112,6 +114,15 @@ int receberPosicaoPeca(){
     scanf("%d", &posicao);
     return posicao;
 }
+
+char receberLadoJogada(){
+	char lado;
+	printf("Escolha em qual lado vocÃª deseja jogar (E para esquerda | D para direita):\n");
+    scanf("%s", &lado);
+    return lado;
+}
+
+
 
 void interacoesMenu(int opcao){
 	if(opcao == 2)
