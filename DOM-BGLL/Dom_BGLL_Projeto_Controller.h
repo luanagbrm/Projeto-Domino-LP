@@ -30,10 +30,11 @@ int checarJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos);
 int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]);
 int encontrarMaior(Jogador jogador[NUM_JOGADORES]);
 int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]);
-int buyCards(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum);
+int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum);
 int numeroJogadores(void);
 void jogarLadoEsquerdo(Mesa mesa[]);
-void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos);
+void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado);
+void fclearBuffer();
 //void iniciaJogo();
 
 #endif
