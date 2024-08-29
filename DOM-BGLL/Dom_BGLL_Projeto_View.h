@@ -20,13 +20,13 @@ Nome dos integrantes:
 void mostrarCartas(Carta domino[NUM_PECAS]);
 int numeroJogadores(void);
 void statusCompra(int status);
-void mostrarPecasJogador(Jogador jogadores[NUM_JOGADORES], int numJogadores);
+void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogadores);
 void mostrarPecasMesa(Mesa mesa[]);
 int menuPrincipal();
 char receberLadoJogada();
 int receberPosicaoPeca();
 int menuPrincipalJogador();
-void mostrarPecasJogadorInd(Jogador jogadores[NUM_JOGADORES], int numJogador);
+void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador);
 void interacoesMenu(int opcao);
 
 #endif
