@@ -21,21 +21,21 @@ void mostrarCartas(Carta domino[NUM_PECAS]){
   }
 }
 
-void mostrarPecasJogador(Jogador jogadores[NUM_JOGADORES], int numJogadores){	
-  printf("\n");
-  for(int i = 0; i < numJogadores; i++){
-    printf("Jogador %d: \n", i + 1);//o i = 1 numera corretamente cada jogador
-    for(int k = 0 ; k < jogadores[i].numPieces; k++){
-		if(jogadores[i].pecasMao[k].status != 'M')
-			printf("[%d|%d]",jogadores[i].pecasMao[k].ladoA,jogadores[i].pecasMao[k].ladoB);
-    }
+//void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogadores){	
+//  printf("\n");
+//  for(int i = 0; i < numJogadores; i++){
+//    printf("Jogador %d: \n", i + 1);//o i = 1 numera corretamente cada jogador
+//    for(int k = 0 ; k < jogadores[i].numPieces; k++){
+//		if(jogadores[i].pecasMao[k].status != 'M')
+//			printf("[%d|%d]",jogadores[i].pecasMao[k].ladoA,jogadores[i].pecasMao[k].ladoB);
+//    }
+//
+//    printf("\n");
+//  }
+//  printf("\n");
+//}
 
-    printf("\n");
-  }
-  printf("\n");
-}
-
-void mostrarPecasJogadorInd(Jogador jogadores[NUM_JOGADORES], int numJogador){
+void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador){
   printf("\n");
     printf("Jogador %d: \n", numJogador + 1);//o i = 1 numera corretamente cada jogador
     for(int k = 0 ; k < jogadores[numJogador].numPieces; k++){
@@ -98,7 +98,7 @@ int menuPrincipalJogador() {
     //system("cls||clear");
     mostrarPecasMesa(mesa);
     printf("\n------ VEZ DO JOGADOR %d ------\n", jogadorAtual + 1);
-    mostrarPecasJogadorInd(jogadores, jogadorAtual);
+    mostrarPecasJogadorAtual(jogadores, jogadorAtual);
     printf("\n--- Menu do Jogador %d ---\n", jogadorAtual + 1);
     printf("1. Escolher peca para jogar\n");
     printf("2. Comprar peca\n");
@@ -118,11 +118,9 @@ int receberPosicaoPeca(){
 char receberLadoJogada(){
 	char lado;
 	printf("Escolha em qual lado você deseja jogar (E para esquerda | D para direita):\n");
-    scanf("%s", &lado);
+    scanf("%c", &lado);
     return lado;
 }
-
-
 
 void interacoesMenu(int opcao){
 	if(opcao == 2)
