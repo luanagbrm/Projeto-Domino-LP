@@ -59,12 +59,15 @@ void removerPecaJogada(Jogador *jogador, int pos) {
     jogador->numPieces--;
 }
 
-void jogarLadoEsquerdo(Mesa mesa[]) {
+void jogarLadoEsquerdo(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos) {
     for (int i = qtdPecasMesa; i >= 0; i--) { //recebe a posicao da peca que foi jogada
         mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estão a direita dela
     }
     
-    qtdPecasMesa++;
+    char lado = 'E';
+    
+    jogarPeca(mesa, jogadores, jogadorAtual, pos, lado);
+    //qtdPecasMesa++;
 }
 
 // Verifica se a peça jogada se encaixa em algumas das extremidades da mesa
@@ -89,10 +92,10 @@ int checarJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
 	} else if(pecaJogada.ladoA == ladoE){
     	limitesMesa.ladoE = pecaJogada.ladoB;
     	return 1;
-  } else if(pecaJogada.ladoB == ladoE){
+  	} else if(pecaJogada.ladoB == ladoE){
     	limitesMesa.ladoE = pecaJogada.ladoA;
     	return 1;
-  } 
+  	} 
 
   return -1;
 
@@ -100,19 +103,21 @@ int checarJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
 
 //Encontra a maior peça dupla que esteja na mão de um dos jogadores
 int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
+  char lado = 'D';
+	
   for(int k = 6; k >= 0; k--){ 
     // Verifica simultaneamente cada peca da mao do jogador 1 e do jogador 2
     // buscando a peca cujo ambos os lados tem valor igual a k
     for(int i = 0; i < 7; i++){ 
       if((jogador[0].pecasMao[i].ladoA == k) && (jogador[0].pecasMao[i].ladoB == k)){
-        jogarPeca(mesa, jogador, 0, i);
+        jogarPeca(mesa, jogador, 0, i, lado);
         return 1; // Encerra a busca no momento que encontra a maior peca dupla presente em ambas as mãos
       }
 
       //Caso nao encontre a peca dupla na mao do jogador 1, a função busca na mao do jogador 2
 
       if((jogador[1].pecasMao[i].ladoA == k) && (jogador[1].pecasMao[i].ladoB == k)){
-        jogarPeca(mesa, jogador, 1, i);
+        jogarPeca(mesa, jogador, 1, i, lado);
         return 2;
       }
     }
@@ -123,6 +128,8 @@ int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
 
 //Encontra a maior peça na mão dos jogadores considerando a soma
 int encontrarMaior(Jogador jogador[NUM_JOGADORES]){
+	char lado = 'D';
+	
 	int maior = -1, jogadorPeca, pos;
     	for(int i = 0; i < 7; i++){
         	if((jogador[0].pecasMao[i].ladoA + jogador[0].pecasMao[i].ladoB) > maior){
@@ -138,7 +145,7 @@ int encontrarMaior(Jogador jogador[NUM_JOGADORES]){
         	}
       	}
       	
-      	jogarPeca(mesa, jogador, jogadorPeca, pos);
+      	jogarPeca(mesa, jogador, jogadorPeca, pos, lado);
     
     return 1;
 }
@@ -179,22 +186,39 @@ int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jog
 	return status;
 }
 
-void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
+void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado) {
 	int validadeJogada = checarJogadaValida(jogadores, jogador, pos); //Verifica se a jogada é válida
 	int posicaoOriginal =  jogadores[jogador].pecasMao[pos].pos; // Guarda a posição da peça jogada dentro do array principal do jogo
 	jogadorAtual = jogador;
   
   
 	if(validadeJogada == 1 || mesa[qtdPecasMesa].ladoD == -7){
-		jogadores[jogador].pecasMao[pos].status = 'M'; //Altera o status da peca para 'M' dentre as pecas na mão do jogador, indicando que ela foi jogada
-		domino[posicaoOriginal].status = 'M'; //Altera o status da peca para 'M' no array original
-    	mesa[qtdPecasMesa].ladoE = jogadores[jogador].pecasMao[pos].ladoA;
-    	mesa[qtdPecasMesa].ladoD = jogadores[jogador].pecasMao[pos].ladoB;
-    	qtdPecasMesa++; //Incrementa a variável de controle da mesa
-    	removerPecaJogada(&jogadores[jogador], pos);
-  		definirJogadorAtual();
-	} 
+		if(lado == 'E'){
+			jogadores[jogador].pecasMao[pos].status = 'M'; //Altera o status da peca para 'M' dentre as pecas na mão do jogador, indicando que ela foi jogada
+			domino[posicaoOriginal].status = 'M'; //Altera o status da peca para 'M' no array original
+	    	mesa[0].ladoE = jogadores[jogador].pecasMao[pos].ladoA;
+	    	mesa[0].ladoD = jogadores[jogador].pecasMao[pos].ladoB;
+	    	qtdPecasMesa++; //Incrementa a variável de controle da mesa
+	    	removerPecaJogada(&jogadores[jogador], pos);
+	  		definirJogadorAtual();
+		} else {
+			jogadores[jogador].pecasMao[pos].status = 'M'; //Altera o status da peca para 'M' dentre as pecas na mão do jogador, indicando que ela foi jogada
+			domino[posicaoOriginal].status = 'M'; //Altera o status da peca para 'M' no array original
+    		mesa[qtdPecasMesa].ladoE = jogadores[jogador].pecasMao[pos].ladoA;
+    		mesa[qtdPecasMesa].ladoD = jogadores[jogador].pecasMao[pos].ladoB;
+    		qtdPecasMesa++; //Incrementa a variável de controle da mesa
+    		removerPecaJogada(&jogadores[jogador], pos);
+  			definirJogadorAtual();
+		}
+	}
 	
+	
+}
+
+void fclearBuffer() 
+{ 
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
@@ -208,23 +232,26 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
             	int posicao;
     			char lado;
     			
-                mostrarPecasJogadorInd(jogadores, jogadorAtual);
-                posicao = receberPosicaoPeca();
-                lado = receberLadoJogada();
-                if(lado == 'E')
-                	jogarLadoEsquerdo(mesa);
+                mostrarPecasJogadorAtual(jogadores, jogadorAtual);
                 
-                if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
-                    jogarPeca(mesa, jogadores, jogadorAtual, posicao - 1);
-                    mostrarPecasMesa(mesa);
+                posicao = receberPosicaoPeca();
+                fclearBuffer();
+                lado = receberLadoJogada();
+                if(lado == 'E') {
+                	jogarLadoEsquerdo(mesa, jogadores, posicao - 1);
                 } else {
-                    interacoesMenu(escolha);
-                }
-                break;
+	               if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
+	                   jogarPeca(mesa, jogadores, jogadorAtual, posicao - 1, 'D');
+	                   mostrarPecasMesa(mesa);
+	               } else {
+	                    interacoesMenu(escolha);
+	               }
+	                break;
+	            }
             }
             case 2:
                 if (realizarCompraCartas(domino, &jogadores[jogadorAtual], jogadorAtual)) {
-                	mostrarPecasJogador(jogadores, NUM_JOGADORES);
+                	mostrarPecasJogadorAtual(jogadores, jogadorAtual);
                 }
                 break;
 
@@ -256,12 +283,7 @@ void jogar(){
 
                 distribuirPecas(domino, jogadores, numJogadores);
 
-                mostrarPecasJogador(jogadores, numJogadores);
-
                 int firstPlayer = primeiroJogador(jogadores, mesa); // faz passagem por referência
-  
-                mostrarPecasJogador(jogadores, numJogadores);
-                mostrarPecasMesa(mesa);
 
                 while (menuJogador(jogadores, domino)) {
                     // O loop continua até que o jogador decida sair
