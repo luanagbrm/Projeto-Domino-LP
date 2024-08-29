@@ -1,5 +1,5 @@
 /*
-DOM-BGLL - Projeto DominÛ - Etapa 3
+DOM-BGLL - Projeto Domin√≥ - Etapa 3
 27/08/2024 - Grupo:BGLL
 
 Nome dos integrantes:
@@ -7,7 +7,7 @@ Nome dos integrantes:
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri†dos†Santos
+- Lucas Ferri¬†dos¬†Santos
 */
 
 #ifndef DOM_BGLL_PROJETO_MODEL_H
@@ -33,16 +33,16 @@ typedef struct{
 
 //Structure que representa cada jogador 
 typedef struct{
-  Carta pecasMao[HAND_PECAS_MAX];//pecasMao È um array da estrutura "Cartas" que representa as cartas que cada jogador tem, podendo ter tamanho m·ximo de 21 pecas (total - inicial)
+  Carta pecasMao[HAND_PECAS_MAX];//pecasMao √© um array da estrutura "Cartas" que representa as cartas que cada jogador tem, podendo ter tamanho m√°ximo de 21 pecas (total - inicial)
   int numPieces; //variavel para saber a qtd de cartas na mao de cada jogador
 }Jogador;
 
 Carta domino[28];
-Mesa limitesMesa; //guarda o valor das extremidades da mesa para facilitar comparaÁ„o
+Mesa limitesMesa; //guarda o valor das extremidades da mesa para facilitar compara√ß√£o
 Mesa mesa[28];
 Jogador jogadores[2];
-int index = 0; //vari·vel de controle da qtd de peÁas que j· foram jogadas na mesa
-int jogadorAtual; // define de que jogador È o turno atual
+int qtdPecasMesa = 0; //vari√°vel de controle da qtd de pe√ßas que j√° foram jogadas na mesa
+int jogadorAtual; // define de que jogador √© o turno atual
 
 void criarCarta(Carta domino[NUM_PECAS]);
 void iniciaMesa(Mesa mesa[28]);
