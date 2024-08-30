@@ -86,10 +86,25 @@ int menuPrincipal() {
     int opcao;
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo\n");
-    printf("2. Sair\n");
-    printf("Escolha uma opcao: ");
+    printf("2. Regras do Jogo\n");
+    printf("3. Sair\n");
+    printf("\nEscolha uma opcao: ");
     scanf("%d", &opcao);
     return opcao;
+}
+
+void showRules(int choice){
+//	printf("\n---------------------------------------------");
+	printf("\nRegras Gerais  \n");
+//	printf("\n---------------------------------------------");
+	printf("\n- Cada jogador incia com 7 peças aleatórias\n");
+	printf("\n- Pode-se comprar quantas vezes for necessário\n");
+	printf("\n- O jogo incia com o jogador que possui a peça [6|6] ou o que tiver com a peca de numero repetido mais alto\n");
+	printf("\n- Os jogadores devem colocar pecas que tenhamo os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa( lado e e D) \n");
+	printf("\n- O jogador so podera passar a vez se ele nao possuir nenhuma peca possivel para ser jogada ou se nao possuir mais pecas para comprar\n");
+	printf("\n- A partida termina quando esgotar o estoque de cartas para compra ou quando um dos jogadores colocar a sua ultima peca na mesa\n");
+	printf("\n- Em casos onde nenhum dos jogadores poderem continuar a partida, vence quem tiver menos pecas na mao\n");
+	printf("\n- Em caso de empate, vence o jogador que tiver o menor numero de pontos das pecas que ficaram\n");
 }
 
 //Opções do menu de ações do jogador durante o jogo
