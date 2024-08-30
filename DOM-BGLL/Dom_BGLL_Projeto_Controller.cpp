@@ -290,12 +290,15 @@ void jogar(){
                 }
                 break;
             }
-            case 2:
+             case 2:
+            	showRules(opcao);
+            	break;
+            case 3:
                 interacoesMenu(opcao);
                 exit(0);
             default:
             	interacoesMenu(opcao);
                 
         }
-    } while (opcao != 2);
+    } while (opcao != 3);
 }
