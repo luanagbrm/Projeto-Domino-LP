@@ -35,6 +35,6 @@ int numeroJogadores(void);
 void jogarLadoEsquerdo(Mesa mesa[]);
 void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado);
 void fclearBuffer();
-//void iniciaJogo();
+void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos);
 
 #endif

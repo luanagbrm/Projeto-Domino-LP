@@ -93,7 +93,7 @@ int menuPrincipal() {
     return opcao;
 }
 
-void showRules(int choice){
+void mostrarRegras(int choice){
 //	printf("\n---------------------------------------------");
 	printf("\nRegras Gerais  \n");
 //	printf("\n---------------------------------------------");

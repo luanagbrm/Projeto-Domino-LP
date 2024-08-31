@@ -221,6 +221,13 @@ void fclearBuffer()
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
+  int p;
+  p = jogadores[numJogador].pecasMao[pos].ladoA;
+  jogadores[numJogador].pecasMao[pos].ladoA = jogadores[numJogador].pecasMao[pos].ladoB;
+  jogadores[numJogador].pecasMao[pos].ladoB = p;
+}
+
 int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     int escolha;
     
@@ -291,7 +298,7 @@ void jogar(){
                 break;
             }
              case 2:
-            	showRules(opcao);
+            	mostrarRegras(opcao);
             	break;
             case 3:
                 interacoesMenu(opcao);
