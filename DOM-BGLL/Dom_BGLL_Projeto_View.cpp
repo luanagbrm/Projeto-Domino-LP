@@ -36,19 +36,18 @@ void mostrarCartas(Carta domino[NUM_PECAS]){
 //}
 
 void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador){
-  printf("\n");
-    printf("Jogador %d: \n", numJogador + 1);//o i = 1 numera corretamente cada jogador
-    for(int k = 0 ; k < jogadores[numJogador].numPieces; k++){
-		if(jogadores[numJogador].pecasMao[k].status != 'M')
-			printf("[%d|%d]",jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB);
+    printf("\n");
+    printf("Jogador %d: \n", numJogador + 1);
+    for(int k = 0; k < jogadores[numJogador].numPieces; k++){
+        if(jogadores[numJogador].pecasMao[k].status != 'M')
+            printf("%d: [%d|%d] ", k + 1, jogadores[numJogador].pecasMao[k].ladoA, jogadores[numJogador].pecasMao[k].ladoB);
     }
-
     printf("\n");
 }
 
 //Mostra todas as pecas da mesa
 void mostrarPecasMesa(Mesa mesa[]){
-   	printf("\nMesa do Jogo: \n\n");
+   	printf("\n  Mesa do Jogo: \n\n");
    	printf("-------------------\n");
     for(int k  = 0; k < qtdPecasMesa; k++)
         printf("[%d|%d]", mesa[k].ladoE, mesa[k].ladoD);
@@ -97,10 +96,10 @@ void mostrarRegras(int choice){
 //	printf("\n---------------------------------------------");
 	printf("\nRegras Gerais  \n");
 //	printf("\n---------------------------------------------");
-	printf("\n- Cada jogador incia com 7 peças aleatórias\n");
-	printf("\n- Pode-se comprar quantas vezes for necessário\n");
-	printf("\n- O jogo incia com o jogador que possui a peça [6|6] ou o que tiver com a peca de numero repetido mais alto\n");
-	printf("\n- Os jogadores devem colocar pecas que tenhamo os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa( lado e e D) \n");
+	printf("\n- Cada jogador incia com 7 pecas aleatorias\n");
+	printf("\n- Pode-se comprar quantas vezes for necessario\n");
+	printf("\n- O jogo incia com o jogador que possui a peca [6|6] ou o que tiver com a peca de numero repetido mais alto\n");
+	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa( lado e e D) \n");
 	printf("\n- O jogador so podera passar a vez se ele nao possuir nenhuma peca possivel para ser jogada ou se nao possuir mais pecas para comprar\n");
 	printf("\n- A partida termina quando esgotar o estoque de cartas para compra ou quando um dos jogadores colocar a sua ultima peca na mesa\n");
 	printf("\n- Em casos onde nenhum dos jogadores poderem continuar a partida, vence quem tiver menos pecas na mao\n");
@@ -123,27 +122,56 @@ int menuPrincipalJogador() {
     return escolha;
 }
 
+//int receberPosicaoPeca(){
+//    int posicao;
+//    printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", jogadores[jogadorAtual].numPieces);
+//    scanf("%d", &posicao);
+//
+//    // Verificar se a posição é válida
+//    if (posicao < 1 || posicao > jogadores[jogadorAtual].numPieces) {
+//        printf("Escolha invalida. Tente novamente.\n");
+//        return -1; // Retorna -1 para indicar uma escolha inválida
+//    }
+//
+//    return posicao - 1; // Subtrai 1 para converter para índice zero-based
+//}
+//
+//char receberLadoJogada(){
+//	char lado;
+//	printf("Escolha em qual lado você deseja jogar (E para esquerda | D para direita):\n");
+//    scanf("%c", &lado);
+//    return lado;
+//}
+//
+//void interacoesMenu(int opcao){
+//	if(opcao == 3)
+//		printf("Saindo do jogo...\n");
+//	else
+//		printf("Opcao invalida. Tente novamente.\n");
+//}
+//
+
 int receberPosicaoPeca(){
-	int posicao;
-	printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", jogadores[jogadorAtual].numPieces);
+    int posicao;
+    printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", jogadores[jogadorAtual].numPieces);
     scanf("%d", &posicao);
-    return posicao;
+
+    // Verificar se a posição é válida
+    if (posicao < 1 || posicao > jogadores[jogadorAtual].numPieces) {
+        printf("Escolha invalida. Tente novamente.\n");
+        return -1; // Retorna -1 para indicar uma escolha inválida
+    }
+
+    return posicao - 1; // Subtrai 1 para converter para índice zero-based
 }
 
 char receberLadoJogada(){
-	char lado;
-	printf("Escolha em qual lado você deseja jogar (E para esquerda | D para direita):\n");
+    char lado;
+    printf("Escolha em qual lado você deseja jogar (E para esquerda | D para direita):\n");
+
+    // Limpa o buffer para evitar problemas com o scanf
+    getchar();  
     scanf("%c", &lado);
+
     return lado;
 }
-
-void interacoesMenu(int opcao){
-	if(opcao == 2)
-		printf("Saindo do jogo...\n");
-	else
-		printf("Opcao invalida. Tente novamente.\n");
-}
-
-
-
-
