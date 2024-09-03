@@ -1,5 +1,5 @@
 /*
-DOM-BGLL - Projeto Dominó - Etapa 3
+DOM-BGLL - Projeto Domino - Etapa 4
 27/08/2024 - Grupo:BGLL
 
 Nome dos integrantes:
@@ -7,7 +7,7 @@ Nome dos integrantes:
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri dos Santos
+- Lucas FerriÂ dosÂ Santos
 */
 
 #ifndef DOM_BGLL_PROJETO_CONTROLLER_H
@@ -18,6 +18,8 @@ Nome dos integrantes:
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <ctype.h>
+
 
 void gerarSeed();
 void jogar();
@@ -36,5 +38,16 @@ void jogarLadoEsquerdo(Mesa mesa[]);
 void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado);
 void fclearBuffer();
 void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos);
+int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos);
+int checarLadoValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos, int lado);
+int checarUnicaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos);
+int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos);
+int verificarPassarVez();
+void passarVez();
+int somarValorPecas();
+int verificarVencedorJogoFechado();
+int verificarJogoFechado();
+int verificarMaoVazia();
+void verificarOpcaoUsuario(int opcao);
 
 #endif
