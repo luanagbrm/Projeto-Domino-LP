@@ -56,7 +56,7 @@ void mostrarPecasMesa(Mesa mesa[]){
     printf("\n");
 }
 
-//Define o nÃºmero de jogadores de acordo com o informado pelo usuÃ¡rio
+//Define o numero de jogadores de acordo com o informado pelo usuario
 int numeroJogadores(void){
   int numJogadores;
   
@@ -65,7 +65,7 @@ int numeroJogadores(void){
 
   scanf("%d",&numJogadores);
 
-  while(numJogadores <1||numJogadores > 2 ){//O loop nao deixa o usuÃ¡rio prosseguir ate que o mesmo digite um dado valido
+  while(numJogadores <1||numJogadores > 2 ){//O loop nao deixa o usuario prosseguir ate que o mesmo digite um dado valido
     printf("O numero de jogadores escolhido e' invalido. Digite 1 ou 2");
     scanf("%d",&numJogadores);
   }
@@ -86,7 +86,7 @@ void statusCompra(int status){
 	
 }
 
-//OpÃ§Ãµes do menu principal do jogo
+//Opcoes do menu principal do jogo
 int menuPrincipal() {
     int opcao;
     printf("\n--- Menu Principal ---\n");
@@ -112,7 +112,7 @@ void mostrarRegras(int choice){
 	printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
 }
 
-//OpÃ§Ãµes do menu de aÃ§Ãµes do jogador durante o jogo
+//Opcoes do menu de acoes do jogador durante o jogo
 int menuPrincipalJogador() {
     int escolha;
     mostrarPecasMesa(mesa);
