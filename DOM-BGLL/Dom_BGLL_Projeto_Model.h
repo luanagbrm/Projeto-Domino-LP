@@ -1,13 +1,13 @@
 /*
 DOM-BGLL - Projeto Domino - Etapa 4
-27/08/2024 - Grupo:BGLL
+03/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas FerriÂ dosÂ Santos
+- Lucas Ferri dos Santos
 */
 
 #ifndef DOM_BGLL_PROJETO_MODEL_H
@@ -33,7 +33,7 @@ typedef struct{
 
 //Structure que representa cada jogador 
 typedef struct{
-  Carta pecasMao[HAND_PECAS_MAX];//pecasMao Ã© um array da estrutura "Cartas" que representa as cartas que cada jogador tem, podendo ter tamanho mÃ¡ximo de 21 pecas (total - inicial)
+  Carta pecasMao[HAND_PECAS_MAX];//pecasMao é um array da estrutura "Cartas" que representa as cartas que cada jogador tem, podendo ter tamanho maximo de 21 pecas (total - inicial)
   int numPieces; //variavel para saber a qtd de cartas na mao de cada jogador
 }Jogador;
 
