@@ -1,6 +1,6 @@
 /*
 DOM-BGLL - Projeto Domino - Etapa 4
-27/08/2024 - Grupo:BGLL
+03/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -8,8 +8,9 @@ Nome dos integrantes:
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
 - Lucas Ferri dos Santos
-*/
 
+A etapa 4 apresenta um jogo completo de dominó, porém, ainda é jogado somente com dois jogadores.
+*/
 
 #include "Dom_BGLL_Projeto_Controller.cpp"
 
