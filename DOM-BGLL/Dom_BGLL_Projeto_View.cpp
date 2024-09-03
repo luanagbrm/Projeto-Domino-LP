@@ -10,486 +10,201 @@ Nome dos integrantes:
 - Lucas Ferri dos Santos
 */
 
-#include "Dom_BGLL_Projeto_Controller.h"
+#include "Dom_BGLL_Projeto_View.h"
 
-void gerarSeed(){
-  srand( (unsigned)time(0));
-}
 
-void definirJogadorAtual(){
-	jogadorAtual = (jogadorAtual + 1) % NUM_JOGADORES;
-}
-
-void embaralharPecas(Carta domino[NUM_PECAS]){
-  Carta peca2;
-  int p;
-
-  for(int i = 0; i < NUM_PECAS;i++){
-    peca2 = domino[i];
-    p = rand() % 28;
-    domino[i] = domino[p];
-    domino[p] = peca2; 
+void mostrarCartas(Carta domino[NUM_PECAS]){
+  for(int i = 0; i < NUM_PECAS; i++){
+      if(i%7 == 0 )
+          printf("\n");
+    printf("[%d|%d] ", domino[i].ladoA, domino[i].ladoB);
   }
 }
 
-void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], int numJogadores){
-
-  int pieceAssign = 0;//acessa todas as pecas uma por uma e distribui para um jogador
-
-  for(int i = 0; i < numJogadores; i++){
-    jogadores[i].numPieces = 0; // inicializa a quantidade de pecas na mao do usuario, iniciando a distribuicao sempre do i­nicio do array
-
-    for(int k = 0; k < HAND_PECAS_INICIAL  && pieceAssign < NUM_PECAS; k++){
-      totalPieces[pieceAssign].status = '1' + i;
-      jogadores[i].pecasMao[k] = totalPieces[pieceAssign++];
-      jogadores[i].pecasMao[k].pos = pieceAssign - 1; //guarda dentro de cada peça na mão do jogador a posição que ela ocupa no array principal do jogo
-      jogadores[i].pecasMao[k].status = '1' + i;
-      jogadores[i].numPieces++;
-      qtdPecasDisponivel--;
+void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador){
+  printf("\n");
+    printf("Jogador %d: \n", numJogador + 1);//o i = 1 numera corretamente cada jogador
+    for(int k = 0 ; k < jogadores[numJogador].numPieces; k++){
+		if(jogadores[numJogador].pecasMao[k].status != 'M')
+			printf("%d.[%d|%d]  ", k+1, jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB);
     }
-  }
+
+    printf("\n");
 }
 
-void removerPecaJogada(Jogador *jogador, int pos) {
-    for (int i = pos; i < jogador->numPieces - 1; i++) { //recebe a posicao da peca que foi jogada
-        jogador->pecasMao[i] = jogador->pecasMao[i + 1];//e diminui em 1 a posicao de todas as pecas que estÃ£o a direita dela
-    }
-    
-    jogador->numPieces--;
+//Mostra todas as pecas da mesa
+void mostrarPecasMesa(Mesa mesa[]){
+   	printf("\nMesa do Jogo: \n\n");
+   	printf("-------------------\n");
+    for(int k  = 0; k < qtdPecasMesa; k++)
+        printf("[%d|%d]", mesa[k].ladoE, mesa[k].ladoD);
+	printf("\n-------------------");
+    printf("\n");
 }
 
-void jogarLadoEsquerdo(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos) {
-    for (int i = qtdPecasMesa; i >= 0; i--) { //recebe a posicao da peca que foi jogada
-        mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estÃ£o a direita dela
-    }
-}
-
-// Verifica se a peca jogada se encaixa em algumas das extremidades da mesa
-int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
-   Carta pecaJogada = jogadores[jogador].pecasMao[pos];
-   int ladoD = limitesMesa.ladoD;
-   int ladoE = limitesMesa.ladoE;
-   int controle = 0;
+//Define o numero de jogadores de acordo com o informado pelo usuario
+int numeroJogadores(void){
+  int numJogadores;
   
+  printf("\n");
+  printf("Digite o numero de jogadores para a partida (1 ou 2):");
 
-	//Verifica quantas possibilidades de jogada uma peça pode oferecer ao jogador
-  	if(pecaJogada.ladoA == ladoD)
-    	controle++;
-  	if(pecaJogada.ladoB == ladoD)
-    	controle++;
-	if(pecaJogada.ladoA == ladoE)
-    	controle++;
-  	if(pecaJogada.ladoB == ladoE)
-    	controle++;
-    	
-    if(pecaJogada.ladoA == pecaJogada.ladoB)
-    	controle = controle/2; //Como os dois lados são identicos, não há necessidade de comparar se ambos os lados da peça podem ser jogados em ambos os lados da mesa 
-  	
-  	return controle;
-	
-}
+  scanf("%d",&numJogadores);
 
-int checarUnicaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
-  Carta pecaJogada = jogadores[jogador].pecasMao[pos];
-  int ladoD = limitesMesa.ladoD;
-  int ladoE = limitesMesa.ladoE;
-
-	//Considerando que ao chegar nessa função temos apenas uma jogada possível,
-	//encontra qual é essa jogada e a realiza
-  	if(pecaJogada.ladoA == ladoD){
-    	limitesMesa.ladoD = pecaJogada.ladoB;
-    	jogarPeca(mesa,jogadores,jogador,pos,'D');
-    	return 1;
-  	} else if(pecaJogada.ladoB == ladoD){
-    	limitesMesa.ladoD = pecaJogada.ladoA;
-    	inverterPeca(jogadores, jogador, pos);
-    	jogarPeca(mesa,jogadores, jogador, pos, 'D');
-    	return 1;
-	} else if(pecaJogada.ladoA == ladoE){
-    	limitesMesa.ladoE = pecaJogada.ladoB;
-    	inverterPeca(jogadores, jogador, pos);
-    	jogarPeca(mesa, jogadores, jogador, pos,'E');
-    	return 1;
-  	} else if(pecaJogada.ladoB == ladoE){
-    	limitesMesa.ladoE = pecaJogada.ladoA;
-    	jogarPeca(mesa, jogadores, jogador, pos, 'E');
-    	return 1;
-  	} 
-
-  return -1;
-
-}
-
-int checarLadoValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado) {
-  	Carta pecaJogada = jogadores[jogador].pecasMao[pos];
-  	int ladoD = limitesMesa.ladoD;
-  	int ladoE = limitesMesa.ladoE;
-  
-  	//Verifica qual lado da peça condiz com a extremidade escolhida pelo jogador
-  	if(lado == 'D'){
-	  	if(pecaJogada.ladoA == ladoD){
-	    	limitesMesa.ladoD = pecaJogada.ladoB;
-	    	jogarPeca(mesa,jogadores,jogador,pos,'D');
-	    	return 1;
-	  	} else if(pecaJogada.ladoB == ladoD){
-	    	limitesMesa.ladoD = pecaJogada.ladoA;
-	    	inverterPeca(jogadores, jogador, pos);
-	    	jogarPeca(mesa,jogadores, jogador, pos, 'D');
-	    	return 1;
-		} else {
-			return -1;
-		}
-  	}
-  
-  	if(lado == 'E'){
-	  	if(pecaJogada.ladoA == ladoE){
-	    	limitesMesa.ladoE = pecaJogada.ladoB;
-	    	inverterPeca(jogadores, jogador, pos);
-	    	jogarPeca(mesa, jogadores, jogador, pos,'E');
-	    	return 1;
-	  	} else if(pecaJogada.ladoB == ladoE){
-	    	limitesMesa.ladoE = pecaJogada.ladoA;
-	    	jogarPeca(mesa, jogadores, jogador, pos, 'E');
-	    	return 1;
-	  	} else {
-	  		return -1;	
-	}
+  while(numJogadores <1||numJogadores > 2 ){//O loop nao deixa o usuario prosseguir ate que o mesmo digite um dado valido
+    printf("O numero de jogadores escolhido e' invalido. Digite 1 ou 2");
+    scanf("%d",&numJogadores);
   }
   
-  return -1;
-
+  limparTela();
+  return numJogadores;
 }
 
-int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, int pos){
-	int qtdValidas = qtdJogadaValida(jogadores, jogador, pos);
-	
-	if(qtdValidas == 0){
-		return -1; //Não há possibilidade de qualquer jogada valida
-	}
-		
-	if(qtdValidas == 1){
-		checarUnicaValida(jogadores, jogadorAtual, pos); //Há apenas uma jogada válida, logo, o jogo a fará automaticamente
-		return 0;
+
+void statusCompra(int status){
+	if(status == 1){
+		limparTela();
+		printf("\nCompra feita com sucesso\n");
+	} else {
+		limparTela();
+		printf("Nao ha pecas para comprar");
 	}
 	
-	
-	if(qtdValidas > 1){ //Há mais de uma jogada possível, então a extremidade a ser jogada será definida pelo jogador
-		fclearBuffer();
-		char lado = receberLadoJogada();
-		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
-			menuPrincipalJogador();
-			return -1;
-		}
-		return 1;
-	}
-	
-	return -1;
 }
 
-//Encontra a maior peça dupla que esteja na mão de um dos jogadores
-int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
-  char lado = 'D';
-	
-  for(int k = 6; k >= 0; k--){ 
-    // Verifica simultaneamente cada peca da mao do jogador 1 e do jogador 2
-    // buscando a peca cujo ambos os lados tem valor igual a k
-    for(int i = 0; i < 7; i++){ 
-      if((jogador[0].pecasMao[i].ladoA == k) && (jogador[0].pecasMao[i].ladoB == k)){
-        jogarPeca(mesa, jogador, 0, i, lado);
-        return 1; // Encerra a busca no momento que encontra a maior peca dupla presente em ambas as maos
-      }
-
-      //Caso nao encontre a peca dupla na mao do jogador 1, a função busca na mao do jogador 2
-
-      if((jogador[1].pecasMao[i].ladoA == k) && (jogador[1].pecasMao[i].ladoB == k)){
-        jogarPeca(mesa, jogador, 1, i, lado);
-        return 2;
-      }
-    }
-  }
-
-  return -1; // Retorna -1 se nao encontrar nenhuma peça dupla na mao de ambos
+//Opcoes do menu principal do jogo
+int menuPrincipal() {
+    int opcao;
+    printf("\n--- Menu Principal ---\n");
+    printf("1. Iniciar Novo Jogo\n");
+    printf("2. Regras do Jogo\n");
+    printf("3. Sair\n");
+     printf("\n---------------------\n");
+    printf("\nEscolha uma opcao: ");
+    scanf("%d", &opcao);
+    return opcao;
 }
 
-//Encontra a maior peca na mao dos jogadores considerando a soma
-int encontrarMaior(Jogador jogador[NUM_JOGADORES]){
-	char lado = 'D';
-	
-	int maior = -1, jogadorPeca, pos;
-    	for(int i = 0; i < 7; i++){
-        	if((jogador[0].pecasMao[i].ladoA + jogador[0].pecasMao[i].ladoB) > maior){
-          		maior = jogador[0].pecasMao[i].ladoA + jogador[0].pecasMao[i].ladoB;
-          		jogadorPeca = 0;
-          		pos = i;
-        	}
-
-        	if((jogador[1].pecasMao[i].ladoA + jogador[1].pecasMao[i].ladoB) > maior){
-          		maior = jogador[1].pecasMao[i].ladoA + jogador[1].pecasMao[i].ladoB;
-          		jogadorPeca = 1;
-          		pos = i;
-        	}
-      	}
-      	
-      	jogarPeca(mesa, jogador, jogadorPeca, pos, lado);
-    
-    return 1;
+void mostrarRegras(int choice){
+	printf("\nRegras Gerais  \n");
+	printf("\n---------------------------------------------");
+	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
+	printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
+	printf("\n- O jogo inicia com o jogador que possui a maior peça cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peça com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
+	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
+	printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
+	printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
+	printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
+	printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
 }
 
-//Define qual jogador vai iniciar o jogo e ja joga a primeira peca
-int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
-
-    int jogador1 = encontrarDupla(jogadores, mesa); //para buscar o primeiro jogador, inicialmente busca pela maior peca dupla
-
-
-    if (jogador1 == -1) { //caso nao haja peca dupla,
-        jogador1 = encontrarMaior(jogadores); //busca pela peca com a maior soma
-    }
-
-    return jogador1;
-}
-
-
-int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum) {
-      for (int k = 0; k < NUM_PECAS; k++) {
-          if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
-                  jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponi­vel ao fim da mao do usuario
-                  totalPieces[k].status = '1' + jogadorNum;
-                  qtdPecasDisponivel--;
-                  return 1; // Compra feita
-        	}
-        }
-      return 0; // Nao foi possivel fazer a compra
-}
-
-//int verificarPassarVez(){
-//	if(qtdPecasDisponivel == 0){
-//		definirJogadorAtual();
-//		return 1;
-//	} else {
-//		return -1;
-//	}
-//}
-
-int verificarPassaVez(Jogador jogador, int ladoEsquerdo, int ladoDireito) {
-    for (int i = 0; i < jogador.numPieces; i++) {
-        Carta peca = jogador.pecasMao[i];
-        if (peca.status != 'M' && (peca.ladoA == ladoEsquerdo || peca.ladoA == ladoDireito || peca.ladoB == ladoEsquerdo || peca.ladoB == ladoDireito)) {
-            return 1; // Jogada possível
-        }
-    }
-    return 0; // Nenhuma jogada possível
-}
-
-
-void passarVez(){
-	int disponibilidadePecas = verificarPassarVez();
-	
-	exibirMensagemPassarVez(disponibilidadePecas);
-}
-
-int verificarMaoVazia(){
-	if(jogadores[0].numPieces == 0)
-		return 1;
-	else if(jogadores[1].numPieces == 0)
-		return 2;
-	return -1;
-}
-
-//Verifica se algum dos dois jogadores possuem alguma peça que possa ser jogada no tabuleiro
-int verificarJogoFechado(){
-	if(qtdPecasDisponivel == 0){
-		for(int i = 0; i < jogadores[0].numPieces; i++){
-			if(jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoD || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoD
-				|| jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoE || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoE){
-					return 1;
-			}
-		}
-		
-		for(int i = 0; i < jogadores[1].numPieces; i++){
-			if(jogadores[1].pecasMao[i].ladoA == limitesMesa.ladoD || jogadores[1].pecasMao[i].ladoB == limitesMesa.ladoD
-				|| jogadores[1].pecasMao[i].ladoA == limitesMesa.ladoE || jogadores[1].pecasMao[i].ladoB == limitesMesa.ladoE){
-					return 1;
-			}
-		}
-	}
-	
-	return 0;
-}
-
-int verificarVencedorJogoFechado(){
-	if(verificarJogoFechado == 0){
-		if(jogadores[0].numPieces > jogadores[1].numPieces)
-			return 2;
-		else if (jogadores[1].numPieces > jogadores[0].numPieces)
-			return 1;
-		else 
-			return somarValorPecas();
-	}
-	
-	return -1;
-}
-
-int somarValorPecas(){
-	int pecasJogador1 = 0;
-	int pecasJogador2 = 0;
-	
-	for(int i = 0; i < jogadores[0].numPieces; i++)
-			pecasJogador1 += (jogadores[0].pecasMao[i].ladoA + jogadores[0].pecasMao[i].ladoB);
-		
-	for(int i = 0; i < jogadores[1].numPieces; i++)
-		pecasJogador2 += (jogadores[1].pecasMao[i].ladoA + jogadores[1].pecasMao[i].ladoB);
-		
-	if(pecasJogador1 > pecasJogador2)
-		return 2;
-	return 1;
-		
-}
-
-void verificarOpcaoUsuario(int opcao){
-	if(opcao == 0)
-		jogar();
-	else if(opcao == 1)
-		exit(0);
-}
-
-void definirVencedor(){
-	if(verificarMaoVazia() != -1){
-		exibirMensagemVencedor(verificarMaoVazia());
-		int opcao = exibirOpcoesJogoFinalizado();
-		verificarOpcaoUsuario(opcao);
-	}
-	
-	if(verificarVencedorJogoFechado() != -1){
-		exibirMensagemVencedor(verificarVencedorJogoFechado());
-		int opcao = exibirOpcoesJogoFinalizado();
-		verificarOpcaoUsuario(opcao);
-	}
-		
-}
-
-
-
-
-int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum){
-	int status = comprarCartas(totalPieces, jogador, jogadorNum);
-	
-	statusCompra(status);
-	
-	return status;
-}
-
-void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado) {
-	int posicaoOriginal =  jogadores[jogador].pecasMao[pos].pos; // Guarda a posicao da peca jogada dentro do array principal do jogo
-	int posicaoJogada = 0;
-	jogadorAtual = jogador;
-	
-	if(lado == 'D')
-		posicaoJogada = qtdPecasMesa;
-	else
-		jogarLadoEsquerdo(mesa, jogadores, pos);
-		
-	jogadores[jogador].pecasMao[pos].status = 'M'; //Altera o status da peca para 'M' dentre as pecas na mao do jogador, indicando que ela foi jogada
-	domino[posicaoOriginal].status = 'M'; //Altera o status da peca para 'M' no array original
-	mesa[posicaoJogada].ladoE = jogadores[jogador].pecasMao[pos].ladoA;
-	mesa[posicaoJogada].ladoD = jogadores[jogador].pecasMao[pos].ladoB;
-	qtdPecasMesa++; //Incrementa a variavel de controle da mesa
-	removerPecaJogada(&jogadores[jogador], pos);
-	definirJogadorAtual();
-	
-	if(qtdPecasMesa == 1){
-		limitesMesa.ladoD = mesa[posicaoJogada].ladoE;
-		limitesMesa.ladoE = mesa[posicaoJogada].ladoD;
-	}
-	
-	definirVencedor();
-	limparTela();
-}
-
-void fclearBuffer() 
-{ 
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
-}
-
-void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
-  int p;
-  p = jogadores[numJogador].pecasMao[pos].ladoA;
-  jogadores[numJogador].pecasMao[pos].ladoA = jogadores[numJogador].pecasMao[pos].ladoB;
-  jogadores[numJogador].pecasMao[pos].ladoB = p;
-}
-
-int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
+//Opcoes do menu de acoes do jogador durante o jogo
+int menuPrincipalJogador() {
     int escolha;
-    
-    do {
-        escolha = menuPrincipalJogador();
-
-        switch (escolha) {
-            case 1: {
-            	int posicao;
-                
-                posicao = receberPosicaoPeca();
-	            if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
-	                verificarJogada(mesa, jogadores, jogadorAtual, posicao-1);
-	            } else {
-	                interacoesMenu(escolha);
-	            }
-	                break;
-            }
-            case 2:
-                realizarCompraCartas(domino, &jogadores[jogadorAtual], jogadorAtual);
-                break;
-
-            case 3:
-                passarVez(); 
-				break;   	
-			case 4:
-				mostrarRegras(escolha);
-				break;
-            case 0:
-            	jogar();
-            default:
-                interacoesMenu(escolha);
-                break;
-        }
-    } while (escolha != 3);
-
-    return 1;
+    mostrarPecasMesa(mesa);
+    printf("\n------ VEZ DO JOGADOR %d ------\n", jogadorAtual + 1);
+    mostrarPecasJogadorAtual(jogadores, jogadorAtual);
+    printf("\n--- Menu do Jogador %d ---\n", jogadorAtual + 1);
+    printf("1. Escolher peca para jogar\n");
+    printf("2. Comprar peca\n");
+	printf("3. Passar vez\n");
+	printf("4. Ver regras do Jogo\n");
+    printf("0. Sair\n");
+    printf("\n-------------------------\n");
+    printf("Escolha uma opcao: ");
+    scanf("%d", &escolha);
+    return escolha;
 }
 
-void jogar(){
-	int opcao;
-	qtdPecasMesa = 0; //a cada novo jogo, inicia a mesa da primeira posicao
-	gerarSeed();
+int receberPosicaoPeca(){
+	int posicao;
+	printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", jogadores[jogadorAtual].numPieces);
+    scanf("%d", &posicao);
+    return posicao;
+}
+
+char receberLadoJogada(){
+	char lado;
+	printf("Escolha em qual lado voce deseja jogar (E para esquerda | D para direita):\n");
+    scanf("%c", &lado);
+    limparTela();
+    return toupper(lado);
+}
+
+void limparTela(){
+	system("cls||clear");
+}
+
+void exibirMensagemJogada(int status){
+	if(status == 0){
+		limparTela();
+		printf("Nao ha jogada possivel com essa peca");
+		return;
+	}
 	
-	do {
-        opcao = menuPrincipal();
-        switch (opcao) {
-            case 1: {
-                criarCarta(domino);
-                embaralharPecas(domino);
-                iniciaMesa(mesa);
-                
-                int numJogadores = numeroJogadores(); // define o numero de jogadores de acordo com o informado pelo usuario
+	if(status == 1){
+		limparTela();
+		printf("Como havia apenas uma possibilidade de jogada, a peca foi jogada automaticamente");
+		return;
+	}
+	
+	if(status > 1){
+		limparTela();
+		printf("Peca jogada na extremidade escolhida");
+		return;
+	}
+	
+	if(status == -1){
+		limparTela();
+		printf("Jogada invalida");
+		return;
+	}	
+}
 
-                distribuirPecas(domino, jogadores, numJogadores);
+void exibirMensagemPassarVez(int status){
+	if(status == 1){
+		limparTela();
+		printf("Passada a vez para Jogador %d", jogadorAtual + 1);
+	} else {
+		limparTela();
+		printf("Ainda ha pecas para compra, nao e' permitido passar");
+	}
+}
 
-                int firstPlayer = primeiroJogador(jogadores, mesa); // faz passagem por referencia
+void exibirMensagemVencedor(int status){
+	if(status == 1){
+		limparTela();
+		printf("Jogador 1 e' o vencedor da partida!");
+	} else {
+		limparTela();
+		printf("Jogador 2 e' o vencedor da partida!");
+	}
+}
 
-                while (menuJogador(jogadores, domino)) {
-                    // O loop continua ate que o jogador decida sair
-                }
-                break;
-            }
-             case 2:
-            	mostrarRegras(opcao);
-            	break;
-            case 3:
-                interacoesMenu(opcao);
-                exit(0);
-            default:
-            	interacoesMenu(opcao);
-                
-        }
-    } while (opcao != 3);
+int exibirOpcoesJogoFinalizado(){
+	int opcao;
+	
+	do{
+		printf("\nPressione 0 para voltar ao menu principal ou 1 para sair do jogo\n");
+		scanf("%d", opcao);
+	
+		if(opcao == 0)
+			return opcao;
+			
+		if(opcao == 1)
+			return opcao;
+			
+		else
+			printf("Opcao invalida\n");
+		
+	}while(opcao != 0);
+	
+	return -1;
+}
+
+void interacoesMenu(int opcao){
+	if(opcao == 2)
+		printf("Saindo do jogo...\n");
+	else
+		printf("Opcao invalida. Tente novamente.\n");
 }
