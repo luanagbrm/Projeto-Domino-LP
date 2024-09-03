@@ -1,13 +1,13 @@
 /*
 DOM-BGLL - Projeto Domino - Etapa 4
-27/08/2024 - Grupo:BGLL
+03/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri dos Santos
+- Lucas Ferri dos Santos
 */
 
 #include "Dom_BGLL_Projeto_Controller.h"
@@ -168,7 +168,7 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	}
 		
 	if(qtdValidas == 1){
-		checarUnicaValida(jogadores, jogadorAtual, pos); //Há apenas uma jogada válida, logo, o jogo há fará automaticamente
+		checarUnicaValida(jogadores, jogadorAtual, pos); //Há apenas uma jogada válida, logo, o jogo a fará automaticamente
 		return 0;
 	}
 	
@@ -261,15 +261,25 @@ int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum
       return 0; // Nao foi possivel fazer a compra
 }
 
-int verificarPassarVez(){
-	if(qtdPecasDisponivel == 0){
-		definirJogadorAtual();
-		//menuPrincipalJogador();
-		return 1;
-	} else {
-		return -1;
-	}
+//int verificarPassarVez(){
+//	if(qtdPecasDisponivel == 0){
+//		definirJogadorAtual();
+//		return 1;
+//	} else {
+//		return -1;
+//	}
+//}
+
+int verificarPassaVez(Jogador jogador, int ladoEsquerdo, int ladoDireito) {
+    for (int i = 0; i < jogador.numPieces; i++) {
+        Carta peca = jogador.pecasMao[i];
+        if (peca.status != 'M' && (peca.ladoA == ladoEsquerdo || peca.ladoA == ladoDireito || peca.ladoB == ladoEsquerdo || peca.ladoB == ladoDireito)) {
+            return 1; // Jogada possível
+        }
+    }
+    return 0; // Nenhuma jogada possível
 }
+
 
 void passarVez(){
 	int disponibilidadePecas = verificarPassarVez();
