@@ -1,5 +1,5 @@
 /*
-DOM-BGLL - Projeto Dominó - Etapa 3
+DOM-BGLL - Projeto Domino - Etapa 4
 27/08/2024 - Grupo:BGLL
 
 Nome dos integrantes:
@@ -7,7 +7,7 @@ Nome dos integrantes:
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas Ferri dos Santos
+- Lucas FerriÂ dosÂ Santos
 */
 
 #include "Dom_BGLL_Projeto_Model.h"
@@ -21,7 +21,7 @@ void criarCarta(Carta domino[NUM_PECAS]){
       peca.ladoA = i;
       peca.ladoB = k;
       peca.pos = j;
-      peca.status = '\0'; //inicializa todas as peças como nulas
+      peca.status = '\0'; //inicializa todas as peÃ§as como nulas
       domino[j] = peca;
       j++;
     }
