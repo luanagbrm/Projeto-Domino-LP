@@ -122,7 +122,7 @@ int menuPrincipalJogador() {
     printf("1. Escolher peca para jogar\n");
     printf("2. Comprar peca\n");
 	printf("3. Passar vez\n");
-	printf("4 - ver regras do Jogo");
+	printf("4 - ver regras do Jogo\n");
     printf("0. Sair\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &escolha);
