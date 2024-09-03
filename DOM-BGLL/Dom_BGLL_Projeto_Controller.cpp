@@ -433,6 +433,11 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
             case 3:
                 passarVez(); 
 				break;   
+				
+			case 4:
+				
+				mostrarRegras(opcao);
+				break;
             case 0:
             	jogar();
             default:
