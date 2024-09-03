@@ -168,7 +168,7 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	}
 		
 	if(qtdValidas == 1){
-		checarUnicaValida(jogadores, jogadorAtual, pos); //Há apenas uma jogada válida, logo, o jogo a fará automaticamente
+		checarUnicaValida(jogadores, jogadorAtual, pos); //Há apenas uma jogada válida, logo, o jogo há fará automaticamente
 		return 0;
 	}
 	
@@ -254,32 +254,22 @@ int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum
           if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
                   jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponi­vel ao fim da mao do usuario
                   totalPieces[k].status = '1' + jogadorNum;
-                  qtdPecasDisponivel--;
+				  qtdPecasDisponivel--;
                   return 1; // Compra feita
         	}
         }
       return 0; // Nao foi possivel fazer a compra
 }
 
-//int verificarPassarVez(){
-//	if(qtdPecasDisponivel == 0){
-//		definirJogadorAtual();
-//		return 1;
-//	} else {
-//		return -1;
-//	}
-//}
-
-int verificarPassaVez(Jogador jogador, int ladoEsquerdo, int ladoDireito) {
-    for (int i = 0; i < jogador.numPieces; i++) {
-        Carta peca = jogador.pecasMao[i];
-        if (peca.status != 'M' && (peca.ladoA == ladoEsquerdo || peca.ladoA == ladoDireito || peca.ladoB == ladoEsquerdo || peca.ladoB == ladoDireito)) {
-            return 1; // Jogada possível
-        }
-    }
-    return 0; // Nenhuma jogada possível
+int verificarPassarVez(){
+	if(qtdPecasDisponivel == 0){
+		definirJogadorAtual();
+		//menuPrincipalJogador();
+		return 1;
+	} else {
+		return -1;
+	}
 }
-
 
 void passarVez(){
 	int disponibilidadePecas = verificarPassarVez();
@@ -366,8 +356,6 @@ void definirVencedor(){
 	}
 		
 }
-
-
 
 
 int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum){
