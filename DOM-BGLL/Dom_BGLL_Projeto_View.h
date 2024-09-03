@@ -1,13 +1,13 @@
 /*
 DOM-BGLL - Projeto Domino - Etapa 4
-27/08/2024 - Grupo:BGLL
+03/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
 - Beatriz Lima Morais
 - Grazielle Batista de Almeida
 - Luana Gabrielle Rodrigues Macedo
-- Lucas FerriÂ dosÂ Santos
+- Lucas Ferri dos Santos
 */
 
 #ifndef DOM_BGLL_PROJETO_VIEW
