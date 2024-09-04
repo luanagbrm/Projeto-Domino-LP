@@ -54,6 +54,8 @@ int verificarJogoFechado();
 int verificarMaoVazia();
 void verificarOpcaoUsuario(int opcao);
 int salvarJogo();
+void salvarPecas();
+void salvarMesa();
 int recuperarJogo();
 
 #endif
