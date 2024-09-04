@@ -37,12 +37,12 @@ void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], in
   int pieceAssign = 0;//acessa todas as pecas uma por uma e distribui para um jogador
 
   for(int i = 0; i < numJogadores; i++){
-    jogadores[i].numPieces = 0; // inicializa a quantidade de pecas na mao do usuario, iniciando a distribuicao sempre do i­nicio do array
+    jogadores[i].numPieces = 0; // inicializa a quantidade de pecas na mao do usuario, iniciando a distribuicao sempre do iÂ­nicio do array
 
     for(int k = 0; k < HAND_PECAS_INICIAL  && pieceAssign < NUM_PECAS; k++){
       totalPieces[pieceAssign].status = '1' + i;
       jogadores[i].pecasMao[k] = totalPieces[pieceAssign++];
-      jogadores[i].pecasMao[k].pos = pieceAssign - 1; //guarda dentro de cada peça na mão do jogador a posição que ela ocupa no array principal do jogo
+      jogadores[i].pecasMao[k].pos = pieceAssign - 1; //guarda dentro de cada peÃ§a na mÃ£o do jogador a posiÃ§Ã£o que ela ocupa no array principal do jogo
       jogadores[i].pecasMao[k].status = '1' + i;
       jogadores[i].numPieces++;
       qtdPecasDisponivel--;
@@ -52,7 +52,7 @@ void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], in
 
 void removerPecaJogada(Jogador *jogador, int pos) {
     for (int i = pos; i < jogador->numPieces - 1; i++) { //recebe a posicao da peca que foi jogada
-        jogador->pecasMao[i] = jogador->pecasMao[i + 1];//e diminui em 1 a posicao de todas as pecas que estÃ£o a direita dela
+        jogador->pecasMao[i] = jogador->pecasMao[i + 1];//e diminui em 1 a posicao de todas as pecas que estÃƒÂ£o a direita dela
     }
     
     jogador->numPieces--;
@@ -60,7 +60,7 @@ void removerPecaJogada(Jogador *jogador, int pos) {
 
 void jogarLadoEsquerdo(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos) {
     for (int i = qtdPecasMesa; i >= 0; i--) { //recebe a posicao da peca que foi jogada
-        mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estÃ£o a direita dela
+        mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estÃƒÂ£o a direita dela
     }
 }
 
@@ -72,7 +72,7 @@ int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
    int controle = 0;
   
 
-	//Verifica quantas possibilidades de jogada uma peça pode oferecer ao jogador
+	//Verifica quantas possibilidades de jogada uma peÃ§a pode oferecer ao jogador
   	if(pecaJogada.ladoA == ladoD)
     	controle++;
   	if(pecaJogada.ladoB == ladoD)
@@ -83,7 +83,7 @@ int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
     	controle++;
     	
     if(pecaJogada.ladoA == pecaJogada.ladoB)
-    	controle = controle/2; //Como os dois lados são identicos, não há necessidade de comparar se ambos os lados da peça podem ser jogados em ambos os lados da mesa 
+    	controle = controle/2; //Como os dois lados saoo identicos, nÃ£o hÃ¡ necessidade de comparar se ambos os lados da peÃ§a podem ser jogados em ambos os lados da mesa 
   	
   	return controle;
 	
@@ -94,8 +94,8 @@ int checarUnicaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
   int ladoD = limitesMesa.ladoD;
   int ladoE = limitesMesa.ladoE;
 
-	//Considerando que ao chegar nessa função temos apenas uma jogada possível,
-	//encontra qual é essa jogada e a realiza
+	//Considerando que ao chegar nessa funÃ§Ã£o temos apenas uma jogada possÃ­vel,
+	//encontra qual Ã© essa jogada e a realiza
   	if(pecaJogada.ladoA == ladoD){
     	limitesMesa.ladoD = pecaJogada.ladoB;
     	jogarPeca(mesa,jogadores,jogador,pos,'D');
@@ -125,7 +125,7 @@ int checarLadoValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos, cha
   	int ladoD = limitesMesa.ladoD;
   	int ladoE = limitesMesa.ladoE;
   
-  	//Verifica qual lado da peça condiz com a extremidade escolhida pelo jogador
+  	//Verifica qual lado da pecas condiz com a extremidade escolhida pelo jogador
   	if(lado == 'D'){
 	  	if(pecaJogada.ladoA == ladoD){
 	    	limitesMesa.ladoD = pecaJogada.ladoB;
@@ -169,13 +169,13 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	}
 		
 	if(qtdValidas == 1){
-		checarUnicaValida(jogadores, jogadorAtual, pos); //Há apenas uma jogada válida, logo, o jogo há fará automaticamente
+		checarUnicaValida(jogadores, jogadorAtual, pos); //HÃ¡ apenas uma jogada vÃ¡lida, logo, o jogo hÃ¡ farÃ¡ automaticamente
 		exibirMensagemJogada(qtdValidas);
 		return 0;
 	}
 	
 	
-	if(qtdValidas > 1){ //Há mais de uma jogada possível, então a extremidade a ser jogada será definida pelo jogador
+	if(qtdValidas > 1){ //HÃ¡ mais de uma jogada possÃ­vel, entÃ£o a extremidade a ser jogada serÃ¡ definida pelo jogador
 		fclearBuffer();
 		char lado = receberLadoJogada();
 		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
@@ -191,7 +191,7 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	return -1;
 }
 
-//Encontra a maior peça dupla que esteja na mão de um dos jogadores
+//Encontra a maior peÃ§a dupla que esteja na mÃ£o de um dos jogadores
 int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
   char lado = 'D';
 	
@@ -204,7 +204,7 @@ int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
         return 1; // Encerra a busca no momento que encontra a maior peca dupla presente em ambas as maos
       }
 
-      //Caso nao encontre a peca dupla na mao do jogador 1, a função busca na mao do jogador 2
+      //Caso nao encontre a peca dupla na mao do jogador 1, a funÃ§Ã£o busca na mao do jogador 2
 
       if((jogador[1].pecasMao[i].ladoA == k) && (jogador[1].pecasMao[i].ladoB == k)){
         jogarPeca(mesa, jogador, 1, i, lado);
@@ -213,7 +213,7 @@ int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
     }
   }
 
-  return -1; // Retorna -1 se nao encontrar nenhuma peça dupla na mao de ambos
+  return -1; // Retorna -1 se nao encontrar nenhuma peÃ§a dupla na mao de ambos
 }
 
 //Encontra a maior peca na mao dos jogadores considerando a soma
@@ -257,7 +257,7 @@ int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
 int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum) {
       for (int k = 0; k < NUM_PECAS; k++) {
           if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
-                  jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponi­vel ao fim da mao do usuario
+                  jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponiÂ­vel ao fim da mao do usuario
                   totalPieces[k].status = '1' + jogadorNum;
 				  qtdPecasDisponivel--;
                   return 1; // Compra feita
@@ -286,7 +286,7 @@ void passarVez(){
 
 //Funcionalidades para verificar se o jogo terminou
 
-//Verifica se a mao de algum dos jogadores esta sem pe�as
+//Verifica se a mao de algum dos jogadores esta sem peças
 int verificarMaoVazia(){
 	if(jogadores[0].numPieces == 0)
 		return 1;
@@ -295,13 +295,13 @@ int verificarMaoVazia(){
 	return -1;
 }
 
-//Verifica se algum dos dois jogadores possuem alguma pe�a que possa ser jogada no tabuleiro
+//Verifica se algum dos dois jogadores possuem alguma peça que possa ser jogada no tabuleiro
 int verificarJogoFechado(){
 	if(qtdPecasDisponivel <= 0){
 		for(int i = 0; i < jogadores[0].numPieces; i++){
 			if(jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoD || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoD
 				|| jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoE || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoE){
-					return 1; //Se encontrar alguma pe�a na m�o do jogador que possa ser jogada no tabuleiro, indica que ainda existe jogadas poss�veis
+					return 1; //Se encontrar alguma peça na mão do jogador que possa ser jogada no tabuleiro, indica que ainda existe jogadas possíveis
 			}
 		}
 		
@@ -312,27 +312,27 @@ int verificarJogoFechado(){
 			}
 		}
 	} else {
-		return 1; //H� mais do que 0 pe�as dispon�veis
+		return 1; //Há mais do que 0 peças disponíveis
 	}
 	
-	return 0; //Se n�o encontrar nenhuma jogada v�lida na m�o de ambos os jogadores, indica que o jogo est� fechado
+	return 0; //Se não encontrar nenhuma jogada válida na mão de ambos os jogadores, indica que o jogo está fechado
 }
 
 
 int verificarVencedorJogoFechado(){
 	if(verificarJogoFechado() == 0){
 		if(jogadores[0].numPieces > jogadores[1].numPieces)
-			return 2; //Primeiro verifica a quantidade de pe�as de cada jogador
+			return 2; //Primeiro verifica a quantidade de peças de cada jogador
 		else if (jogadores[1].numPieces > jogadores[0].numPieces)
 			return 1;
 		else 
-			return somarValorPecas(); //Caso a quantidade de pe�as for identica, faz a soma dos lados de todas as pe�as na m�o do jogador
+			return somarValorPecas(); //Caso a quantidade de peças for identica, faz a soma dos lados de todas as peças na mão do jogador
 	}
 	
 	return -1;
 }
 
-//Soma o valor de ambos os lados de cada pe�a para todas pe�as
+//Soma o valor de ambos os lados de cada peça para todas peças
 int somarValorPecas(){
 	int pecasJogador1 = 0;
 	int pecasJogador2 = 0;
@@ -358,14 +358,14 @@ void verificarOpcaoUsuario(int opcao){
 
 
 void definirVencedor(){
-	if(verificarMaoVazia() != -1){ //Primeiro, verifica se algum dos jogadores n�o tem pe�as na m�o
+	if(verificarMaoVazia() != -1){ //Primeiro, verifica se algum dos jogadores não tem peças na mão
 		exibirMensagemVencedor(verificarMaoVazia());
 		int opcao = exibirOpcoesJogoFinalizado();
 		verificarOpcaoUsuario(opcao);
 		return;
 	}
 	
-	//Caso ainda tenha, verifica se o jogo est� fechado
+	//Caso ainda tenha, verifica se o jogo está fechado
 	if(verificarVencedorJogoFechado() != -1){
 		exibirMensagemVencedor(verificarVencedorJogoFechado());
 		int opcao = exibirOpcoesJogoFinalizado();
