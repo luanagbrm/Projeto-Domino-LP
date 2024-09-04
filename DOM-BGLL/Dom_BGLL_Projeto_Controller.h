@@ -24,6 +24,7 @@ Nome dos integrantes:
 FILE *arqPecas;
 FILE *arqMesa;
 FILE *arqJogador;
+//FILE *fopen;
 
 void gerarSeed();
 void jogar();
