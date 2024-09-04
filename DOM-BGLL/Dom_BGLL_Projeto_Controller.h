@@ -1,6 +1,6 @@
 /*
-DOM-BGLL - Projeto Domino - Etapa 4
-03/09/2024 - Grupo:BGLL
+DOM-BGLL - Projeto Domino - Etapa 5
+10/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -9,7 +9,6 @@ Nome dos integrantes:
 - Luana Gabrielle Rodrigues Macedo
 - Lucas Ferri dos Santos
 */
-
 
 #ifndef DOM_BGLL_PROJETO_CONTROLLER_H
 #define DOM_BGLL_PROJETO_CONTROLLER_H
@@ -24,7 +23,6 @@ Nome dos integrantes:
 FILE *arqPecas;
 FILE *arqMesa;
 FILE *arqJogador;
-//FILE *fopen;
 
 void gerarSeed();
 void jogar();
@@ -55,8 +53,8 @@ int verificarJogoFechado();
 int verificarMaoVazia();
 void verificarOpcaoUsuario(int opcao);
 int salvarJogo();
-void salvarPecas();
-void salvarMesa();
+int salvarPecas();
+int salvarMesa();
 int recuperarJogo();
 
 #endif

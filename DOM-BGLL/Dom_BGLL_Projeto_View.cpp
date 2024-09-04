@@ -1,6 +1,6 @@
 /*
-DOM-BGLL - Projeto Domino - Etapa 4
-03/09/2024 - Grupo:BGLL
+DOM-BGLL - Projeto Domino - Etapa 5
+10/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -12,6 +12,7 @@ Nome dos integrantes:
 
 #include "Dom_BGLL_Projeto_View.h"
 
+//FUNCIONALIDADES PARA VISUALIZAR AS PECAS
 
 void mostrarCartas(Carta domino[NUM_PECAS]){
   for(int i = 0; i < NUM_PECAS; i++){
@@ -60,17 +61,7 @@ int numeroJogadores(void){
   return numJogadores;
 }
 
-
-
-void statusCompra(int status){
-	if(status == 1){
-		limparTela();
-		printf("\nCompra feita com sucesso\n");
-	} else {
-		limparTela();
-		printf("Nao ha pecas para comprar");
-	}	
-}
+//FUNCOES DE MENU
 
 //Opcoes do menu principal do jogo
 int menuPrincipal() {
@@ -79,25 +70,13 @@ int menuPrincipal() {
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo\n");
     printf("2. Regras do Jogo\n");
+    printf("3. Salvar Jogo\n");
+    printf("4. Continuar Jogo\n");
     printf("3. Sair\n");
      printf("------------------------\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &opcao);
     return opcao;
-}
-
-void mostrarRegras(int choice){
-	limparTela();
-	printf("\nRegras Gerais  \n");
-	printf("\n---------------------------------------------");
-	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
-	printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
-	printf("\n- O jogo inicia com o jogador que possui a maior peÃ§a cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peÃ§a com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
-	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
-	printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
-	printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
-	printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
-	printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
 }
 
 //Opcoes do menu de acoes do jogador durante o jogo
@@ -119,6 +98,32 @@ int menuPrincipalJogador() {
     return escolha;
 }
 
+void interacoesMenu(int opcao){
+	if(opcao == 2 || opcao == 3){
+		printf("Saindo do jogo...\n");
+	} else {
+		limparTela();
+		printf("Opcao invalida. Tente novamente.\n");
+	}
+		
+}
+
+void mostrarRegras(int choice){
+	limparTela();
+	printf("\nRegras Gerais  \n");
+	printf("\n---------------------------------------------");
+	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
+	printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
+	printf("\n- O jogo inicia com o jogador que possui a maior peÃ§a cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peÃ§a com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
+	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
+	printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
+	printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
+	printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
+	printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
+}
+
+//FUNCOES PARA ESCOLHA DE JOGADAS
+
 int receberPosicaoPeca() {
     int posicao;
     int numPieces = jogadores[jogadorAtual].numPieces; // Retrieve the number of pieces for the current player
@@ -137,11 +142,6 @@ int receberPosicaoPeca() {
     } while (posicao < 1 || posicao > numPieces); // Loop until a valid position is provided
 
     return posicao;
-}
-
-void limparBuffer() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 char receberLadoJogada() {
@@ -164,9 +164,18 @@ char receberLadoJogada() {
     return 'e';
 }
 
+//FUNCIONALIDADES DE LIMPEZA
+
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 void limparTela(){
 	system("cls||clear");
 }
+
+//FUNCOES DE MESNSAGENS DURANTE A PARTIDA DO JOGO
 
 void exibirMensagemJogada(int status){
 	if(status == 0){
@@ -194,6 +203,16 @@ void exibirMensagemJogada(int status){
 	}	
 }
 
+void statusCompra(int status){
+	if(status == 1){
+		limparTela();
+		printf("\nCompra feita com sucesso\n");
+	} else {
+		limparTela();
+		printf("Nao ha pecas para comprar");
+	}	
+}
+
 void exibirMensagemPassarVez(int status){
 	if(status == 1){
 		limparTela();
@@ -203,6 +222,8 @@ void exibirMensagemPassarVez(int status){
 		printf("Ainda ha pecas para compra, nao e' permitido passar\n");
 	}
 }
+
+//FUNCOES DE MESNSAGENS APOS A FINALIZACAO DE UMA PARTIDA
 
 void exibirMensagemVencedor(int status){
 	if(status == 1){
@@ -235,12 +256,3 @@ int exibirOpcoesJogoFinalizado(){
 	return -1;
 }
 
-void interacoesMenu(int opcao){
-	if(opcao == 2 || opcao == 3){
-		printf("Saindo do jogo...\n");
-	} else {
-		limparTela();
-		printf("Opcao invalida. Tente novamente.\n");
-	}
-		
-}

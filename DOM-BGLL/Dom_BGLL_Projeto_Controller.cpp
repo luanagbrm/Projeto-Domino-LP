@@ -1,6 +1,6 @@
 /*
-DOM-BGLL - Projeto Domino - Etapa 4
-03/09/2024 - Grupo:BGLL
+DOM-BGLL - Projeto Domino - Etapa 5
+10/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -12,7 +12,7 @@ Nome dos integrantes:
 
 #include "Dom_BGLL_Projeto_Controller.h"
 
-
+//FUNCOES INICIAIS PARA ANTES DO INICIO DA PRIMEIRA JOGADA
 
 void gerarSeed(){
   srand( (unsigned)time(0));
@@ -39,12 +39,12 @@ void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], in
   int pieceAssign = 0;//acessa todas as pecas uma por uma e distribui para um jogador
 
   for(int i = 0; i < numJogadores; i++){
-    jogadores[i].numPieces = 0; // inicializa a quantidade de pecas na mao do usuario, iniciando a distribuicao sempre do iÂ­nicio do array
+    jogadores[i].numPieces = 0; // inicializa a quantidade de pecas na mao do usuario, iniciando a distribuicao sempre do inicio do array
 
     for(int k = 0; k < HAND_PECAS_INICIAL  && pieceAssign < NUM_PECAS; k++){
       totalPieces[pieceAssign].status = '1' + i;
       jogadores[i].pecasMao[k] = totalPieces[pieceAssign++];
-      jogadores[i].pecasMao[k].pos = pieceAssign - 1; //guarda dentro de cada peÃ§a na mÃ£o do jogador a posiÃ§Ã£o que ela ocupa no array principal do jogo
+      jogadores[i].pecasMao[k].pos = pieceAssign - 1; //guarda dentro de cada peca na mao do jogador a posicao que ela ocupa no array principal do jogo
       jogadores[i].pecasMao[k].status = '1' + i;
       jogadores[i].numPieces++;
       qtdPecasDisponivel--;
@@ -52,19 +52,7 @@ void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], in
   }
 }
 
-void removerPecaJogada(Jogador *jogador, int pos) {
-    for (int i = pos; i < jogador->numPieces - 1; i++) { //recebe a posicao da peca que foi jogada
-        jogador->pecasMao[i] = jogador->pecasMao[i + 1];//e diminui em 1 a posicao de todas as pecas que estÃƒÂ£o a direita dela
-    }
-    
-    jogador->numPieces--;
-}
-
-void jogarLadoEsquerdo(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos) {
-    for (int i = qtdPecasMesa; i >= 0; i--) { //recebe a posicao da peca que foi jogada
-        mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estÃƒÂ£o a direita dela
-    }
-}
+//FUNCIONALIDADES PARA VERIFICACOES 
 
 // Verifica se a peca jogada se encaixa em algumas das extremidades da mesa
 int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
@@ -74,7 +62,7 @@ int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
    int controle = 0;
   
 
-	//Verifica quantas possibilidades de jogada uma peÃ§a pode oferecer ao jogador
+	//Verifica quantas possibilidades de jogada uma peca pode oferecer ao jogador
   	if(pecaJogada.ladoA == ladoD)
     	controle++;
   	if(pecaJogada.ladoB == ladoD)
@@ -85,7 +73,7 @@ int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
     	controle++;
     	
     if(pecaJogada.ladoA == pecaJogada.ladoB)
-    	controle = controle/2; //Como os dois lados sÃ£o identicos, nÃ£o hÃ¡ necessidade de comparar se ambos os lados da peÃ§a podem ser jogados em ambos os lados da mesa 
+    	controle = controle/2; //Como os dois lados sao identicos, nao ha necessidade de comparar se ambos os lados da peca podem ser jogados em ambos os lados da mesa 
   	
   	return controle;
 	
@@ -96,8 +84,8 @@ int checarUnicaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
   int ladoD = limitesMesa.ladoD;
   int ladoE = limitesMesa.ladoE;
 
-	//Considerando que ao chegar nessa funÃ§Ã£o temos apenas uma jogada possÃ­vel,
-	//encontra qual Ã© essa jogada e a realiza
+	//Considerando que ao chegar nessa funcao temos apenas uma jogada possil,
+	//encontra qual e' essa jogada e a realiza
   	if(pecaJogada.ladoA == ladoD){
     	limitesMesa.ladoD = pecaJogada.ladoB;
     	jogarPeca(mesa,jogadores,jogador,pos,'D');
@@ -127,7 +115,7 @@ int checarLadoValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos, cha
   	int ladoD = limitesMesa.ladoD;
   	int ladoE = limitesMesa.ladoE;
   
-  	//Verifica qual lado da peÃ§a condiz com a extremidade escolhida pelo jogador
+  	//Verifica qual lado da peca condiz com a extremidade escolhida pelo jogador
   	if(lado == 'D'){
 	  	if(pecaJogada.ladoA == ladoD){
 	    	limitesMesa.ladoD = pecaJogada.ladoB;
@@ -171,13 +159,13 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	}
 		
 	if(qtdValidas == 1){
-		checarUnicaValida(jogadores, jogadorAtual, pos); //HÃ¡ apenas uma jogada vÃ¡lida, logo, o jogo hÃ¡ farÃ¡ automaticamente
+		checarUnicaValida(jogadores, jogadorAtual, pos); //Ha apenas uma jogada valida, logo, o jogo ha fara' automaticamente
 		exibirMensagemJogada(qtdValidas);
 		return 0;
 	}
 	
 	
-	if(qtdValidas > 1){ //HÃ¡ mais de uma jogada possÃ­vel, entÃ£o a extremidade a ser jogada serÃ¡ definida pelo jogador
+	if(qtdValidas > 1){ //ha mais de uma jogada possivel, entao a extremidade a ser jogada sera definida pelo jogador
 		fclearBuffer();
 		char lado = receberLadoJogada();
 		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
@@ -193,7 +181,7 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	return -1;
 }
 
-//Encontra a maior peÃ§a dupla que esteja na mÃ£o de um dos jogadores
+//Encontra a maior peca dupla que esteja na mao de um dos jogadores
 int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
   char lado = 'D';
 	
@@ -206,7 +194,7 @@ int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
         return 1; // Encerra a busca no momento que encontra a maior peca dupla presente em ambas as maos
       }
 
-      //Caso nao encontre a peca dupla na mao do jogador 1, a funÃ§Ã£o busca na mao do jogador 2
+      //Caso nao encontre a peca dupla na mao do jogador 1, a funcao busca na mao do jogador 2
 
       if((jogador[1].pecasMao[i].ladoA == k) && (jogador[1].pecasMao[i].ladoB == k)){
         jogarPeca(mesa, jogador, 1, i, lado);
@@ -215,7 +203,7 @@ int encontrarDupla(Jogador jogador[NUM_JOGADORES], Mesa mesa[28]){
     }
   }
 
-  return -1; // Retorna -1 se nao encontrar nenhuma peÃ§a dupla na mao de ambos
+  return -1; // Retorna -1 se nao encontrar nenhuma peca dupla na mao de ambos
 }
 
 //Encontra a maior peca na mao dos jogadores considerando a soma
@@ -255,20 +243,7 @@ int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
     return jogador1;
 }
 
-
-int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum) {
-      for (int k = 0; k < NUM_PECAS; k++) {
-          if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
-                  jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponiÂ­vel ao fim da mao do usuario
-                  totalPieces[k].status = '1' + jogadorNum;
-				  qtdPecasDisponivel--;
-                  return 1; // Compra feita
-        	}
-        }
-      return 0; // Nao foi possivel fazer a compra
-}
-
-//Funcionalidades para passar a vez
+//FUNCIONALIDADES PARA PASSAR A VEZ
 
 int verificarPassarVez(){
 	if(qtdPecasDisponivel == 0){
@@ -286,9 +261,9 @@ void passarVez(){
 	exibirMensagemPassarVez(disponibilidadePecas);
 }
 
-//Funcionalidades para verificar se o jogo terminou
+//FUNCIONALIDADES PARA VERIFICAR SE O JOGO TERMINOU
 
-//Verifica se a mao de algum dos jogadores esta sem peï¿½as
+//Verifica se a mao de algum dos jogadores esta sem pecas
 int verificarMaoVazia(){
 	if(jogadores[0].numPieces == 0)
 		return 1;
@@ -297,13 +272,13 @@ int verificarMaoVazia(){
 	return -1;
 }
 
-//Verifica se algum dos dois jogadores possuem alguma peï¿½a que possa ser jogada no tabuleiro
+//Verifica se algum dos dois jogadores possuem alguma peca que possa ser jogada no tabuleiro
 int verificarJogoFechado(){
 	if(qtdPecasDisponivel <= 0){
 		for(int i = 0; i < jogadores[0].numPieces; i++){
 			if(jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoD || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoD
 				|| jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoE || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoE){
-					return 1; //Se encontrar alguma peï¿½a na mï¿½o do jogador que possa ser jogada no tabuleiro, indica que ainda existe jogadas possï¿½veis
+					return 1; //Se encontrar alguma peca na mao do jogador que possa ser jogada no tabuleiro, indica que ainda existe jogadas possiveis
 			}
 		}
 		
@@ -314,27 +289,26 @@ int verificarJogoFechado(){
 			}
 		}
 	} else {
-		return 1; //Hï¿½ mais do que 0 peï¿½as disponï¿½veis
+		return 1; //Ha mais do que 0 pecas disponiveis
 	}
 	
-	return 0; //Se nï¿½o encontrar nenhuma jogada vï¿½lida na mï¿½o de ambos os jogadores, indica que o jogo estï¿½ fechado
+	return 0; //Se nao encontrar nenhuma jogada valida na mao de ambos os jogadores, indica que o jogo esta' fechado
 }
-
 
 int verificarVencedorJogoFechado(){
 	if(verificarJogoFechado() == 0){
 		if(jogadores[0].numPieces > jogadores[1].numPieces)
-			return 2; //Primeiro verifica a quantidade de peï¿½as de cada jogador
+			return 2; //Primeiro verifica a quantidade de pecas de cada jogador
 		else if (jogadores[1].numPieces > jogadores[0].numPieces)
 			return 1;
 		else 
-			return somarValorPecas(); //Caso a quantidade de peï¿½as for identica, faz a soma dos lados de todas as peï¿½as na mï¿½o do jogador
+			return somarValorPecas(); //Caso a quantidade de pecas for identica, faz a soma dos lados de todas as pecas na mao do jogador
 	}
 	
 	return -1;
 }
 
-//Soma o valor de ambos os lados de cada peï¿½a para todas peï¿½as
+//Soma o valor de ambos os lados de cada peca para todas pecas
 int somarValorPecas(){
 	int pecasJogador1 = 0;
 	int pecasJogador2 = 0;
@@ -358,9 +332,8 @@ void verificarOpcaoUsuario(int opcao){
 		exit(0);
 }
 
-
 void definirVencedor(){
-	if(verificarMaoVazia() != -1){ //Primeiro, verifica se algum dos jogadores nï¿½o tem peï¿½as na mï¿½o
+	if(verificarMaoVazia() != -1){ //Primeiro, verifica se algum dos jogadores nao tem pecas na mao
 		exibirMensagemVencedor(verificarMaoVazia());
 		int opcao = exibirOpcoesJogoFinalizado();
 		verificarOpcaoUsuario(opcao);
@@ -377,6 +350,19 @@ void definirVencedor(){
 		
 }
 
+//FUNCIONALIDADES PARA COMPRA DAS PECAS
+
+int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum) {
+      for (int k = 0; k < NUM_PECAS; k++) {
+          if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
+                  jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponivel ao fim da mao do usuario
+                  totalPieces[k].status = '1' + jogadorNum;
+				  qtdPecasDisponivel--;
+                  return 1; // Compra feita
+        	}
+        }
+      return 0; // Nao foi possivel fazer a compra
+}
 
 int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum){
 	int status = comprarCartas(totalPieces, jogador, jogadorNum);
@@ -384,6 +370,21 @@ int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jog
 	statusCompra(status);
 	
 	return status;
+}
+
+//FUNCIONALIDADES PARA JOGADAS
+
+void jogarLadoEsquerdo(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos) {
+    for (int i = qtdPecasMesa; i >= 0; i--) { //recebe a posicao da peca que foi jogada
+        mesa[i+1] = mesa[i];//e diminui em 1 a posicao de todas as pecas que estao a direita dela
+    }
+}
+
+void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
+  int p;
+  p = jogadores[numJogador].pecasMao[pos].ladoA;
+  jogadores[numJogador].pecasMao[pos].ladoA = jogadores[numJogador].pecasMao[pos].ladoB;
+  jogadores[numJogador].pecasMao[pos].ladoB = p;
 }
 
 void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado) {
@@ -413,63 +414,59 @@ void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int
 	limparTela();
 }
 
-void fclearBuffer() 
-{ 
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+void removerPecaJogada(Jogador *jogador, int pos) {
+	
+    for (int i = pos; i < jogador->numPieces - 1; i++) { //recebe a posicao da peca que foi jogada
+        jogador->pecasMao[i] = jogador->pecasMao[i + 1];//e diminui em 1 a posicao de todas as pecas que estao a direita dela
+    }
+    
+    jogador->numPieces--;
 }
 
-void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
-  int p;
-  p = jogadores[numJogador].pecasMao[pos].ladoA;
-  jogadores[numJogador].pecasMao[pos].ladoA = jogadores[numJogador].pecasMao[pos].ladoB;
-  jogadores[numJogador].pecasMao[pos].ladoB = p;
-}
+//FUNCIONALIDADES PARA SALVAR E RECUPERAR DADOS DO JOGO
 
-
-//Funcionalidades para salvar e recuperar os dados do jogo
 // int salvarJogo(){
 // 	salvarPecas();
 // 	salvarMesa();
 // }
-
+//
 // void salvarPecas(){
 // 	arqPecas = fopen("CAD_DOMINO","w");
-	
+//	
 // 	if((arqPecas = fopen("CAD_DOMINO","w")) == NULL){
 // 		printf("O aquivo CAD_DOMINO nao pode ser aberto para gravacao");
 // 		return;
 // 	}
-
+//
 // 	for (int k = 0; k < NUM_PECAS; k++){
 // 		if(fwrite(&domino[k], sizeof(Carta), 1, arqPecas) != 1){
 // 			printf("erro na gravacao do arquivo");
 // 			return;
 // 		}
 // 	}
-
+//
 // 	fclose(arqPecas);
 // }
-
+//
 // void salvarMesa(){
-// 	arqMesa = fopen("CAD_MESA","w");
-	
+//	arqMesa = fopen("CAD_MESA","w");
+//	
 // 	if((arqMesa = fopen("CAD_MESA","w")) == NULL){
 // 		printf("O aquivo CAD_MESA nao pode ser aberto para gravacao");
 // 		return;
 // 	}
-	
+//	
 // 	for (int k = 0; k < NUM_PECAS; k++){
 // 		if(fwrite(&mesa[k], sizeof(Mesa), 1, arqPecas) != 1){
 // 			printf("erro na gravacao do arquivo");
 // 			return;
 // 		}
 // 	}
-	
+//	
 // 	fclose(arqMesa);
 // }
-
-
+//
+//
 // int recuperarJogo(){	
 // 	if((arqMesa = fopen("CAD_MESA","r")) == NULL){
 // 		printf("O aquivo nomedoarquivo nÃ£o pode ser aberto para leitura");
@@ -480,6 +477,7 @@ void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
 // int continuarJogo(){
 // 	recuperarJogo();	
 // }
+
 int salvarPecas(){
 
 	FILE *arqPecas = fopen("CAD_DOMINO","w");
@@ -502,19 +500,16 @@ int salvarPecas(){
 	return 0;
 }
 
-int salvarMesa()
-{
+int salvarMesa(){
     FILE *arqMesa = fopen("CAD_MESA", "w");
 
-    if (arqMesa == NULL)
-    {
+    if (arqMesa == NULL){
         printf("O arquivo nao pode ser aberto para gravacao\n");
         return -1;
     }
 
     // Grava o conteúdo da mesa
-    if (fwrite(mesa, sizeof(Mesa), 28, arqMesa) != 28)
-    {
+    if (fwrite(mesa, sizeof(Mesa), 28, arqMesa) != 28){
         printf("Houve um erro na gravacao do arquivo\n");
         fclose(arqMesa);
         return -1;
@@ -524,6 +519,24 @@ int salvarMesa()
     return 0;
 }
 
+int salvarJogo() {
+    // Salvar as peças do jogo
+    int statusPecas = salvarPecas();
+    if (statusPecas != 0) {
+        printf("Erro ao salvar as pecas do jogo.\n");
+        return -1;
+    }
+
+    // Salvar a mesa do jogo
+    int statusMesa = salvarMesa();
+    if (statusMesa != 0) {
+        printf("Erro ao salvar a mesa do jogo.\n");
+        return -1;
+    }
+
+    printf("Jogo salvo com sucesso!\n");
+    return 0;
+}
 
 int recuperarJogo(){	
 FILE *arqPecas = fopen("CAD_DOMINO", "r");
@@ -558,8 +571,9 @@ FILE *arqPecas = fopen("CAD_DOMINO", "r");
 int continuarJogo() {
     return recuperarJogo();    
 }
-//Fim das funcionalidades para salvar e recuperar arquivos
-//Fim das funcionalidades para salvar e recuperar arquivos
+
+
+//MENU DO JOGADOR E INICIALIZACAO DO JOGO APARTIR DO MENU PRINCIPAL
 
 int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     int escolha;
@@ -611,6 +625,7 @@ void jogar(){
 	gerarSeed();
 	
 	salvarJogo();
+	continuarJogo();
 	
 	do {
         opcao = menuPrincipal();
@@ -635,11 +650,24 @@ void jogar(){
             	mostrarRegras(opcao);
             	break;
             case 3:
-                interacoesMenu(opcao);
+                salvarJogo();
+                break;
+            case 4:
+            	continuarJogo();
+            	
+            case 5:
+            	interacoesMenu(opcao);
                 exit(0);
             default:
             	interacoesMenu(opcao);
                 
         }
-    } while (opcao != 3);
+    } while (opcao != 5);
+}
+
+//LIMPADOR
+void fclearBuffer() 
+{ 
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }

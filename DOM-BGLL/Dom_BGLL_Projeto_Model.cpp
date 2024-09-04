@@ -1,6 +1,6 @@
 /*
-DOM-BGLL - Projeto Domino - Etapa 4
-03/09/2024 - Grupo:BGLL
+DOM-BGLL - Projeto Domino - Etapa 5
+10/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -9,7 +9,6 @@ Nome dos integrantes:
 - Luana Gabrielle Rodrigues Macedo
 - Lucas Ferri dos Santos
 */
-
 #include "Dom_BGLL_Projeto_Model.h"
 
 void criarCarta(Carta domino[NUM_PECAS]){
