@@ -21,6 +21,9 @@ Nome dos integrantes:
 #include <time.h>
 #include <ctype.h>
 
+FILE *arqPecas;
+FILE *arqMesa;
+FILE *arqJogador;
 
 void gerarSeed();
 void jogar();
@@ -50,5 +53,7 @@ int verificarVencedorJogoFechado();
 int verificarJogoFechado();
 int verificarMaoVazia();
 void verificarOpcaoUsuario(int opcao);
+int salvarJogo();
+int recuperarJogo();
 
 #endif

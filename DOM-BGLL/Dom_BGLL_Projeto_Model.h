@@ -37,6 +37,17 @@ typedef struct{
   int numPieces; //variavel para saber a qtd de cartas na mao de cada jogador
 }Jogador;
 
+struct jogo
+{
+  int qtmesajogo;
+  int jogadorJogo;
+  int jogadorComp;
+  int mesaDJogo;
+  int mesaEJogo;
+  
+}sitJogo;
+
+
 Carta domino[28];
 Mesa limitesMesa; //guarda o valor das extremidades da mesa para facilitar comparações
 Mesa mesa[28];
