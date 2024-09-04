@@ -79,8 +79,8 @@ int menuPrincipal() {
     printf("1. Iniciar Novo Jogo\n");
     printf("2. Regras do Jogo\n");
     printf("3. Sair\n");
-     printf("\n---------------------\n");
-    printf("\nEscolha uma opcao: ");
+     printf("------------------------\n");
+    printf("Escolha uma opcao: ");
     scanf("%d", &opcao);
     return opcao;
 }
@@ -110,7 +110,7 @@ int menuPrincipalJogador() {
 	printf("3. Passar vez\n");
 	printf("4. Ver regras do Jogo\n");
     printf("0. Sair\n");
-    printf("\n-------------------------\n");
+    printf("-----------------------------\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &escolha);
     return escolha;
@@ -186,7 +186,7 @@ int exibirOpcoesJogoFinalizado(){
 	
 	do{
 		printf("\nPressione 0 para voltar ao menu principal ou 1 para sair do jogo\n");
-		scanf("%d", opcao);
+		scanf("%d", &opcao);
 	
 		if(opcao == 0)
 			return opcao;
@@ -203,7 +203,7 @@ int exibirOpcoesJogoFinalizado(){
 }
 
 void interacoesMenu(int opcao){
-	if(opcao == 2)
+	if(opcao == 2 || opcao == 3)
 		printf("Saindo do jogo...\n");
 	else
 		printf("Opcao invalida. Tente novamente.\n");
