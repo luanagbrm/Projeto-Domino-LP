@@ -448,6 +448,7 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
 void jogar(){
 	int opcao;
 	qtdPecasMesa = 0; //a cada novo jogo, inicia a mesa da primeira posicao
+	qtdPecasDisponivel= NUM_PECAS; 
 	gerarSeed();
 	
 	do {
