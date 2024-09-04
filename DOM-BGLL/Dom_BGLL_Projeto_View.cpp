@@ -61,6 +61,7 @@ int numeroJogadores(void){
 }
 
 
+
 void statusCompra(int status){
 	if(status == 1){
 		limparTela();
@@ -68,8 +69,7 @@ void statusCompra(int status){
 	} else {
 		limparTela();
 		printf("Nao ha pecas para comprar");
-	}
-	
+	}	
 }
 
 //Opcoes do menu principal do jogo
@@ -92,7 +92,7 @@ void mostrarRegras(int choice){
 	printf("\n---------------------------------------------");
 	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
 	printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
-	printf("\n- O jogo inicia com o jogador que possui a maior peça cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peça com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
+	printf("\n- O jogo inicia com o jogador que possui a maior peÃ§a cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peÃ§a com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
 	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
 	printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
 	printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
@@ -148,19 +148,20 @@ char receberLadoJogada() {
     char lado;
     do {
         printf("Escolha em qual lado voce deseja jogar (E para esquerda | D para direita):\n");
-        scanf("%c", &lado); // Add a space before %c to skip any whitespace characters
+        scanf("%c", &lado);
         
-        // Clear the input buffer
         limparBuffer();
 
-        lado = toupper(lado); // Convert to uppercase to handle case-insensitivity
+        lado = toupper(lado);
 
         if (lado == 'E' || lado == 'D') {
             return lado;
         } else {
             printf("Opcao invalida. ");
         }
-    } while (lado != 'E' && lado != 'D'); // Use && to correctly validate the condition
+    } while (lado != 'E' && lado != 'D');
+    
+    return 'e';
 }
 
 void limparTela(){
