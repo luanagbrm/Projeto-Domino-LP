@@ -428,59 +428,137 @@ void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
 
 
 //Funcionalidades para salvar e recuperar os dados do jogo
-int salvarJogo(){
-	salvarPecas();
-	salvarMesa();
-}
+// int salvarJogo(){
+// 	salvarPecas();
+// 	salvarMesa();
+// }
 
-void salvarPecas(){
-	arqPecas = fopen("CAD_DOMINO","w");
+// void salvarPecas(){
+// 	arqPecas = fopen("CAD_DOMINO","w");
 	
-	if((arqPecas = fopen("CAD_DOMINO","w")) == NULL){
-		printf("O aquivo CAD_DOMINO nao pode ser aberto para gravacao");
-		return;
+// 	if((arqPecas = fopen("CAD_DOMINO","w")) == NULL){
+// 		printf("O aquivo CAD_DOMINO nao pode ser aberto para gravacao");
+// 		return;
+// 	}
+
+// 	for (int k = 0; k < NUM_PECAS; k++){
+// 		if(fwrite(&domino[k], sizeof(Carta), 1, arqPecas) != 1){
+// 			printf("erro na gravacao do arquivo");
+// 			return;
+// 		}
+// 	}
+
+// 	fclose(arqPecas);
+// }
+
+// void salvarMesa(){
+// 	arqMesa = fopen("CAD_MESA","w");
+	
+// 	if((arqMesa = fopen("CAD_MESA","w")) == NULL){
+// 		printf("O aquivo CAD_MESA nao pode ser aberto para gravacao");
+// 		return;
+// 	}
+	
+// 	for (int k = 0; k < NUM_PECAS; k++){
+// 		if(fwrite(&mesa[k], sizeof(Mesa), 1, arqPecas) != 1){
+// 			printf("erro na gravacao do arquivo");
+// 			return;
+// 		}
+// 	}
+	
+// 	fclose(arqMesa);
+// }
+
+
+// int recuperarJogo(){	
+// 	if((arqMesa = fopen("CAD_MESA","r")) == NULL){
+// 		printf("O aquivo nomedoarquivo nÃ£o pode ser aberto para leitura");
+// 		return -1;
+// 	}
+// }
+
+// int continuarJogo(){
+// 	recuperarJogo();	
+// }
+int salvarPecas(){
+
+	FILE *arqPecas = fopen("CAD_DOMINO","w");
+
+	if(arqPecas == NULL)
+	{
+		printf("O arquivo escolhido nao pode ser aberto para gravacao\n");
+		return -1;
 	}
 
-	for (int k = 0; k < NUM_PECAS; k++){
-		if(fwrite(&domino[k], sizeof(Carta), 1, arqPecas) != 1){
-			printf("erro na gravacao do arquivo");
-			return;
+	for(int j = 0; j < NUM_PECAS; j++){
+		if(fwrite(&domino[j],sizeof(Carta),1,arqPecas)!= 1)
+		{
+			printf("Houve um erro na gravacao do arquivo\n");
+			fclose(arqPecas);
+			return -1;
 		}
 	}
-
 	fclose(arqPecas);
+	return 0;
 }
 
-void salvarMesa(){
-	arqMesa = fopen("CAD_MESA","w");
-	
-	if((arqMesa = fopen("CAD_MESA","w")) == NULL){
-		printf("O aquivo CAD_MESA nao pode ser aberto para gravacao");
-		return;
-	}
-	
-	for (int k = 0; k < NUM_PECAS; k++){
-		if(fwrite(&mesa[k], sizeof(Mesa), 1, arqPecas) != 1){
-			printf("erro na gravacao do arquivo");
-			return;
-		}
-	}
-	
-	fclose(arqMesa);
+int salvarMesa()
+{
+    FILE *arqMesa = fopen("CAD_MESA", "w");
+
+    if (arqMesa == NULL)
+    {
+        printf("O arquivo nao pode ser aberto para gravacao\n");
+        return -1;
+    }
+
+    // Grava o conteúdo da mesa
+    if (fwrite(mesa, sizeof(Mesa), 28, arqMesa) != 28)
+    {
+        printf("Houve um erro na gravacao do arquivo\n");
+        fclose(arqMesa);
+        return -1;
+    }
+
+    fclose(arqMesa);
+    return 0;
 }
 
 
 int recuperarJogo(){	
-	if((arqMesa = fopen("CAD_MESA","r")) == NULL){
-		printf("O aquivo nomedoarquivo nÃ£o pode ser aberto para leitura");
-		return -1;
-	}
+FILE *arqPecas = fopen("CAD_DOMINO", "r");
+    FILE *arqMesa = fopen("CAD_MESA", "r");
+
+    if (arqPecas == NULL || arqMesa == NULL) {
+        printf("O arquivo nao pode ser aberto para leitura\n");
+        return -1;
+    }
+
+    for (int j = 0; j < NUM_PECAS; j++) {
+        if (fread(&domino[j], sizeof(Carta), 1, arqPecas) != 1) {
+            printf("Houve um erro na leitura do arquivo\n");
+            fclose(arqPecas);
+            fclose(arqMesa);
+            return -1;
+        }
+    }
+
+    if (fread(&mesa, sizeof(Mesa), 1, arqMesa) != 1) {
+        printf("Houve um erro na leitura do arquivo\n");
+        fclose(arqPecas);
+        fclose(arqMesa);
+        return -1;
+    }
+
+    fclose(arqPecas);
+    fclose(arqMesa);
+    return 0;
 }
 
-int continuarJogo(){
-	recuperarJogo();	
+int continuarJogo() {
+    return recuperarJogo();    
 }
-
+//Fim das funcionalidades para salvar e recuperar arquivos
 //Fim das funcionalidades para salvar e recuperar arquivos
 
 int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
