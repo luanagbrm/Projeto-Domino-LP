@@ -164,11 +164,13 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	int qtdValidas = qtdJogadaValida(jogadores, jogador, pos);
 	
 	if(qtdValidas == 0){
-		return -1; //N√£o h√° possibilidade de qualquer jogada valida
+		exibirMensagemJogada(qtdValidas);
+		return -1; //Nao ha possibilidade de qualquer jogada valida
 	}
 		
 	if(qtdValidas == 1){
 		checarUnicaValida(jogadores, jogadorAtual, pos); //H√° apenas uma jogada v√°lida, logo, o jogo h√° far√° automaticamente
+		exibirMensagemJogada(qtdValidas);
 		return 0;
 	}
 	
@@ -177,12 +179,15 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 		fclearBuffer();
 		char lado = receberLadoJogada();
 		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
+			exibirMensagemJogada(0);
 			menuPrincipalJogador();
 			return -1;
 		}
+		exibirMensagemJogada(qtdValidas);
 		return 1;
 	}
 	
+	exibirMensagemJogada(-1);
 	return -1;
 }
 
@@ -261,6 +266,8 @@ int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum
       return 0; // Nao foi possivel fazer a compra
 }
 
+//Funcionalidades para passar a vez
+
 int verificarPassarVez(){
 	if(qtdPecasDisponivel == 0){
 		definirJogadorAtual();
@@ -277,6 +284,9 @@ void passarVez(){
 	exibirMensagemPassarVez(disponibilidadePecas);
 }
 
+//Funcionalidades para verificar se o jogo terminou
+
+//Verifica se a mao de algum dos jogadores esta sem peÁas
 int verificarMaoVazia(){
 	if(jogadores[0].numPieces == 0)
 		return 1;
@@ -285,13 +295,13 @@ int verificarMaoVazia(){
 	return -1;
 }
 
-//Verifica se algum dos dois jogadores possuem alguma pe√ßa que possa ser jogada no tabuleiro
+//Verifica se algum dos dois jogadores possuem alguma peÁa que possa ser jogada no tabuleiro
 int verificarJogoFechado(){
-	if(qtdPecasDisponivel == 0){
+	if(qtdPecasDisponivel <= 0){
 		for(int i = 0; i < jogadores[0].numPieces; i++){
 			if(jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoD || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoD
 				|| jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoE || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoE){
-					return 1;
+					return 1; //Se encontrar alguma peÁa na m„o do jogador que possa ser jogada no tabuleiro, indica que ainda existe jogadas possÌveis
 			}
 		}
 		
@@ -301,24 +311,28 @@ int verificarJogoFechado(){
 					return 1;
 			}
 		}
+	} else {
+		return 1; //H· mais do que 0 peÁas disponÌveis
 	}
 	
-	return 0;
+	return 0; //Se n„o encontrar nenhuma jogada v·lida na m„o de ambos os jogadores, indica que o jogo est· fechado
 }
 
+
 int verificarVencedorJogoFechado(){
-	if(verificarJogoFechado == 0){
+	if(verificarJogoFechado() == 0){
 		if(jogadores[0].numPieces > jogadores[1].numPieces)
-			return 2;
+			return 2; //Primeiro verifica a quantidade de peÁas de cada jogador
 		else if (jogadores[1].numPieces > jogadores[0].numPieces)
 			return 1;
 		else 
-			return somarValorPecas();
+			return somarValorPecas(); //Caso a quantidade de peÁas for identica, faz a soma dos lados de todas as peÁas na m„o do jogador
 	}
 	
 	return -1;
 }
 
+//Soma o valor de ambos os lados de cada peÁa para todas peÁas
 int somarValorPecas(){
 	int pecasJogador1 = 0;
 	int pecasJogador2 = 0;
@@ -342,17 +356,21 @@ void verificarOpcaoUsuario(int opcao){
 		exit(0);
 }
 
+
 void definirVencedor(){
-	if(verificarMaoVazia() != -1){
+	if(verificarMaoVazia() != -1){ //Primeiro, verifica se algum dos jogadores n„o tem peÁas na m„o
 		exibirMensagemVencedor(verificarMaoVazia());
 		int opcao = exibirOpcoesJogoFinalizado();
 		verificarOpcaoUsuario(opcao);
+		return;
 	}
 	
+	//Caso ainda tenha, verifica se o jogo est· fechado
 	if(verificarVencedorJogoFechado() != -1){
 		exibirMensagemVencedor(verificarVencedorJogoFechado());
 		int opcao = exibirOpcoesJogoFinalizado();
 		verificarOpcaoUsuario(opcao);
+		return;
 	}
 		
 }
@@ -417,12 +435,16 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
             	int posicao;
                 
                 posicao = receberPosicaoPeca();
-	            if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
-	                verificarJogada(mesa, jogadores, jogadorAtual, posicao-1);
-	            } else {
-	                interacoesMenu(escolha);
-	            }
-	                break;
+                
+	            if (posicao == -1) {
+			        break;
+			    } else if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
+			        verificarJogada(mesa, jogadores, jogadorAtual, posicao - 1);
+			    } else {
+			        interacoesMenu(posicao);
+			    }
+			    
+			    break;
             }
             case 2:
                 realizarCompraCartas(domino, &jogadores[jogadorAtual], jogadorAtual);

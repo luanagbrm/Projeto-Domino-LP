@@ -9,7 +9,7 @@ Nome dos integrantes:
 - Luana Gabrielle Rodrigues Macedo
 - Lucas Ferri dos Santos
 
-A etapa 4 apresenta um jogo completo de dominó, porém, ainda é jogado somente com dois jogadores.
+A etapa 4 apresenta um jogo completo de domino, porem, ainda e' jogado somente com dois jogadores.
 */
 
 #include "Dom_BGLL_Projeto_Controller.cpp"

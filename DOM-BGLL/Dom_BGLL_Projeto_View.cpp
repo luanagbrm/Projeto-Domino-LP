@@ -75,6 +75,7 @@ void statusCompra(int status){
 //Opcoes do menu principal do jogo
 int menuPrincipal() {
     int opcao;
+    limparTela();
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo\n");
     printf("2. Regras do Jogo\n");
@@ -86,6 +87,7 @@ int menuPrincipal() {
 }
 
 void mostrarRegras(int choice){
+	limparTela();
 	printf("\nRegras Gerais  \n");
 	printf("\n---------------------------------------------");
 	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
@@ -106,29 +108,59 @@ int menuPrincipalJogador() {
     mostrarPecasJogadorAtual(jogadores, jogadorAtual);
     printf("\n--- Menu do Jogador %d ---\n", jogadorAtual + 1);
     printf("1. Escolher peca para jogar\n");
-    printf("2. Comprar peca\n");
+    printf("2. Comprar peca (%d pecas disponiveis)\n", qtdPecasDisponivel);
 	printf("3. Passar vez\n");
 	printf("4. Ver regras do Jogo\n");
     printf("0. Sair\n");
     printf("-----------------------------\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &escolha);
+    limparBuffer();
     return escolha;
 }
 
-int receberPosicaoPeca(){
-	int posicao;
-	printf("Escolha a posicao da peca que deseja jogar (1 a %d): ", jogadores[jogadorAtual].numPieces);
-    scanf("%d", &posicao);
+int receberPosicaoPeca() {
+    int posicao;
+    int numPieces = jogadores[jogadorAtual].numPieces; // Retrieve the number of pieces for the current player
+    
+    do {
+        printf("Escolha a posicao da peca que deseja jogar (1 a %d) [0 para voltar]: ", numPieces);
+        scanf("%d", &posicao);
+        
+        if (posicao == 0) {
+        	limparTela();
+            return -1; 
+        } else if (posicao < 1 || posicao > numPieces) {
+            printf("Posicao invalida. Por favor, insira um numero entre 1 e %d.\n", numPieces);
+            posicao = -1; // Set to an invalid number to repeat the loop
+        }
+    } while (posicao < 1 || posicao > numPieces); // Loop until a valid position is provided
+
     return posicao;
 }
 
-char receberLadoJogada(){
-	char lado;
-	printf("Escolha em qual lado voce deseja jogar (E para esquerda | D para direita):\n");
-    scanf("%c", &lado);
-    limparTela();
-    return toupper(lado);
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+char receberLadoJogada() {
+    char lado;
+    do {
+        printf("Escolha em qual lado voce deseja jogar (E para esquerda | D para direita):\n");
+        scanf("%c", &lado); // Add a space before %c to skip any whitespace characters
+        
+        // Clear the input buffer
+        limparBuffer();
+
+        lado = toupper(lado); // Convert to uppercase to handle case-insensitivity
+
+        if (lado == 'E' || lado == 'D') {
+            return lado;
+        } else {
+            printf("Opcao invalida. ");
+        }
+    } while (lado != 'E' && lado != 'D'); // Use && to correctly validate the condition
 }
 
 void limparTela(){
@@ -138,25 +170,25 @@ void limparTela(){
 void exibirMensagemJogada(int status){
 	if(status == 0){
 		limparTela();
-		printf("Nao ha jogada possivel com essa peca");
+		printf("Nao ha jogada possivel com essa peca\n");
 		return;
 	}
 	
 	if(status == 1){
 		limparTela();
-		printf("Como havia apenas uma possibilidade de jogada, a peca foi jogada automaticamente");
+		printf("Como havia apenas uma possibilidade de jogada, a peca foi jogada automaticamente\n");
 		return;
 	}
 	
 	if(status > 1){
 		limparTela();
-		printf("Peca jogada na extremidade escolhida");
+		printf("Peca jogada na extremidade escolhida\n");
 		return;
 	}
 	
 	if(status == -1){
 		limparTela();
-		printf("Jogada invalida");
+		printf("Jogada invalida\n");
 		return;
 	}	
 }
@@ -164,20 +196,20 @@ void exibirMensagemJogada(int status){
 void exibirMensagemPassarVez(int status){
 	if(status == 1){
 		limparTela();
-		printf("Passada a vez para Jogador %d", jogadorAtual + 1);
+		printf("Passada a vez para Jogador %d\n", jogadorAtual + 1);
 	} else {
 		limparTela();
-		printf("Ainda ha pecas para compra, nao e' permitido passar");
+		printf("Ainda ha pecas para compra, nao e' permitido passar\n");
 	}
 }
 
 void exibirMensagemVencedor(int status){
 	if(status == 1){
 		limparTela();
-		printf("Jogador 1 e' o vencedor da partida!");
+		printf("JOGADOR 1 E' O VENCEDOR DA PARTIDA!\n");
 	} else {
 		limparTela();
-		printf("Jogador 2 e' o vencedor da partida!");
+		printf("JOGADOR 2 E' O VENCEDOR DA PARTIDA!\n");
 	}
 }
 
@@ -185,7 +217,7 @@ int exibirOpcoesJogoFinalizado(){
 	int opcao;
 	
 	do{
-		printf("\nPressione 0 para voltar ao menu principal ou 1 para sair do jogo\n");
+		printf("\nPressione 0 para voltar ao menu principal\nPressione 1 para sair do jogo\n");
 		scanf("%d", &opcao);
 	
 		if(opcao == 0)
@@ -203,8 +235,11 @@ int exibirOpcoesJogoFinalizado(){
 }
 
 void interacoesMenu(int opcao){
-	if(opcao == 2 || opcao == 3)
+	if(opcao == 2 || opcao == 3){
 		printf("Saindo do jogo...\n");
-	else
+	} else {
+		limparTela();
 		printf("Opcao invalida. Tente novamente.\n");
+	}
+		
 }

@@ -31,5 +31,6 @@ void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador);
 void interacoesMenu(int opcao);
 void mostrarRegras(int choice);
 void limparTela();
+void limparBuffer();
 
 #endif
