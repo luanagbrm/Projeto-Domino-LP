@@ -53,7 +53,7 @@ Mesa limitesMesa; //guarda o valor das extremidades da mesa para facilitar compa
 Mesa mesa[28];
 Jogador jogadores[2];
 int qtdPecasMesa = 0; //variavel de controle da qtd de peças que já foram jogadas na mesa
-int qtdPecasDisponivel = 28; //variavel de controle da qtd de peças que ainda estão disponíveis para compra
+int qtdPecasDisponivel; //variavel de controle da qtd de peças que ainda estão disponíveis para compra
 int jogadorAtual; // define de que jogador é o turno atual
 
 void criarCarta(Carta domino[NUM_PECAS]);

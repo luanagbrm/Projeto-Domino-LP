@@ -340,7 +340,7 @@ void definirVencedor(){
 		return;
 	}
 	
-	//Caso ainda tenha, verifica se o jogo estï¿½ fechado
+	//Caso ainda tenha, verifica se o jogo esta' fechado
 	if(verificarVencedorJogoFechado() != -1){
 		exibirMensagemVencedor(verificarVencedorJogoFechado());
 		int opcao = exibirOpcoesJogoFinalizado();
@@ -469,7 +469,7 @@ void removerPecaJogada(Jogador *jogador, int pos) {
 //
 // int recuperarJogo(){	
 // 	if((arqMesa = fopen("CAD_MESA","r")) == NULL){
-// 		printf("O aquivo nomedoarquivo nÃ£o pode ser aberto para leitura");
+// 		printf("O aquivo nomedoarquivo na£o pode ser aberto para leitura");
 // 		return -1;
 // 	}
 // }
@@ -492,7 +492,7 @@ int salvarPecas(){
 		if(fwrite(&domino[j],sizeof(Carta),1,arqPecas)!= 1)
 		{
 			printf("Houve um erro na gravacao do arquivo\n");
-			fclose(arqPecas);
+//			fclose(arqPecas);
 			return -1;
 		}
 	}
@@ -508,19 +508,21 @@ int salvarMesa(){
         return -1;
     }
 
-    // Grava o conteúdo da mesa
-    if (fwrite(mesa, sizeof(Mesa), 28, arqMesa) != 28){
-        printf("Houve um erro na gravacao do arquivo\n");
-        fclose(arqMesa);
-        return -1;
-    }
+	for(int j = 0; j < NUM_PECAS; j++){
+    // Grava o conteudo da mesa
+	    if (fwrite(&mesa[j], sizeof(Mesa), 28, arqMesa) != 28){
+	        printf("Houve um erro na gravacao do arquivo\n");
+	        fclose(arqMesa);
+	        return -1;
+	    }
+	}
 
     fclose(arqMesa);
     return 0;
 }
 
 int salvarJogo() {
-    // Salvar as peças do jogo
+    // Salvar as pecas do jogo
     int statusPecas = salvarPecas();
     if (statusPecas != 0) {
         printf("Erro ao salvar as pecas do jogo.\n");
@@ -538,29 +540,28 @@ int salvarJogo() {
     return 0;
 }
 
+
 int recuperarJogo(){	
-FILE *arqPecas = fopen("CAD_DOMINO", "r");
+	FILE *arqPecas = fopen("CAD_DOMINO", "r");
     FILE *arqMesa = fopen("CAD_MESA", "r");
 
     if (arqPecas == NULL || arqMesa == NULL) {
         printf("O arquivo nao pode ser aberto para leitura\n");
         return -1;
     }
-
-    for (int j = 0; j < NUM_PECAS; j++) {
-        if (fread(&domino[j], sizeof(Carta), 1, arqPecas) != 1) {
-            printf("Houve um erro na leitura do arquivo\n");
-            fclose(arqPecas);
-            fclose(arqMesa);
-            return -1;
-        }
-    }
-
-    if (fread(&mesa, sizeof(Mesa), 1, arqMesa) != 1) {
-        printf("Houve um erro na leitura do arquivo\n");
-        fclose(arqPecas);
-        fclose(arqMesa);
-        return -1;
+    
+    for(int i = 0; i < NUM_PECAS; i++){
+    	if (fread(&mesa[i], sizeof(Mesa), 1, arqMesa) != 1) {
+	    printf("Houve um erro na leitura do arquivo da mesa %d\n", i);
+	    return -1;
+		}
+	}
+	
+	for(int i = 0; i < NUM_PECAS; i++){
+	    if (fread(&domino[i], sizeof(Carta), 1, arqPecas) != 1) {
+	        printf("Houve um erro na leitura do arquivo das pecas %d\n", i);
+	        return -1;
+	    }
     }
 
     fclose(arqPecas);
@@ -569,7 +570,9 @@ FILE *arqPecas = fopen("CAD_DOMINO", "r");
 }
 
 int continuarJogo() {
-    return recuperarJogo();    
+	recuperarJogo();
+	jogoSalvo();
+	return 0;
 }
 
 
@@ -618,32 +621,48 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     return 1;
 }
 
-void jogar(){
-	int opcao;
+int logicaJogo(){
+	criarCarta(domino);
+    embaralharPecas(domino);
+    iniciaMesa(mesa);
+     
+	int numJogadores = numeroJogadores(); // define o numero de jogadores de acordo com o informado pelo usuario
+    
+	distribuirPecas(domino, jogadores, numJogadores);
+
+    int firstPlayer = primeiroJogador(jogadores, mesa); // faz passagem por referencia
+
+    while (menuJogador(jogadores, domino)) {
+      // O loop continua ate que o jogador decida sair
+    }
+    
+    return 0;
+}
+
+int novoJogo(){
 	qtdPecasMesa = 0; //a cada novo jogo, inicia a mesa da primeira posicao
-	qtdPecasDisponivel= NUM_PECAS; 
-	gerarSeed();
+	qtdPecasDisponivel = NUM_PECAS; 
 	
-	salvarJogo();
-	continuarJogo();
+	logicaJogo();
+	return 0;
+}
+
+
+int jogoSalvo(){
+	logicaJogo();
+	return 0;
+}
+
+void jogar(){
+   	int opcao; 
+	
+	gerarSeed();
 	
 	do {
         opcao = menuPrincipal();
         switch (opcao) {
             case 1: {
-                criarCarta(domino);
-                embaralharPecas(domino);
-                iniciaMesa(mesa);
-                
-                int numJogadores = numeroJogadores(); // define o numero de jogadores de acordo com o informado pelo usuario
-
-                distribuirPecas(domino, jogadores, numJogadores);
-
-                int firstPlayer = primeiroJogador(jogadores, mesa); // faz passagem por referencia
-
-                while (menuJogador(jogadores, domino)) {
-                    // O loop continua ate que o jogador decida sair
-                }
+               	novoJogo();
                 break;
             }
             case 2:
@@ -654,7 +673,7 @@ void jogar(){
                 break;
             case 4:
             	continuarJogo();
-            	
+            	break;
             case 5:
             	interacoesMenu(opcao);
                 exit(0);

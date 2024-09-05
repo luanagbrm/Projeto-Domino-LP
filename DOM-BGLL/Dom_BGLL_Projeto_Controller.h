@@ -56,5 +56,8 @@ int salvarJogo();
 int salvarPecas();
 int salvarMesa();
 int recuperarJogo();
+int continuarJogo();
+int jogoSalvo();
+int novoJogo();
 
 #endif

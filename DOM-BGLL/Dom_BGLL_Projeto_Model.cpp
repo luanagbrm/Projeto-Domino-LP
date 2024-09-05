@@ -20,7 +20,7 @@ void criarCarta(Carta domino[NUM_PECAS]){
       peca.ladoA = i;
       peca.ladoB = k;
       peca.pos = j;
-      peca.status = '\0'; //inicializa todas as peças como nulas
+      peca.status = '\0'; //inicializa todas as pecas como nulas
       domino[j] = peca;
       j++;
     }
