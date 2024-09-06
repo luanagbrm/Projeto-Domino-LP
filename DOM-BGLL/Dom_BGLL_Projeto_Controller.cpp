@@ -536,8 +536,8 @@ int salvarJogo() {
             return -1;
     }
 
-	printf("Jogo salvo com sucesso!\n");
-    return 1;
+    printf("Jogo salvo com sucesso!\n");
+    return 0;
 
 }
 
