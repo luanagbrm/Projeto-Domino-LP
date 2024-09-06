@@ -72,7 +72,7 @@ int menuPrincipal() {
     printf("2. Regras do Jogo\n");
     printf("3. Salvar Jogo\n");
     printf("4. Continuar Jogo\n");
-    printf("3. Sair\n");
+    printf("0. Sair\n");
      printf("------------------------\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &opcao);
@@ -89,7 +89,6 @@ int menuPrincipalJogador() {
     printf("1. Escolher peca para jogar\n");
     printf("2. Comprar peca (%d pecas disponiveis)\n", qtdPecasDisponivel);
 	printf("3. Passar vez\n");
-	printf("4. Ver regras do Jogo\n");
     printf("0. Sair\n");
     printf("-----------------------------\n");
     printf("Escolha uma opcao: ");

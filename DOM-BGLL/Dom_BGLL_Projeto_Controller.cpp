@@ -504,16 +504,16 @@ int salvarMesa(){
     FILE *arqMesa = fopen("CAD_MESA", "w");
 
     if (arqMesa == NULL){
-        printf("O arquivo nao pode ser aberto para gravacao\n");
-        return -1;
+            printf("O arquivo nao pode ser aberto para gravacao\n");
+            return -1;
     }
 
 	for(int j = 0; j < NUM_PECAS; j++){
     // Grava o conteudo da mesa
 	    if (fwrite(&mesa[j], sizeof(Mesa), 28, arqMesa) != 28){
-	        printf("Houve um erro na gravacao do arquivo\n");
-	        fclose(arqMesa);
-	        return -1;
+	            printf("Houve um erro na gravacao do arquivo\n");
+	            fclose(arqMesa);
+	            return -1;
 	    }
 	}
 
@@ -525,56 +525,33 @@ int salvarJogo() {
     // Salvar as pecas do jogo
     int statusPecas = salvarPecas();
     if (statusPecas != 0) {
-        printf("Erro ao salvar as pecas do jogo.\n");
-        return -1;
+            printf("Erro ao salvar as pecas do jogo.\n");
+            return -1;
     }
 
     // Salvar a mesa do jogo
     int statusMesa = salvarMesa();
     if (statusMesa != 0) {
-        printf("Erro ao salvar a mesa do jogo.\n");
-        return -1;
+            printf("Erro ao salvar a mesa do jogo.\n");
+            return -1;
     }
 
-    printf("Jogo salvo com sucesso!\n");
-    return 0;
-}
+	printf("Jogo salvo com sucesso!\n");
+    return 1;
 
-
-int recuperarJogo(){	
-	FILE *arqPecas = fopen("CAD_DOMINO", "r");
-    FILE *arqMesa = fopen("CAD_MESA", "r");
-
-    if (arqPecas == NULL || arqMesa == NULL) {
-        printf("O arquivo nao pode ser aberto para leitura\n");
-        return -1;
-    }
-    
-    for(int i = 0; i < NUM_PECAS; i++){
-    	if (fread(&mesa[i], sizeof(Mesa), 1, arqMesa) != 1) {
-	    printf("Houve um erro na leitura do arquivo da mesa %d\n", i);
-	    return -1;
-		}
-	}
-	
-	for(int i = 0; i < NUM_PECAS; i++){
-	    if (fread(&domino[i], sizeof(Carta), 1, arqPecas) != 1) {
-	        printf("Houve um erro na leitura do arquivo das pecas %d\n", i);
-	        return -1;
-	    }
-    }
-
-    fclose(arqPecas);
-    fclose(arqMesa);
-    return 0;
 }
 
 int continuarJogo() {
-	recuperarJogo();
-	jogoSalvo();
-	return 0;
-}
+    if (recuperarJogo() != 0) {
+        printf("Erro ao recuperar o jogo.\n");
+        return -1; // Indica que houve um erro ao recuperar o jogo
+    }
+    while (menuJogador(jogadores, domino)) {
+        // O loop continua até que o jogador decida sair
+    }
 
+    return 0;
+}
 
 //MENU DO JOGADOR E INICIALIZACAO DO JOGO APARTIR DO MENU PRINCIPAL
 
@@ -607,9 +584,6 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
             case 3:
                 passarVez(); 
 				break;   	
-			case 4:
-				mostrarRegras(escolha);
-				break;
             case 0:
             	jogar();
             default:
@@ -674,14 +648,14 @@ void jogar(){
             case 4:
             	continuarJogo();
             	break;
-            case 5:
+            case 0:
             	interacoesMenu(opcao);
                 exit(0);
             default:
             	interacoesMenu(opcao);
                 
         }
-    } while (opcao != 5);
+    } while (opcao != 4);
 }
 
 //LIMPADOR
