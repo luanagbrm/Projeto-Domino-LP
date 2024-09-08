@@ -12,6 +12,11 @@ Nome dos integrantes:
 
 #include "Dom_BGLL_Projeto_Controller.h"
 
+FILE *arqmesa;
+FILE *pecas;
+FILE *sitJogoSalvo;
+FILE *dataHoraSalvo;
+
 //FUNCOES INICIAIS PARA ANTES DO INICIO DA PRIMEIRA JOGADA
 
 void gerarSeed(){
@@ -246,7 +251,7 @@ int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
 //FUNCIONALIDADES PARA PASSAR A VEZ
 
 int verificarPassarVez(){
-	if(qtdPecasDisponivel == 0){
+	if(qtdPecasDisponivel <= 0){
 		definirJogadorAtual();
 		//menuPrincipalJogador();
 		return 1;
@@ -257,6 +262,7 @@ int verificarPassarVez(){
 
 void passarVez(){
 	int disponibilidadePecas = verificarPassarVez();
+	
 	
 	exibirMensagemPassarVez(disponibilidadePecas);
 }
@@ -353,15 +359,18 @@ void definirVencedor(){
 //FUNCIONALIDADES PARA COMPRA DAS PECAS
 
 int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum) {
+	if(qtdPecasDisponivel > 0){
       for (int k = 0; k < NUM_PECAS; k++) {
-          if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
+          	if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
                   jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponivel ao fim da mao do usuario
                   totalPieces[k].status = '1' + jogadorNum;
 				  qtdPecasDisponivel--;
                   return 1; // Compra feita
         	}
         }
-      return 0; // Nao foi possivel fazer a compra
+    }
+    	printf("%d",qtdPecasDisponivel);
+      	return 0; // Nao foi possivel fazer a compra
 }
 
 int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum){
@@ -425,131 +434,234 @@ void removerPecaJogada(Jogador *jogador, int pos) {
 
 //FUNCIONALIDADES PARA SALVAR E RECUPERAR DADOS DO JOGO
 
-// int salvarJogo(){
-// 	salvarPecas();
-// 	salvarMesa();
-// }
-//
-// void salvarPecas(){
-// 	arqPecas = fopen("CAD_DOMINO","w");
-//	
-// 	if((arqPecas = fopen("CAD_DOMINO","w")) == NULL){
-// 		printf("O aquivo CAD_DOMINO nao pode ser aberto para gravacao");
-// 		return;
-// 	}
-//
-// 	for (int k = 0; k < NUM_PECAS; k++){
-// 		if(fwrite(&domino[k], sizeof(Carta), 1, arqPecas) != 1){
-// 			printf("erro na gravacao do arquivo");
-// 			return;
-// 		}
-// 	}
-//
-// 	fclose(arqPecas);
-// }
-//
-// void salvarMesa(){
-//	arqMesa = fopen("CAD_MESA","w");
-//	
-// 	if((arqMesa = fopen("CAD_MESA","w")) == NULL){
-// 		printf("O aquivo CAD_MESA nao pode ser aberto para gravacao");
-// 		return;
-// 	}
-//	
-// 	for (int k = 0; k < NUM_PECAS; k++){
-// 		if(fwrite(&mesa[k], sizeof(Mesa), 1, arqPecas) != 1){
-// 			printf("erro na gravacao do arquivo");
-// 			return;
-// 		}
-// 	}
-//	
-// 	fclose(arqMesa);
-// }
-//
-//
-// int recuperarJogo(){	
-// 	if((arqMesa = fopen("CAD_MESA","r")) == NULL){
-// 		printf("O aquivo nomedoarquivo na£o pode ser aberto para leitura");
-// 		return -1;
-// 	}
-// }
-
-// int continuarJogo(){
-// 	recuperarJogo();	
-// }
+int armazenarDataHora(){
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	
+	dataSalvo.ano = tm.tm_year + 1900;
+	dataSalvo.mes = tm.tm_mon + 1;
+	dataSalvo.dia = tm.tm_mday;
+	dataSalvo.hora = tm.tm_hour;
+	dataSalvo.minutos = tm.tm_min;
+}
 
 int salvarPecas(){
-
-	FILE *arqPecas = fopen("CAD_DOMINO","w");
-
-	if(arqPecas == NULL)
-	{
-		printf("O arquivo escolhido nao pode ser aberto para gravacao\n");
-		return -1;
+	int i;
+	
+    if((pecas = fopen("CAD_DOMINO", "wb")) == NULL){
+    	return -1;
 	}
-
-	for(int j = 0; j < NUM_PECAS; j++){
-		if(fwrite(&domino[j],sizeof(Carta),1,arqPecas)!= 1)
-		{
-			printf("Houve um erro na gravacao do arquivo\n");
-//			fclose(arqPecas);
+	
+	for(i = 0; i < 28; i++){
+		if(fwrite(&domino[i], sizeof(Carta), 1, pecas) != 1){
 			return -1;
 		}
 	}
-	fclose(arqPecas);
+	
+	fclose(pecas);
 	return 0;
 }
 
 int salvarMesa(){
-    FILE *arqMesa = fopen("CAD_MESA", "w");
-
-    if (arqMesa == NULL){
-            printf("O arquivo nao pode ser aberto para gravacao\n");
-            return -1;
-    }
-
-	for(int j = 0; j < NUM_PECAS; j++){
-    // Grava o conteudo da mesa
-	    if (fwrite(&mesa[j], sizeof(Mesa), 28, arqMesa) != 28){
-	            printf("Houve um erro na gravacao do arquivo\n");
-	            fclose(arqMesa);
-	            return -1;
-	    }
+	int i;
+	
+	if((arqmesa = fopen("CAD_MESA", "wb")) == NULL){
+    	return -2;
 	}
+	
+	for(i = 0; i < 28; i++){
+		if(fwrite(&mesa[i], sizeof(Mesa), 1, arqmesa) != 1){
+			return -1;
+		}
+	}
+	
+	fclose(arqmesa);
+	return 0;
+}
 
-    fclose(arqMesa);
+
+int salvarSitJogo(){
+	sitSalva.jogadorComp = 0;
+    sitSalva.jogadorJogo = jogadorAtual;
+    sitSalva.mesaDJogo = limitesMesa.ladoD;
+    sitSalva.mesaEJogo = limitesMesa.ladoE;
+    sitSalva.qtdPecasMesa = qtdPecasMesa;
+    sitSalva.qtdPecasDisponivel = qtdPecasDisponivel;
+    
+	
+	if((sitJogoSalvo = fopen("CAD_SIT", "wb")) == NULL){
+    	return -2;
+	}
+	
+	if(fwrite(&sitSalva, sizeof(sitJogo), 1, sitJogoSalvo) != 1){
+		return -1;
+	}
+	
+	fclose(sitJogoSalvo);
+	return 0;
+}
+
+int salvarDataHora(){
+	armazenarDataHora();
+    
+	
+	if((dataHoraSalvo = fopen("CAD_DH", "wb")) == NULL){
+    	return -2;
+	}
+	
+	if(fwrite(&dataSalvo, sizeof(dataHora), 1, dataHoraSalvo) != 1){
+		return -1;
+	}
+	
+	fclose(dataHoraSalvo);
+	return 0;
+}
+
+
+
+int salvarJogo() {
+    if (salvarPecas() != 0 || salvarMesa() != 0 || salvarSitJogo() != 0 || salvarDataHora() != 0) {
+        printf("Erro ao salvar o jogo.\n");
+        return -1;
+    }
+    
+    printf("Jogo salvo com sucesso.\n");
     return 0;
 }
 
-int salvarJogo() {
-    // Salvar as pecas do jogo
-    int statusPecas = salvarPecas();
-    if (statusPecas != 0) {
-            printf("Erro ao salvar as pecas do jogo.\n");
+ int recuperarJogoPecas(){	
+ 
+ 	int i;
+	
+    if((pecas = fopen("CAD_DOMINO", "rb")) == NULL){
+    	return -2;
+	}
+	
+	for (i = 0; i < 28; i++) {
+        size_t result = fread(&domino[i], sizeof(Carta), 1, pecas);
+        if (result != 1) {
+            fclose(pecas);
             return -1;
+        }
     }
+	
+	fclose(pecas);
+	return 0;
+ }
+ 
+int recuperarJogoMesa(){
+    int i;
 
-    // Salvar a mesa do jogo
-    int statusMesa = salvarMesa();
-    if (statusMesa != 0) {
-            printf("Erro ao salvar a mesa do jogo.\n");
+    if ((arqmesa = fopen("CAD_MESA", "rb")) == NULL) {
+        return -2;
+    }
+    
+
+    for (i = 0; i < 28; i++) {
+        if (fread(&mesa[i], sizeof(Mesa), 1, arqmesa) != 1) {
+            fclose(arqmesa);
             return -1;
+        }
     }
-
-    printf("Jogo salvo com sucesso!\n");
+	
+    fclose(arqmesa);
     return 0;
+}
 
+int recuperarSitJogo(){  
+    if ((sitJogoSalvo = fopen("CAD_SIT", "rb")) == NULL) {
+        return -2;
+    }
+    
+    if (fread(&sitSalva, sizeof(sitJogo), 1, sitJogoSalvo) != 1) {
+        fclose(sitJogoSalvo);
+        return -1;
+    }
+    
+    // Close the file after reading
+    fclose(sitJogoSalvo);
+	return 0;
+}
+
+int recuperarDataHora(){
+	dataHoraSalvo = fopen("CAD_DH", "rb");
+    if (dataHoraSalvo == NULL) {
+        return -1;
+    }
+
+    size_t read = fread(&dataSalvo, sizeof(dataHora), 1, dataHoraSalvo);
+    if (read != 1) {
+        fclose(dataHoraSalvo);
+        return -1;
+    }
+	
+    fclose(dataHoraSalvo);
+
+    return 0;
+}
+
+int definirDataHora(){
+	ano = dataSalvo.ano;
+	mes = dataSalvo.mes;
+	dia = dataSalvo.dia;
+	hora = dataSalvo.hora;
+	minutos = dataSalvo.minutos;
+	
+	return 0;
+}
+
+int definirPecasCadaJogador(Carta domino[28]){
+	int pecasJ1 = 0;
+	int pecasJ2 = 0;
+	
+	for(int i = 0; i < 28; i++){
+		if(domino[i].status == '1'){
+			jogadores[0].pecasMao[pecasJ1] = domino[i];
+			pecasJ1++;
+		}
+		
+		else if(domino[i].status == '2'){
+			jogadores[1].pecasMao[pecasJ2] = domino[i];
+			pecasJ2++;
+		}
+			
+	}
+	
+	jogadores[0].numPieces = pecasJ1;
+	jogadores[1].numPieces = pecasJ2;
+    
+	return 0;
+}
+
+int definirSitVariaveis(){
+	jogadorAtual = sitSalva.jogadorJogo;
+	qtdPecasMesa = sitSalva.qtdPecasMesa;
+	qtdPecasDisponivel = sitSalva.qtdPecasDisponivel;
+	limitesMesa.ladoD = sitSalva.mesaDJogo;
+	limitesMesa.ladoE = sitSalva.mesaEJogo;
+	modoJogo = sitSalva.jogadorComp;
+    
+	return 0;
+}
+
+int recuperarJogo(){
+	if (recuperarJogoPecas() != 0 || recuperarJogoMesa() != 0 || recuperarSitJogo() != 0) {
+        printf("Erro ao recuperar o jogo.\n");
+        return -1;
+    }
+    
+    printf("Jogo recuperado com sucesso.\n");
+    return 0;
 }
 
 int continuarJogo() {
     if (recuperarJogo() != 0) {
         printf("Erro ao recuperar o jogo.\n");
+        menuJogador(jogadores,domino);
         return -1; // Indica que houve um erro ao recuperar o jogo
     }
-    while (menuJogador(jogadores, domino)) {
-        // O loop continua até que o jogador decida sair
-    }
-
+	
+	jogoSalvo();
     return 0;
 }
 
@@ -595,7 +707,10 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     return 1;
 }
 
-int logicaJogo(){
+int novoJogo(){
+	qtdPecasMesa = 0; //a cada novo jogo, inicia a mesa da primeira posicao
+	qtdPecasDisponivel = NUM_PECAS; 
+	
 	criarCarta(domino);
     embaralharPecas(domino);
     iniciaMesa(mesa);
@@ -610,29 +725,28 @@ int logicaJogo(){
       // O loop continua ate que o jogador decida sair
     }
     
-    return 0;
-}
-
-int novoJogo(){
-	qtdPecasMesa = 0; //a cada novo jogo, inicia a mesa da primeira posicao
-	qtdPecasDisponivel = NUM_PECAS; 
-	
-	logicaJogo();
 	return 0;
 }
 
 
+
 int jogoSalvo(){
-	logicaJogo();
+	limparTela();
+	definirPecasCadaJogador(domino);
+	definirSitVariaveis();
+	while (menuJogador(jogadores, domino)) {
+      // O loop continua ate que o jogador decida sair
+    }
 	return 0;
 }
 
 void jogar(){
-   	int opcao; 
-	
+	int opcao;
+	recuperarDataHora();
 	gerarSeed();
 	
 	do {
+		definirDataHora();
         opcao = menuPrincipal();
         switch (opcao) {
             case 1: {
