@@ -70,6 +70,7 @@ int existeDataHora(){
 	} else {
 		printf("4. Continuar Jogo (Salvo em: %02d/%02d/%d - %02d:%02d)\n", dia, mes,ano,hora,minutos);
 	}
+	return 1;
 }
 
 //Opcoes do menu principal do jogo

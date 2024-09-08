@@ -326,8 +326,8 @@ int somarValorPecas(){
 		pecasJogador2 += (jogadores[1].pecasMao[i].ladoA + jogadores[1].pecasMao[i].ladoB);
 		
 	if(pecasJogador1 > pecasJogador2)
-		return 2;
-	return 1;
+		return 2; //jogador 2 vence
+	return 1; //jogador 1 vence
 		
 }
 
@@ -443,6 +443,8 @@ int armazenarDataHora(){
 	dataSalvo.dia = tm.tm_mday;
 	dataSalvo.hora = tm.tm_hour;
 	dataSalvo.minutos = tm.tm_min;
+
+	return 0;
 }
 
 int salvarPecas(){
@@ -578,7 +580,7 @@ int recuperarSitJogo(){
         return -1;
     }
     
-    // Close the file after reading
+    // fecha o jogo apos a leitura
     fclose(sitJogoSalvo);
 	return 0;
 }
