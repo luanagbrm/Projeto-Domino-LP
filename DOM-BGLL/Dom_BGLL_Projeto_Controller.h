@@ -19,10 +19,8 @@ Nome dos integrantes:
 #include <stdio.h>
 #include <time.h>
 #include <ctype.h>
+#include <stdbool.h>
 
-FILE *arqPecas;
-FILE *arqMesa;
-FILE *arqJogador;
 
 void gerarSeed();
 void jogar();
@@ -55,9 +53,16 @@ void verificarOpcaoUsuario(int opcao);
 int salvarJogo();
 int salvarPecas();
 int salvarMesa();
+int salvarSitJogo();
 int recuperarJogo();
 int continuarJogo();
 int jogoSalvo();
 int novoJogo();
+int recuperarJogoPecas();
+int recuperarJogoMesa();
+int recuperarSitJogo();
+int definirPecasCadaJogador(Carta domino[28]);
+int definirSitVariaveis();
+int armazenarDataHora();
 
 #endif
