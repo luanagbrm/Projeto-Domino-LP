@@ -326,8 +326,8 @@ int somarValorPecas(){
 		pecasJogador2 += (jogadores[1].pecasMao[i].ladoA + jogadores[1].pecasMao[i].ladoB);
 		
 	if(pecasJogador1 > pecasJogador2)
-		return 2; //jogador 2 vence
-	return 1; //jogador 1 vence
+		return 2;
+	return 1;
 		
 }
 
@@ -443,7 +443,7 @@ int armazenarDataHora(){
 	dataSalvo.dia = tm.tm_mday;
 	dataSalvo.hora = tm.tm_hour;
 	dataSalvo.minutos = tm.tm_min;
-
+	
 	return 0;
 }
 
@@ -580,7 +580,7 @@ int recuperarSitJogo(){
         return -1;
     }
     
-    // fecha o jogo apos a leitura
+    // Close the file after reading
     fclose(sitJogoSalvo);
 	return 0;
 }
@@ -730,7 +730,45 @@ int novoJogo(){
 	return 0;
 }
 
+void vezDoPc(Jogador jogadores[NUM_JOGADORES], int jogador) {
+	
+    int donePlay = -1;  // Inicializa como -1 para indicar que nenhuma jogada foi feita ainda
+    
+    // Verifica todas as pcas na mao do computador para achar uma jogada que seja valida
+    for (int i = 0; i < jogadores[jogador].numPieces; i++) {
+        int qtdValidas = qtdJogadaValida(jogadores, jogador, i);
+        
+        if (qtdValidas > 0) {  // verifica se a peca pode ou nao ser jogada
+            if (qtdValidas == 1) {  // 
+                checarUnicaValida(jogadores, jogador, i);
+            } else {  // Caso tenha mais de uma opocao de lado para jogar
+                // Decidir automaticamente o lado 
+                checarLadoValida(jogadores, jogador, i, 'D');
+            }
+            
+            donePlay = 1;  // indica que uma jogada foi feita com sucesso
+            break;  
+        }
+    }
 
+    // o pc compra pecas, caso nao tenha jogadas validas com as pecas em mao
+    if (donePlay == -1) {
+        while (qtdPecasDisponivel > 0 && donePlay == -1) {
+                comprarCartas(domino, &jogadores[jogador], jogador);
+            for (int i = 0; i < jogadores[jogador].numPieces; i++) {
+                if (qtdJogadaValida(jogadores, jogador, i) > 0) {
+                    checarUnicaValida(jogadores, jogador, i);
+                    donePlay = 1;
+                    break;
+                }
+            }
+        }
+        
+        if (donePlay == -1) {
+            passarVez();  
+        }
+    }
+}
 
 int jogoSalvo(){
 	limparTela();
@@ -756,12 +794,16 @@ void jogar(){
                 break;
             }
             case 2:
-            	mostrarRegras(opcao);
+            	novoJogo();
+            	vezDoPc(jogadores, 1);
             	break;
             case 3:
+            	mostrarRegras(opcao);
+            	break;
+            case 4:
                 salvarJogo();
                 break;
-            case 4:
+            case 5:
             	continuarJogo();
             	break;
             case 0:
@@ -771,8 +813,9 @@ void jogar(){
             	interacoesMenu(opcao);
                 
         }
-    } while (opcao != 4);
+    } while (opcao != 0);
 }
+
 
 //LIMPADOR
 void fclearBuffer() 
