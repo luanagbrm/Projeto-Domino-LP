@@ -70,7 +70,7 @@ int existeDataHora(){
 	} else {
 		printf("4. Continuar Jogo (Salvo em: %02d/%02d/%d - %02d:%02d)\n", dia, mes,ano,hora,minutos);
 	}
-	return 1;
+	return 0;
 }
 
 //Opcoes do menu principal do jogo
@@ -78,9 +78,11 @@ int menuPrincipal() {
     int opcao;
     limparTela();
     printf("\n--- Menu Principal ---\n");
-    printf("1. Iniciar Novo Jogo\n");
-    printf("2. Regras do Jogo\n");
-    printf("3. Salvar Jogo\n");
+    printf("1. Iniciar Novo Jogo com oponente\n");
+    printf("2. Inciar novo Jogo contra o PC\n");
+    printf("3. Regras do Jogo\n");
+    printf("4. Salvar Jogo\n");
+    printf("5. Continuar Jogo Salvo\n");
     existeDataHora();
     printf("0. Sair\n");
      printf("------------------------\n");
