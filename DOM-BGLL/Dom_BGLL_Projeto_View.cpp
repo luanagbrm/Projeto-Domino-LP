@@ -18,7 +18,7 @@ void mostrarCartas(Carta domino[NUM_PECAS]){
   for(int i = 0; i < NUM_PECAS; i++){
       if(i%7 == 0 )
           printf("\n");
-    printf("[%d|%d] ", domino[i].ladoA, domino[i].ladoB);
+    printf("[%d|%d] ", domino[i].ladoA, domino[i].ladoB, domino[i].status, i);
   }
 }
 
@@ -27,7 +27,7 @@ void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador){
     printf("Jogador %d: \n", numJogador + 1);//o i = 1 numera corretamente cada jogador
     for(int k = 0 ; k < jogadores[numJogador].numPieces; k++){
 		if(jogadores[numJogador].pecasMao[k].status != 'M')
-			printf("%d.[%d|%d]  ", k+1, jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB);
+			printf("%d.[%d|%d] ", k+1, jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB, jogadores[numJogador].pecasMao[k].pos);
     }
 
     printf("\n");
@@ -70,7 +70,6 @@ int existeDataHora(){
 	} else {
 		printf("4. Continuar Jogo (Salvo em: %02d/%02d/%d - %02d:%02d)\n", dia, mes,ano,hora,minutos);
 	}
-	return 0;
 }
 
 //Opcoes do menu principal do jogo
@@ -78,14 +77,12 @@ int menuPrincipal() {
     int opcao;
     limparTela();
     printf("\n--- Menu Principal ---\n");
-    printf("1. Iniciar Novo Jogo com oponente\n");
-    printf("2. Inciar novo Jogo contra o PC\n");
-    printf("3. Regras do Jogo\n");
-    printf("4. Salvar Jogo\n");
-    printf("5. Continuar Jogo Salvo\n");
+    printf("1. Iniciar Novo Jogo\n");
+    printf("2. Regras do Jogo\n");
+    printf("3. Salvar Jogo\n");
     existeDataHora();
     printf("0. Sair\n");
-     printf("------------------------\n");
+    printf("------------------------\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &opcao);
     return opcao;
@@ -103,7 +100,7 @@ int menuPrincipalJogador() {
 	printf("3. Passar vez\n");
     printf("0. Sair\n");
     printf("-----------------------------\n");
-    printf("Escolha uma opcao: ");
+    printf("\nEscolha uma opcao: ");
     scanf("%d", &escolha);
     limparBuffer();
     return escolha;
