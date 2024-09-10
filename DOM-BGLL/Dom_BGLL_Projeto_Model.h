@@ -52,7 +52,7 @@ typedef struct{
   	int mes;
   	int dia;
   	int hora;
- 	 int minutos;
+ 	int minutos;
 }dataHora;
 
 
