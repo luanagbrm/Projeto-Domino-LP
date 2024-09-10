@@ -58,7 +58,6 @@ int recuperarJogo();
 int continuarJogo();
 int jogoSalvo();
 int novoJogo();
-void vezDoPc(Jogador jogadores[NUM_JOGADORES], int jogador);
 int recuperarJogoPecas();
 int recuperarJogoMesa();
 int recuperarSitJogo();
