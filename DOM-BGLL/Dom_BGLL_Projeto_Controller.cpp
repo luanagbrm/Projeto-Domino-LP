@@ -12,9 +12,10 @@ Nome dos integrantes:
 
 #include "Dom_BGLL_Projeto_Controller.h"
 
+//PONTEIROS DOS ARQUIVOS
 FILE *arqmesa;
 FILE *pecas;
-FILE *sitJogoSalvo;
+FILE *sitJogoSalvo; //situacao
 FILE *dataHoraSalvo;
 
 //FUNCOES INICIAIS PARA ANTES DO INICIO DA PRIMEIRA JOGADA
@@ -104,7 +105,7 @@ int checarUnicaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
   int ladoD = limitesMesa.ladoD;
   int ladoE = limitesMesa.ladoE;
 
-	//Considerando que ao chegar nessa funcao temos apenas uma jogada possil,
+	//Considerando que ao chegar nessa funcao temos apenas uma jogada possivel,
 	//encontra qual e' essa jogada e a realiza
   	if(pecaJogada.ladoA == ladoD){
     	limitesMesa.ladoD = pecaJogada.ladoB;
@@ -270,7 +271,6 @@ int verificarPassarVez(){
 	
 	if(qtdPecasDisponivel <= 0){
 		definirJogadorAtual();
-		//menuPrincipalJogador();
 		return 1;
 	} else {
 		return -1;
@@ -284,7 +284,7 @@ void passarVez(){
 	exibirMensagemPassarVez(disponibilidadePecas);
 }
 
-//FUNCIONALIDADES PARA VERIFICAR SE O JOGO TERMINOU
+//FUNCIONALIDADES PARA VERIFICAR SE E QUANDO O JOGO TERMINOU
 
 //Verifica se a mao de algum dos jogadores esta sem pecas
 int verificarMaoVazia(){
@@ -376,6 +376,7 @@ void definirVencedor(){
 }
 
 //FUNCIONALIDADES PARA COMPRA DAS PECAS
+
 int comprarCartas(Carta totalPieces[NUM_PECAS]) {	
 	verificarDisponiveis();
 	if(qtdPecasDisponivel > 0){
@@ -465,15 +466,19 @@ int armazenarDataHora(){
 	dataSalvo.dia = tm.tm_mday;
 	dataSalvo.hora = tm.tm_hour;
 	dataSalvo.minutos = tm.tm_min;
+	
+	return 0;
 }
 
 int salvarPecas(){
 	int i;
 	
+	// Abre o arquivo para escrita em binario das pecas
     if((pecas = fopen("CAD_DOMINO", "wb")) == NULL){
     	return -1;
 	}
 	
+    // Escreve cada peca no arquivo
 	for(i = 0; i < 28; i++){
 		if(fwrite(&domino[i], sizeof(Carta), 1, pecas) != 1){
 			return -1;
@@ -487,6 +492,7 @@ int salvarPecas(){
 int salvarMesa(){
 	int i;
 	
+	// Abre o arquivo para escrita em binario da mesa
 	if((arqmesa = fopen("CAD_MESA", "wb")) == NULL){
     	return -2;
 	}
@@ -501,8 +507,9 @@ int salvarMesa(){
 	return 0;
 }
 
-
+// Funcao para salvar o estado do jogo em um arquivo binario
 int salvarSitJogo(){
+	//Dados do jogo 
 	sitSalva.jogadorComp = 0;
     sitSalva.jogadorJogo = jogadorAtual;
     sitSalva.mesaDJogo = limitesMesa.ladoD;
@@ -510,7 +517,7 @@ int salvarSitJogo(){
     sitSalva.qtdPecasMesa = qtdPecasMesa;
     sitSalva.qtdPecasDisponivel = qtdPecasDisponivel;
     
-	
+	//Escreve a estrutura no arquivo
 	if((sitJogoSalvo = fopen("CAD_SIT", "wb")) == NULL){
     	return -2;
 	}
@@ -523,6 +530,7 @@ int salvarSitJogo(){
 	return 0;
 }
 
+//salva a data e a hora em que o jogo foi salvo 
 int salvarDataHora(){
 	armazenarDataHora();
     
@@ -539,22 +547,19 @@ int salvarDataHora(){
 	return 0;
 }
 
-
-
 int salvarJogo() {
     if (salvarPecas() != 0 || salvarMesa() != 0 || salvarSitJogo() != 0 || salvarDataHora() != 0) {
-        printf("Erro ao salvar o jogo.\n");
         return -1;
     }
-    
-    printf("Jogo salvo com sucesso.\n");
     return 0;
 }
 
+// Funcao para recuperar as pecas do arquivo binario
  int recuperarJogoPecas(){	
  
  	int i;
 	
+	//Faz a leitura de cada peca em binario
     if((pecas = fopen("CAD_DOMINO", "rb")) == NULL){
     	return -2;
 	}
@@ -563,7 +568,7 @@ int salvarJogo() {
         size_t result = fread(&domino[i], sizeof(Carta), 1, pecas);
         if (result != 1) {
             fclose(pecas);
-            return -1;
+            return -1;     // Retorna -1 para erro ao ler o arquivo
         }
     }
 	
@@ -573,7 +578,8 @@ int salvarJogo() {
  
 int recuperarJogoMesa(){
     int i;
-
+    
+    //Faz a leitura da mesa em binario
     if ((arqmesa = fopen("CAD_MESA", "rb")) == NULL) {
         return -2;
     }
@@ -590,6 +596,7 @@ int recuperarJogoMesa(){
     return 0;
 }
 
+//Faz a leitura da situacao do jogo que foi salva
 int recuperarSitJogo(){  
     if ((sitJogoSalvo = fopen("CAD_SIT", "rb")) == NULL) {
         return -2;
@@ -604,6 +611,7 @@ int recuperarSitJogo(){
 	return 0;
 }
 
+//Faz a leitura dos dos dados salvos da hora e data
 int recuperarDataHora(){
 	dataHoraSalvo = fopen("CAD_DH", "rb");
     if (dataHoraSalvo == NULL) {
@@ -667,23 +675,23 @@ int definirSitVariaveis(){
 
 int recuperarJogo(){
 	if (recuperarJogoPecas() != 0 || recuperarJogoMesa() != 0 || recuperarSitJogo() != 0) {
-        printf("Erro ao recuperar o jogo.\n");
         return -1;
     }
     
-    printf("Jogo recuperado com sucesso.\n");
     return 0;
 }
 
 int continuarJogo() {
-    if (recuperarJogo() != 0) {
-        printf("Erro ao recuperar o jogo.\n");
-        menuJogador(jogadores,domino);
+    int status = recuperarJogo();
+    mensagemRecuperarJogo(status);
+
+    if (status != 0) {
+        menuJogador(jogadores, domino);
         return -1; // Indica que houve um erro ao recuperar o jogo
     }
-	
-	jogoSalvo();
-    return 0;
+
+    jogoSalvo();
+    return 0; // Indica sucesso na continuacao do jogo
 }
 
 //MENU DO JOGADOR E INICIALIZACAO DO JOGO APARTIR DO MENU PRINCIPAL
@@ -775,7 +783,7 @@ void jogar(){
                 break;
             }
             case 2:
-            	mostrarRegras(opcao);
+            	mostrarRegras();
             	break;
             case 3:
                 salvarJogo();

@@ -70,6 +70,7 @@ int existeDataHora(){
 	} else {
 		printf("4. Continuar Jogo (Salvo em: %02d/%02d/%d - %02d:%02d)\n", dia, mes,ano,hora,minutos);
 	}
+	return 1;
 }
 
 //Opcoes do menu principal do jogo
@@ -116,25 +117,26 @@ void interacoesMenu(int opcao){
 		
 }
 
-void mostrarRegras(int choice){
+void mostrarRegras(){
 	limparTela();
 	printf("\nRegras Gerais  \n");
 	printf("\n---------------------------------------------");
 	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
 	printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
-	printf("\n- O jogo inicia com o jogador que possui a maior peaÂ§a cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peaÂ§a com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
+	printf("\n- O jogo inicia com o jogador que possui a maior peca cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peca com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
 	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
 	printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
 	printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
 	printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
 	printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
+
 }
 
 //FUNCOES PARA ESCOLHA DE JOGADAS
 
 int receberPosicaoPeca() {
     int posicao;
-    int numPieces = jogadores[jogadorAtual].numPieces; // Retrieve the number of pieces for the current player
+    int numPieces = jogadores[jogadorAtual].numPieces; // Recupera o número de peças do jogador atual
     
     do {
         printf("Escolha a posicao da peca que deseja jogar (1 a %d) [0 para voltar]: ", numPieces);
@@ -145,9 +147,9 @@ int receberPosicaoPeca() {
             return -1; 
         } else if (posicao < 1 || posicao > numPieces) {
             printf("Posicao invalida. Por favor, insira um numero entre 1 e %d.\n", numPieces);
-            posicao = -1; // Set to an invalid number to repeat the loop
+            posicao = -1; // Define um número inválido para repetir o loop
         }
-    } while (posicao < 1 || posicao > numPieces); // Loop until a valid position is provided
+    } while (posicao < 1 || posicao > numPieces); // Loop até que uma posição válida seja fornecida
 	
     return posicao;
 }
@@ -233,6 +235,20 @@ void exibirMensagemPassarVez(int status){
 	} else{
 		printf("O problema é otro");
 	}
+}
+
+void mensagemRecuperarJogo(int status) {
+    switch (status) {
+        case 0:
+            printf("Jogo recuperado com sucesso.\n");
+            break;
+        case -1:
+            printf("Erro ao recuperar o jogo.\n");
+            break;
+        default:
+            printf("Status desconhecido.\n");
+            break;
+    }
 }
 
 //FUNCOES DE MESNSAGENS APOS A FINALIZACAO DE UMA PARTIDA

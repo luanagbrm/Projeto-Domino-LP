@@ -34,10 +34,11 @@ typedef struct{
 
 //Structure que representa cada jogador 
 typedef struct{
-  Carta pecasMao[HAND_PECAS_MAX];//pecasMao Ã© um array da estrutura "Cartas" que representa as cartas que cada jogador tem, podendo ter tamanho maximo de 21 pecas (total - inicial)
-  int numPieces; //variavel para saber a qtd de cartas na mao de cada jogador
+  Carta pecasMao[HAND_PECAS_MAX];//pecasMao e' um array da estrutura "Cartas" que representa as cartas que cada jogador tem, podendo ter tamanho maximo de 21 pecas (total - inicial)
+  int numPieces; //variavel para saber a quantidadde de cartas na mao de cada jogador
 }Jogador;
 
+//struct utilizada para salvar e recuperar jogo
 typedef struct{
   int jogadorJogo;
   int jogadorComp;
@@ -47,6 +48,7 @@ typedef struct{
   int qtdPecasDisponivel;
 }sitJogo;
 
+//struct para salvar data e hora do Jogo salvo
 typedef struct{
 	int ano;
   	int mes;
@@ -57,12 +59,12 @@ typedef struct{
 
 
 Carta domino[28];
-Mesa limitesMesa; //guarda o valor das extremidades da mesa para facilitar comparaÃ§Ãµes
+Mesa limitesMesa; //guarda o valor das extremidades da mesa para facilitar comparacoes
 Mesa mesa[28];
 Jogador jogadores[2];
-int qtdPecasMesa = 0; //variavel de controle da qtd de peÃ§as que jÃ¡ foram jogadas na mesa
-int qtdPecasDisponivel; //variavel de controle da qtd de peÃ§as que ainda estÃ£o disponÃ­veis para compra
-int jogadorAtual; // define de que jogador Ã© o turno atual
+int qtdPecasMesa = 0; //variavel de controle da qtd de pecas que ja foram jogadas na mesa
+int qtdPecasDisponivel; //variavel de controle da quantidade de pecas que ainda estao disponiveis para compra
+int jogadorAtual; // define de que jogador e' o turno atual
 int modoJogo;
 int ano = 0, mes, dia, hora, minutos;
 sitJogo sitSalva;
