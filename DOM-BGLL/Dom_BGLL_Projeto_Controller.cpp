@@ -39,6 +39,18 @@ void embaralharPecas(Carta domino[NUM_PECAS]){
   }
 }
 
+int verificarDisponiveis(){
+	qtdPecasDisponivel = 0;
+	
+	for(int i = 0; i < NUM_PECAS; i++){
+		if(domino[i].status == '\0'){
+			qtdPecasDisponivel++;
+		}
+	}
+	
+	return 0;
+}
+
 void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], int numJogadores){
 
   int pieceAssign = 0;//acessa todas as pecas uma por uma e distribui para um jogador
@@ -52,10 +64,13 @@ void distribuirPecas(Carta totalPieces[28], Jogador jogadores[NUM_JOGADORES], in
       jogadores[i].pecasMao[k].pos = pieceAssign - 1; //guarda dentro de cada peca na mao do jogador a posicao que ela ocupa no array principal do jogo
       jogadores[i].pecasMao[k].status = '1' + i;
       jogadores[i].numPieces++;
-      qtdPecasDisponivel--;
     }
   }
+  
+  verificarDisponiveis();
 }
+
+
 
 //FUNCIONALIDADES PARA VERIFICACOES 
 
@@ -251,6 +266,8 @@ int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
 //FUNCIONALIDADES PARA PASSAR A VEZ
 
 int verificarPassarVez(){
+	verificarDisponiveis();
+	
 	if(qtdPecasDisponivel <= 0){
 		definirJogadorAtual();
 		//menuPrincipalJogador();
@@ -280,6 +297,8 @@ int verificarMaoVazia(){
 
 //Verifica se algum dos dois jogadores possuem alguma peca que possa ser jogada no tabuleiro
 int verificarJogoFechado(){
+	verificarDisponiveis();
+	
 	if(qtdPecasDisponivel <= 0){
 		for(int i = 0; i < jogadores[0].numPieces; i++){
 			if(jogadores[0].pecasMao[i].ladoA == limitesMesa.ladoD || jogadores[0].pecasMao[i].ladoB == limitesMesa.ladoD
@@ -357,24 +376,27 @@ void definirVencedor(){
 }
 
 //FUNCIONALIDADES PARA COMPRA DAS PECAS
-
-int comprarCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum) {
+int comprarCartas(Carta totalPieces[NUM_PECAS]) {	
+	verificarDisponiveis();
 	if(qtdPecasDisponivel > 0){
-      for (int k = 0; k < NUM_PECAS; k++) {
-          	if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
-                  jogador->pecasMao[jogador->numPieces++] = totalPieces[k]; //adiciona a peca disponivel ao fim da mao do usuario
-                  totalPieces[k].status = '1' + jogadorNum;
-				  qtdPecasDisponivel--;
-                  return 1; // Compra feita
-        	}
-        }
-    }
-    	printf("%d",qtdPecasDisponivel);
-      	return 0; // Nao foi possivel fazer a compra
+	    for (int k = 0; k < NUM_PECAS; k++) {
+	        if (totalPieces[k].status == '\0') { //busca por pecas que nao estejam nem na mesa e nem na mao dos jogadores
+	                jogadores[jogadorAtual].pecasMao[jogadores[jogadorAtual].numPieces++] = totalPieces[k]; //adiciona a peca disponivel ao fim da mao do usuario
+	                totalPieces[k].status = '1' + jogadorAtual;
+	                jogadores[jogadorAtual].pecasMao[(jogadores[jogadorAtual].numPieces) - 1].pos = k;
+					qtdPecasDisponivel--;
+	                return 1; // Compra feita
+	        }
+	    }
+    } else if (qtdPecasDisponivel < 1){
+    	return 0; // Nao foi possivel fazer a compra
+	}
+    
+	return -1;    	
 }
 
-int realizarCompraCartas(Carta totalPieces[NUM_PECAS], Jogador *jogador, int jogadorNum){
-	int status = comprarCartas(totalPieces, jogador, jogadorNum);
+int realizarCompraCartas(Carta totalPieces[NUM_PECAS]){
+	int status = comprarCartas(totalPieces);
 	
 	statusCompra(status);
 	
@@ -443,8 +465,6 @@ int armazenarDataHora(){
 	dataSalvo.dia = tm.tm_mday;
 	dataSalvo.hora = tm.tm_hour;
 	dataSalvo.minutos = tm.tm_min;
-	
-	return 0;
 }
 
 int salvarPecas(){
@@ -580,7 +600,6 @@ int recuperarSitJogo(){
         return -1;
     }
     
-    // Close the file after reading
     fclose(sitJogoSalvo);
 	return 0;
 }
@@ -692,7 +711,7 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
 			    break;
             }
             case 2:
-                realizarCompraCartas(domino, &jogadores[jogadorAtual], jogadorAtual);
+                realizarCompraCartas(domino);
                 break;
 
             case 3:
@@ -730,45 +749,7 @@ int novoJogo(){
 	return 0;
 }
 
-void vezDoPc(Jogador jogadores[NUM_JOGADORES], int jogador) {
-	
-    int donePlay = -1;  // Inicializa como -1 para indicar que nenhuma jogada foi feita ainda
-    
-    // Verifica todas as pcas na mao do computador para achar uma jogada que seja valida
-    for (int i = 0; i < jogadores[jogador].numPieces; i++) {
-        int qtdValidas = qtdJogadaValida(jogadores, jogador, i);
-        
-        if (qtdValidas > 0) {  // verifica se a peca pode ou nao ser jogada
-            if (qtdValidas == 1) {  // 
-                checarUnicaValida(jogadores, jogador, i);
-            } else {  // Caso tenha mais de uma opocao de lado para jogar
-                // Decidir automaticamente o lado 
-                checarLadoValida(jogadores, jogador, i, 'D');
-            }
-            
-            donePlay = 1;  // indica que uma jogada foi feita com sucesso
-            break;  
-        }
-    }
 
-    // o pc compra pecas, caso nao tenha jogadas validas com as pecas em mao
-    if (donePlay == -1) {
-        while (qtdPecasDisponivel > 0 && donePlay == -1) {
-                comprarCartas(domino, &jogadores[jogador], jogador);
-            for (int i = 0; i < jogadores[jogador].numPieces; i++) {
-                if (qtdJogadaValida(jogadores, jogador, i) > 0) {
-                    checarUnicaValida(jogadores, jogador, i);
-                    donePlay = 1;
-                    break;
-                }
-            }
-        }
-        
-        if (donePlay == -1) {
-            passarVez();  
-        }
-    }
-}
 
 int jogoSalvo(){
 	limparTela();
@@ -794,16 +775,12 @@ void jogar(){
                 break;
             }
             case 2:
-            	novoJogo();
-            	vezDoPc(jogadores, 1);
-            	break;
-            case 3:
             	mostrarRegras(opcao);
             	break;
-            case 4:
+            case 3:
                 salvarJogo();
                 break;
-            case 5:
+            case 4:
             	continuarJogo();
             	break;
             case 0:
@@ -813,9 +790,8 @@ void jogar(){
             	interacoesMenu(opcao);
                 
         }
-    } while (opcao != 0);
+    } while (opcao != 4);
 }
-
 
 //LIMPADOR
 void fclearBuffer() 
