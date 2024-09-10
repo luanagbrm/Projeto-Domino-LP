@@ -76,7 +76,7 @@ int existeDataHora(){
 //Opcoes do menu principal do jogo
 int menuPrincipal() {
     int opcao;
-    limparTela();
+    //limparTela();
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo\n");
     printf("2. Regras do Jogo\n");
@@ -117,19 +117,26 @@ void interacoesMenu(int opcao){
 		
 }
 
-void mostrarRegras(){
-	limparTela();
-	printf("\nRegras Gerais  \n");
-	printf("\n---------------------------------------------");
-	printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
-	printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
-	printf("\n- O jogo inicia com o jogador que possui a maior peca cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peca com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
-	printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
-	printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
-	printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
-	printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
-	printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
-
+int mostrarRegras(){
+    int alt;
+    do{
+        limparTela();
+        printf("\nRegras Gerais  \n");
+        printf("\n---------------------------------------------");
+        printf("\n- Cada jogador inicia com 7 pecas aleatorias\n");
+        printf("\n- Pode-se comprar quantas vezes for necessarias, sendo permitido blefe\n");
+        printf("\n- O jogo inicia com o jogador que possui a maior peca cujo os dois lados tenham o mesmo valor, caso nenhum dos jogadores possuam uma peca com essas caracteristicas, inicia o jogador que tiver a peca de maior soma\n");
+        printf("\n- Os jogadores devem colocar pecas que tenham os mesmos numeros das pecas que se encontram nas 2 extremidas da mesa(lado E e D) \n");
+        printf("\n- O jogador so podera passar a vez se nao possuir mais pecas para comprar\n");
+        printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
+        printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
+        printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
+        printf("\n- 0 Para voltar o menu\n");
+        scanf("%d", &alt);
+        limparBuffer();
+    } while (alt != 0);
+    
+    return alt;
 }
 
 //FUNCOES PARA ESCOLHA DE JOGADAS

@@ -782,9 +782,13 @@ void jogar(){
                	novoJogo();
                 break;
             }
-            case 2:
-            	mostrarRegras();
-            	break;
+            case 2:{
+            	int alt = mostrarRegras();
+				if (alt == 0){
+					limparTela();
+					jogar();
+				}
+			}
             case 3:
                 salvarJogo();
                 break;

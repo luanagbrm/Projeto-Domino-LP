@@ -29,7 +29,7 @@ int receberPosicaoPeca();
 int menuPrincipalJogador();
 void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador);
 void interacoesMenu(int opcao);
-void mostrarRegras();
+int mostrarRegras();
 void mensagemRecuperarJogo(int status);
 void limparTela();
 void limparBuffer();
