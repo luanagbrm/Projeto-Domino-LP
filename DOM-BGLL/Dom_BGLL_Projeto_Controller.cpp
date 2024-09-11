@@ -13,10 +13,10 @@ Nome dos integrantes:
 #include "Dom_BGLL_Projeto_Controller.h"
 
 //PONTEIROS DOS ARQUIVOS
-FILE *arqmesa;
-FILE *pecas;
-FILE *sitJogoSalvo; //situacao
-FILE *dataHoraSalvo;
+FILE *arqmesa; //arquivo onde serao armazenadas apenas as pecas que ja tinham sido jogadas
+FILE *pecas; //arquivo onde serao armazenadas todas as pecas do jogo
+FILE *sitJogoSalvo; //situacao das variaveis globais no momento do salvamento do jogo
+FILE *dataHoraSalvo; //arquivo para armazenar a data e a hora em que o jogo foi salvo por ultimo
 
 //FUNCOES INICIAIS PARA ANTES DO INICIO DA PRIMEIRA JOGADA
 
@@ -646,11 +646,13 @@ int definirPecasCadaJogador(Carta domino[28]){
 	for(int i = 0; i < 28; i++){
 		if(domino[i].status == '1'){
 			jogadores[0].pecasMao[pecasJ1] = domino[i];
+			jogadores[0].pecasMao[pecasJ1].pos = i;
 			pecasJ1++;
 		}
 		
 		else if(domino[i].status == '2'){
 			jogadores[1].pecasMao[pecasJ2] = domino[i];
+			jogadores[1].pecasMao[pecasJ2].pos = i;
 			pecasJ2++;
 		}
 			
@@ -721,7 +723,6 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
             case 2:
                 realizarCompraCartas(domino);
                 break;
-
             case 3:
                 passarVez(); 
 				break;   	
@@ -762,7 +763,7 @@ int novoJogo(){
 int jogoSalvo(){
 	limparTela();
 	definirPecasCadaJogador(domino);
-	definirSitVariaveis();
+	definirSitVariaveis(); //Recupera as variaveis sobre a situacao salva do jogo e ja o inicia partindo dessas informacoes
 	while (menuJogador(jogadores, domino)) {
       // O loop continua ate que o jogador decida sair
     }
@@ -783,15 +784,18 @@ void jogar(){
                 break;
             }
             case 2:{
-            	int alt = mostrarRegras();
-				if (alt == 0){
-					limparTela();
-					jogar();
-				}
+            	mostrarRegras();
+            	break;
 			}
             case 3:
-                salvarJogo();
-                break;
+            	//Somente permite salvar o jogo caso algum jogo ja tenha sido iniciado
+            	if(qtdPecasMesa == 0){
+            		interacoesMenu(8);
+            		break;
+				} else {
+					salvarJogo();
+                	break;
+				}
             case 4:
             	continuarJogo();
             	break;

@@ -18,7 +18,7 @@ void mostrarCartas(Carta domino[NUM_PECAS]){
   for(int i = 0; i < NUM_PECAS; i++){
       if(i%7 == 0 )
           printf("\n");
-    printf("[%d|%d] ", domino[i].ladoA, domino[i].ladoB, domino[i].status, i);
+    printf("[%d|%d] ", domino[i].ladoA, domino[i].ladoB);
   }
 }
 
@@ -27,7 +27,7 @@ void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador){
     printf("Jogador %d: \n", numJogador + 1);//o i = 1 numera corretamente cada jogador
     for(int k = 0 ; k < jogadores[numJogador].numPieces; k++){
 		if(jogadores[numJogador].pecasMao[k].status != 'M')
-			printf("%d.[%d|%d] ", k+1, jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB, jogadores[numJogador].pecasMao[k].pos);
+			printf("%d.[%d|%d] ", k+1, jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB);
     }
 
     printf("\n");
@@ -76,11 +76,11 @@ int existeDataHora(){
 //Opcoes do menu principal do jogo
 int menuPrincipal() {
     int opcao;
-    //limparTela();
+    limparTela();
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo\n");
     printf("2. Regras do Jogo\n");
-    printf("3. Salvar Jogo\n");
+    printf("3. Salvar Jogo (Necessario ter um jogo em andamento)\n");
     existeDataHora();
     printf("0. Sair\n");
     printf("------------------------\n");
@@ -108,7 +108,7 @@ int menuPrincipalJogador() {
 }
 
 void interacoesMenu(int opcao){
-	if(opcao == 2 || opcao == 3){
+	if(opcao == 0){
 		printf("Saindo do jogo...\n");
 	} else {
 		limparTela();
@@ -131,7 +131,8 @@ int mostrarRegras(){
         printf("\n- A partida termina quando um dos jogadores colocar a sua ultima peca na mesa ou no momento que nao existir mais nenhuma jogada possivel\n");
         printf("\n- Em casos de nao haver mais movimentos possiveis, vence quem tiver menos pecas na mao\n");
         printf("\n- Em caso de empate, vence o jogador que tiver a menor soma de pontos das pecas que restaram em sua mao\n");
-        printf("\n- 0 Para voltar o menu\n");
+        printf("\n---------------------------------------------");
+        printf("\nDigite 0 para voltar o menu\n");
         scanf("%d", &alt);
         limparBuffer();
     } while (alt != 0);
@@ -143,7 +144,7 @@ int mostrarRegras(){
 
 int receberPosicaoPeca() {
     int posicao;
-    int numPieces = jogadores[jogadorAtual].numPieces; // Recupera o número de peças do jogador atual
+    int numPieces = jogadores[jogadorAtual].numPieces; // Recupera o numero de pecas do jogador atual
     
     do {
         printf("Escolha a posicao da peca que deseja jogar (1 a %d) [0 para voltar]: ", numPieces);
@@ -156,7 +157,7 @@ int receberPosicaoPeca() {
             printf("Posicao invalida. Por favor, insira um numero entre 1 e %d.\n", numPieces);
             posicao = -1; // Define um número inválido para repetir o loop
         }
-    } while (posicao < 1 || posicao > numPieces); // Loop até que uma posição válida seja fornecida
+    } while (posicao < 1 || posicao > numPieces); // Loop ate que uma posicao valida seja fornecida
 	
     return posicao;
 }
@@ -239,8 +240,8 @@ void exibirMensagemPassarVez(int status){
 	} else if (status == -1){
 		limparTela();
 		printf("Ainda ha pecas para compra, nao e' permitido passar\n");
-	} else{
-		printf("O problema é otro");
+	} else {
+		printf("Problema desconhecido. Nos informe, por favor\n");
 	}
 }
 

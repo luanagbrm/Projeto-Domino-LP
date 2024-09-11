@@ -14,7 +14,6 @@ A etapa 5 apresenta um jogo completo de domino com a possibilidade de salvar e r
 
 #include "Dom_BGLL_Projeto_Controller.cpp"
 
-
 int main(){
   jogar();
   return 0;
