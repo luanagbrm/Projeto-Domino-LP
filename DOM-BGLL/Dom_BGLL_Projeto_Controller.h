@@ -64,5 +64,6 @@ int recuperarSitJogo();
 int definirPecasCadaJogador(Carta domino[28]);
 int definirSitVariaveis();
 int armazenarDataHora();
+int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC);
 
 #endif
