@@ -699,43 +699,59 @@ int continuarJogo() {
 //MENU DO JOGADOR E INICIALIZACAO DO JOGO APARTIR DO MENU PRINCIPAL
 
 int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
-    int escolha;
+    int escolha = 9;
     
-    do {
-        escolha = menuPrincipalJogador();
-
-        switch (escolha) {
-            case 1: {
-            	int posicao;
-                
-                posicao = receberPosicaoPeca();
-                
-	            if (posicao == -1) {
-			        break;
-			    } else if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
-			        verificarJogada(mesa, jogadores, jogadorAtual, posicao - 1);
-			    } else {
-			        interacoesMenu(posicao);
-			    }
-			    
-			    break;
-            }
-            case 2:
-                realizarCompraCartas(domino);
-                break;
-            case 3:
-                passarVez(); 
-				break;   	
-            case 0:
-            	jogar();
-            default:
-                interacoesMenu(escolha);
-                break;
-        }
-    } while (escolha != 3);
-
-    return 1;
+		do {
+			if(modoJogo == 1 && jogadorAtual == 1){
+    			escolherPecaPC(jogadores, jogadorAtual);
+			} else {
+				escolha = menuPrincipalJogador();
+				printf("modojogo: %d \t jogador atual: %d \tdireito: %d \t esquerdo: %d\n\n",modoJogo, jogadorAtual, limitesMesa.ladoD, limitesMesa.ladoE);
+				switch (escolha) {
+		            case 1: {
+		            	int posicao;
+		                
+		                posicao = receberPosicaoPeca();
+		                
+			            if (posicao == -1) {
+					        break;
+					    } else if (posicao > 0 && posicao <= jogadores[jogadorAtual].numPieces) {
+					        verificarJogada(mesa, jogadores, jogadorAtual, posicao - 1);
+					    } else {
+					        interacoesMenu(posicao);
+					    }
+					    
+					    break;
+		            }
+		            case 2:
+		                realizarCompraCartas(domino);
+		                break;
+		            case 3:
+		                passarVez(); 
+						break;   	
+		            case 0:
+		            	jogar();
+		            default:
+		                interacoesMenu(escolha);
+		                break;
+	        	}
+			}
+	} while (escolha != 0);
+	
+	return 1;
 }
+    
+int definirModoJogo(){
+	int numJogadores = numeroJogadores(); // define o numero de jogadores de acordo com o informado pelo usuario
+	if(numJogadores == 1){
+		modoJogo = 1;
+		return 1;
+	} 
+	
+	modoJogo = 0;
+	return 0;
+}
+
 
 int novoJogo(){
 	qtdPecasMesa = 0; //a cada novo jogo, inicia a mesa da primeira posicao
@@ -745,9 +761,8 @@ int novoJogo(){
     embaralharPecas(domino);
     iniciaMesa(mesa);
      
-	int numJogadores = numeroJogadores(); // define o numero de jogadores de acordo com o informado pelo usuario
-    
-	distribuirPecas(domino, jogadores, numJogadores);
+	int modo = definirModoJogo(); // define o numero de jogadores de acordo com o informado pelo usuario
+	distribuirPecas(domino, jogadores, 2);
 
     int firstPlayer = primeiroJogador(jogadores, mesa); // faz passagem por referencia
 
@@ -756,6 +771,8 @@ int novoJogo(){
     }
     
 	return 0;
+	
+
 }
 
 
@@ -819,15 +836,22 @@ void fclearBuffer()
 //FUNCOES DO PC
 int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC){
 	int ladoD = limitesMesa.ladoD;
-  	int ladoE = limitesMesa.ladoE;
+	int ladoE = limitesMesa.ladoE;
+	
 	do{
-
+		
 		for (int k = 0; k < jogadores[PC].numPieces; k++){
-			if(jogadores[PC].pecasMao[k].ladoA || jogadores[PC].pecasMao[k].ladoB == ladoD || ladoE){
-				return k;
+			if(jogadores[PC].pecasMao[k].ladoA == ladoD || jogadores[PC].pecasMao[k].ladoB == ladoD){
+				checarLadoValida(jogadores, 1, k, 'D');
+				return 0;
+			} else if(jogadores[PC].pecasMao[k].ladoA == ladoE || jogadores[PC].pecasMao[k].ladoB == ladoE){
+				checarLadoValida(jogadores, 1, k, 'E');
+				return 0;
 			}
 		}
 
 		realizarCompraCartas(domino);
 	}while (1);
+
+	return 1;
 }
