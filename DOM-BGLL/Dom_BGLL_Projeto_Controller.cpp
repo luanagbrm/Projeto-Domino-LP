@@ -815,3 +815,19 @@ void fclearBuffer()
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
+//FUNCOES DO PC
+int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC){
+	int ladoD = limitesMesa.ladoD;
+  	int ladoE = limitesMesa.ladoE;
+	do{
+
+		for (int k = 0; k < jogadores[PC].numPieces; k++){
+			if(jogadores[PC].pecasMao[k].ladoA || jogadores[PC].pecasMao[k].ladoB == ladoD || ladoE){
+				return k;
+			}
+		}
+
+		realizarCompraCartas(domino);
+	}while (1);
+}
