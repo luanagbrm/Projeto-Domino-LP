@@ -97,7 +97,15 @@ int qtdJogadaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
     	controle = controle/2; //Como os dois lados sao identicos, nao ha necessidade de comparar se ambos os lados da peca podem ser jogados em ambos os lados da mesa 
   	
   	return controle;
+}
+
+int verificarSeJogadaValida(){
+	int qtdJogadas = 0;
+	for(int i = 0; i < jogadores[jogadorAtual].numPieces; i++){
+			qtdJogadas += qtdJogadaValida(jogadores, jogadorAtual, i);
+	}
 	
+	return qtdJogadas;
 }
 
 int checarUnicaValida(Jogador jogadores[NUM_JOGADORES], int jogador, int pos) {
@@ -269,7 +277,9 @@ int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
 int verificarPassarVez(){
 	verificarDisponiveis();
 	
-	if(qtdPecasDisponivel <= 0){
+	
+	
+	if(qtdPecasDisponivel <= 0 && verificarSeJogadaValida() == 0){
 		definirJogadorAtual();
 		return 1;
 	} else {
@@ -706,7 +716,6 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     			escolherPecaPC(jogadores, jogadorAtual);
 			} else {
 				escolha = menuPrincipalJogador();
-				printf("modojogo: %d \t jogador atual: %d \tdireito: %d \t esquerdo: %d\n\n",modoJogo, jogadorAtual, limitesMesa.ladoD, limitesMesa.ladoE);
 				switch (escolha) {
 		            case 1: {
 		            	int posicao;
@@ -740,17 +749,6 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
 	
 	return 1;
 }
-    
-int definirModoJogo(){
-	int numJogadores = numeroJogadores(); // define o numero de jogadores de acordo com o informado pelo usuario
-	if(numJogadores == 1){
-		modoJogo = 1;
-		return 1;
-	} 
-	
-	modoJogo = 0;
-	return 0;
-}
 
 
 int novoJogo(){
@@ -760,8 +758,7 @@ int novoJogo(){
 	criarCarta(domino);
     embaralharPecas(domino);
     iniciaMesa(mesa);
-     
-	int modo = definirModoJogo(); // define o numero de jogadores de acordo com o informado pelo usuario
+	
 	distribuirPecas(domino, jogadores, 2);
 
     int firstPlayer = primeiroJogador(jogadores, mesa); // faz passagem por referencia
@@ -797,14 +794,25 @@ void jogar(){
         opcao = menuPrincipal();
         switch (opcao) {
             case 1: {
+            	modoJogo = 0;
                	novoJogo();
                 break;
             }
-            case 2:{
+            case 2: {
+            	modoJogo = 1;
+               	novoJogo();
+                break;
+            }
+            case 3: {
+            	limparTela();
+               	menuJogador(jogadores,domino);
+                break;
+            }
+            case 4:{
             	mostrarRegras();
             	break;
 			}
-            case 3:
+            case 5:
             	//Somente permite salvar o jogo caso algum jogo ja tenha sido iniciado
             	if(qtdPecasMesa == 0){
             		interacoesMenu(8);
@@ -813,7 +821,7 @@ void jogar(){
 					salvarJogo();
                 	break;
 				}
-            case 4:
+            case 6:
             	continuarJogo();
             	break;
             case 0:
@@ -823,7 +831,7 @@ void jogar(){
             	interacoesMenu(opcao);
                 
         }
-    } while (opcao != 4);
+    } while (opcao != 0);
 }
 
 //LIMPADOR
@@ -831,6 +839,95 @@ void fclearBuffer()
 { 
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
+}
+
+int qtdNumMao(int qtdNum[6]){
+	int qtd0 = 0;
+	int qtd1 = 0;
+	int qtd2 = 0;
+	int qtd3 = 0;
+	int qtd4 = 0;
+	int qtd5 = 0;
+	int qtd6 = 0;
+	
+	for (int k = 0; k < jogadores[1].numPieces; k++){
+		if(jogadores[1].pecasMao[k].ladoA == 0 || jogadores[1].pecasMao[k].ladoB == 0){
+			qtd0++;
+		} 
+		
+		if(jogadores[1].pecasMao[k].ladoA == 1 || jogadores[1].pecasMao[k].ladoB == 1){
+			qtd1++;
+		}
+		
+		if(jogadores[1].pecasMao[k].ladoA == 2 || jogadores[1].pecasMao[k].ladoB == 2){
+			qtd2++;
+		}
+		
+		if(jogadores[1].pecasMao[k].ladoA == 3 || jogadores[1].pecasMao[k].ladoB == 3){
+			qtd3++;
+		}
+		
+		if(jogadores[1].pecasMao[k].ladoA == 4 || jogadores[1].pecasMao[k].ladoB == 4){
+			qtd4++;
+		}
+		
+		if(jogadores[1].pecasMao[k].ladoA == 5 || jogadores[1].pecasMao[k].ladoB == 5){
+			qtd5++;
+		}
+		
+		if(jogadores[1].pecasMao[k].ladoA == 6 || jogadores[1].pecasMao[k].ladoB == 6){
+			qtd6++;
+		}
+	}
+	
+	return 0;
+}
+
+
+int preferenciaJogadaComputador(){
+	int ladoD = limitesMesa.ladoD;
+	int ladoE = limitesMesa.ladoE;
+	int qtdNumMao[6];
+	
+	qtdNumMao(qtdNumMao);
+	
+	int qtdLadoD = qtdNumMao[ladoD];
+	int qtdLadoE = qtdNumMao[ladoE];
+	
+	//Criar uma funcao ordenada de acordo com a qtd de pecas de um mesmo numero, do maior para o menor. 
+	//Em seguida, fazer um for aninhado sendo o de fora para percorrer a mao do jogador e o de dentro para percorrer o vetor ordenado.
+	//Dar preferencia para as pecas que tenham a maior quantidade de ocorrencias e um valor igual a uma das extremidades
+	
+	//Ex:
+		//ladoD>ladoE
+	//	verificar as pecas em que ladoA ou lado B == ladoD e o ladoA ou ladoB sejam iguais ao valor da primeira posicao do vetor ordenado e assim sucessivamente
+	
+	if(qtdLadoD >= qtdLadoE){
+		for (int k = 0; k < jogadores[1].numPieces; k++){
+		if((jogadores[1].pecasMao[k].ladoA == jogadores[1].pecasMao[k].ladoB) && (jogadores[1].pecasMao[k].ladoB == ladoD)){
+				checarLadoValida(jogadores, 1, k, 'D');
+				return 0;
+		} else if(jogadores[1].pecasMao[k].ladoA == ladoE || jogadores[1].pecasMao[k].ladoB == ladoE){
+				checarLadoValida(jogadores, 1, k, 'E');
+				return 0;
+		}
+		}
+	}
+	
+	
+	
+	
+	for (int k = 0; k < jogadores[1].numPieces; k++){
+		if((jogadores[1].pecasMao[k].ladoA == jogadores[1].pecasMao[k].ladoB) && (jogadores[1].pecasMao[k].ladoB == ladoD)){
+				checarLadoValida(jogadores, 1, k, 'D');
+				return 0;
+		} else if(jogadores[1].pecasMao[k].ladoA == ladoE || jogadores[1].pecasMao[k].ladoB == ladoE){
+				checarLadoValida(jogadores, 1, k, 'E');
+				return 0;
+		}
+	}
+	
+	return 0;
 }
 
 //FUNCOES DO PC
@@ -849,9 +946,15 @@ int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC){
 				return 0;
 			}
 		}
-
-		realizarCompraCartas(domino);
-	}while (1);
+		
+		if(realizarCompraCartas(domino) != 0){
+			realizarCompraCartas(domino);
+		} else {
+			verificarPassarVez();
+			return 0;
+		}
+			
+	} while (1);
 
 	return 1;
 }

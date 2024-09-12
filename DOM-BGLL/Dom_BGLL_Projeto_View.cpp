@@ -65,10 +65,10 @@ int numeroJogadores(void){
 
 int existeDataHora(){
 	if(ano == 0){
-		printf("4. Continuar Jogo (Nao ha jogo salvo)\n");
+		printf("6. Recuperar Jogo (Nao ha jogo salvo)\n");
 		return 0;
 	} else {
-		printf("4. Continuar Jogo (Salvo em: %02d/%02d/%d - %02d:%02d)\n", dia, mes,ano,hora,minutos);
+		printf("6. Recuperar Jogo (Salvo em: %02d/%02d/%d - %02d:%02d)\n", dia, mes,ano,hora,minutos);
 	}
 	return 1;
 }
@@ -78,9 +78,11 @@ int menuPrincipal() {
     int opcao;
     limparTela();
     printf("\n--- Menu Principal ---\n");
-    printf("1. Iniciar Novo Jogo\n");
-    printf("2. Regras do Jogo\n");
-    printf("3. Salvar Jogo (Necessario ter um jogo em andamento)\n");
+    printf("1. Iniciar Novo Jogo (2 jogadores)\n");
+    printf("2. Iniciar Novo Jogo (Contra jogadores)\n");
+    printf("3. Continuar jogo interrompido\n");
+    printf("4. Regras do Jogo\n");
+    printf("5. Salvar Jogo (Necessario ter um jogo em andamento)\n");
     existeDataHora();
     printf("0. Sair\n");
     printf("------------------------\n");
@@ -99,7 +101,7 @@ int menuPrincipalJogador() {
     printf("1. Escolher peca para jogar\n");
     printf("2. Comprar peca (%d pecas disponiveis)\n", qtdPecasDisponivel);
 	printf("3. Passar vez\n");
-    printf("0. Sair\n");
+    printf("0. Interromper jogo atual\n");
     printf("-----------------------------\n");
     printf("\nEscolha uma opcao: ");
     scanf("%d", &escolha);
