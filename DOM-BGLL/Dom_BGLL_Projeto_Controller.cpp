@@ -879,6 +879,25 @@ int qtdNumMao(int qtdNum[6]){
 			qtd6++;
 		}
 	}
+
+	qtdNum[0] = qtd0;
+	qtdNum[1] = qtd1;
+	qtdNum[2] = qtd2;
+	qtdNum[3] = qtd3;
+	qtdNum[4] = qtd4;
+	qtdNum[5] = qtd5;
+	qtdNum[6] = qtd6;
+
+	//Ordena o vetor em ordem crescente
+	for(int i = 0; i < 6; i++){
+		for(int j = 0; j < 6; j++){
+			if(qtdNum[i] > qtdNum[j]){
+				int aux = qtdNum[i];
+				qtdNum[j] = qtdNum[i];
+				qtdNum[i] = aux;
+			}
+		}
+	}
 	
 	return 0;
 }
