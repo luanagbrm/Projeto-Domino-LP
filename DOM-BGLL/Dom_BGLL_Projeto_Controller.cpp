@@ -878,8 +878,28 @@ int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES]) {
 
     return totalPecas;  // retorna o total de peças
 }
+//verifica se o pc pode jogar, se ele nao poder deve comprar
+int pcCompraOuJoga(Jogador jogadores[NUM_JOGADORES], int pc, int ladoD, int ladoE) {
+	
+	
+	//condicao para comprar cartas
+	do
+	{
+		for (int k = 0; k < jogadores[pc].numPieces; k++) {
+            if (jogadores[pc].pecasMao[k].ladoA == ladoD || jogadores[pc].pecasMao[k].ladoB == ladoD) {
+                checarLadoValida(jogadores, pc, k, 'D');
+                return 0;
+            } else if (jogadores[pc].pecasMao[k].ladoA == ladoE || jogadores[pc].pecasMao[k].ladoB == ladoE) {
+                checarLadoValida(jogadores, pc, k, 'E');
+                return 0;
+            }
+        }
+	}while(realizarCompraCartas(domino) != 0);
 
-
+	verificarPassarVez();
+	
+	return 0;
+}
 //funcao para escolher a melhor jogada do pc
 int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 	
@@ -910,25 +930,9 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 			}
 	}
 	
-	//condicao para comprar cartas
-	
-	do
-	{
-		for (int k = 0; k < jogadores[pc].numPieces; k++) {
-            if (jogadores[pc].pecasMao[k].ladoA == ladoD || jogadores[pc].pecasMao[k].ladoB == ladoD) {
-                checarLadoValida(jogadores, pc, k, 'D');
-                return 0;
-            } else if (jogadores[pc].pecasMao[k].ladoA == ladoE || jogadores[pc].pecasMao[k].ladoB == ladoE) {
-                checarLadoValida(jogadores, pc, k, 'E');
-                return 0;
-            }
-        }
-	}while(realizarCompraCartas(domino) != 0);
-
-	verificarPassarVez();
+	pcCompraOuJoga(jogadores,pc,ladoD,ladoE);
 	
 	return 0;
-	
 }
 
 //FUNCOES DO PC
