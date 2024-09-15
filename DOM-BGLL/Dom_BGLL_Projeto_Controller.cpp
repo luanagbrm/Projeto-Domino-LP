@@ -841,112 +841,93 @@ void fclearBuffer()
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-int qtdNumMao(int qtdNum[6]){
-	int qtd0 = 0;
-	int qtd1 = 0;
-	int qtd2 = 0;
-	int qtd3 = 0;
-	int qtd4 = 0;
-	int qtd5 = 0;
-	int qtd6 = 0;
+int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES]) {
 	
-	for (int k = 0; k < jogadores[1].numPieces; k++){
-		if(jogadores[1].pecasMao[k].ladoA == 0 || jogadores[1].pecasMao[k].ladoB == 0){
-			qtd0++;
-		} 
-		
-		if(jogadores[1].pecasMao[k].ladoA == 1 || jogadores[1].pecasMao[k].ladoB == 1){
-			qtd1++;
-		}
-		
-		if(jogadores[1].pecasMao[k].ladoA == 2 || jogadores[1].pecasMao[k].ladoB == 2){
-			qtd2++;
-		}
-		
-		if(jogadores[1].pecasMao[k].ladoA == 3 || jogadores[1].pecasMao[k].ladoB == 3){
-			qtd3++;
-		}
-		
-		if(jogadores[1].pecasMao[k].ladoA == 4 || jogadores[1].pecasMao[k].ladoB == 4){
-			qtd4++;
-		}
-		
-		if(jogadores[1].pecasMao[k].ladoA == 5 || jogadores[1].pecasMao[k].ladoB == 5){
-			qtd5++;
-		}
-		
-		if(jogadores[1].pecasMao[k].ladoA == 6 || jogadores[1].pecasMao[k].ladoB == 6){
-			qtd6++;
-		}
-	}
-
-	qtdNum[0] = qtd0;
-	qtdNum[1] = qtd1;
-	qtdNum[2] = qtd2;
-	qtdNum[3] = qtd3;
-	qtdNum[4] = qtd4;
-	qtdNum[5] = qtd5;
-	qtdNum[6] = qtd6;
-
-	//Ordena o vetor em ordem crescente
-	for(int i = 0; i < 6; i++){
-		for(int j = 0; j < 6; j++){
-			if(qtdNum[i] > qtdNum[j]){
-				int aux = qtdNum[i];
-				qtdNum[j] = qtdNum[i];
-				qtdNum[i] = aux;
-			}
-		}
-	}
 	
-	return 0;
+    int totalPecas = 0;  // inicializa a variável totalPecas
+    int auxiliar;  // variavel auxiliar para a troca de valores no vetor
+
+    // inicializa o array qtd com zero
+    for (int k = 0; k < 7; k++) {
+        qtd[k] = 0;
+    }
+
+    // conta a quantidade de vezes que cada num aparece 
+    for (int cont = 0; cont < jogadores[1].numPieces; cont++) {
+        if (jogadores[1].pecasMao[cont].ladoA >= 0 && jogadores[1].pecasMao[cont].ladoA <= 6) {
+            qtd[jogadores[1].pecasMao[cont].ladoA] = qtd[jogadores[1].pecasMao[cont].ladoA] + 1;  
+            totalPecas = totalPecas + 1;  
+        }
+        if (jogadores[1].pecasMao[cont].ladoB >= 0 && jogadores[1].pecasMao[cont].ladoB <= 6) {
+            qtd[jogadores[1].pecasMao[cont].ladoB] =  qtd[jogadores[1].pecasMao[cont].ladoB] + 1;  
+            totalPecas = totalPecas + 1;  
+        }
+    }
+
+    // ordena o array em ordem decrescente
+    for (int k = 0; k < 7; k++) {
+        for (int i = k + 1; i < 7; i++) {
+            if (qtd[k] < qtd[i]) {
+                auxiliar = qtd[k];
+                qtd[k] = qtd[i];
+                qtd[i] = auxiliar;
+            }
+        }
+    }
+
+    return totalPecas;  // retorna o total de peças
 }
 
 
-int preferenciaJogadaComputador(){
+//funcao para escolher a melhor jogada do pc
+int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
+	
 	int ladoD = limitesMesa.ladoD;
 	int ladoE = limitesMesa.ladoE;
-	int qtdNumMao[6];
+	int maoNumQtd[7];
 	
-	qtdNumMao(qtdNumMao);
+	qtdNumMao(maoNumQtd , jogadores);
 	
-	int qtdLadoD = qtdNumMao[ladoD];
-	int qtdLadoE = qtdNumMao[ladoE];
 	
-	//Criar uma funcao ordenada de acordo com a qtd de pecas de um mesmo numero, do maior para o menor. 
-	//Em seguida, fazer um for aninhado sendo o de fora para percorrer a mao do jogador e o de dentro para percorrer o vetor ordenado.
-	//Dar preferencia para as pecas que tenham a maior quantidade de ocorrencias e um valor igual a uma das extremidades
-	
-	//Ex:
-		//ladoD>ladoE
-	//	verificar as pecas em que ladoA ou lado B == ladoD e o ladoA ou ladoB sejam iguais ao valor da primeira posicao do vetor ordenado e assim sucessivamente
-	
-	if(qtdLadoD >= qtdLadoE){
-		for (int k = 0; k < jogadores[1].numPieces; k++){
-		if((jogadores[1].pecasMao[k].ladoA == jogadores[1].pecasMao[k].ladoB) && (jogadores[1].pecasMao[k].ladoB == ladoD)){
-				checarLadoValida(jogadores, 1, k, 'D');
+	//ve se o lado D e o melhor lado
+	if(maoNumQtd[ladoD] >= maoNumQtd[ladoE]){
+		for(int j = 0; j < jogadores[pc].numPieces;j++){
+			
+			if((jogadores[pc].pecasMao[j].ladoA == ladoD || jogadores[pc].pecasMao[j].ladoB == ladoD)){
+				checarLadoValida(jogadores,pc,j,'D');
+				
 				return 0;
-		} else if(jogadores[1].pecasMao[k].ladoA == ladoE || jogadores[1].pecasMao[k].ladoB == ladoE){
-				checarLadoValida(jogadores, 1, k, 'E');
-				return 0;
-		}
+			}
 		}
 	}
-	
-	
-	
-	
-	for (int k = 0; k < jogadores[1].numPieces; k++){
-		if((jogadores[1].pecasMao[k].ladoA == jogadores[1].pecasMao[k].ladoB) && (jogadores[1].pecasMao[k].ladoB == ladoD)){
-				checarLadoValida(jogadores, 1, k, 'D');
+	for(int i = 0; i < jogadores[pc].numPieces; i++){
+		
+		if((jogadores[pc].pecasMao[i].ladoA == ladoE || jogadores[pc].pecasMao[i].ladoB == ladoE)){
+				checarLadoValida(jogadores,pc,i,'D');
+				
 				return 0;
-		} else if(jogadores[1].pecasMao[k].ladoA == ladoE || jogadores[1].pecasMao[k].ladoB == ladoE){
-				checarLadoValida(jogadores, 1, k, 'E');
-				return 0;
-		}
+			}
 	}
+	
+	//condicao para comprar cartas
+	
+	while(realizarCompraCartas(domino) != 0) 
+	{
+		for (int k = 0; k < jogadores[pc].numPieces; k++) {
+            if (jogadores[pc].pecasMao[k].ladoA == ladoD || jogadores[pc].pecasMao[k].ladoB == ladoD) {
+                checarLadoValida(jogadores, pc, k, 'D');
+                return 0;
+            } else if (jogadores[pc].pecasMao[k].ladoA == ladoE || jogadores[pc].pecasMao[k].ladoB == ladoE) {
+                checarLadoValida(jogadores, pc, k, 'E');
+                return 0;
+            }
+        }
+	}
+
+	verificarPassarVez();
 	
 	return 0;
+	
 }
 
 //FUNCOES DO PC
