@@ -713,7 +713,8 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     
 		do {
 			if(modoJogo == 1 && jogadorAtual == 1){
-    			escolherPecaPC(jogadores, jogadorAtual);
+				preferenciaJogadaComputador(jogadores, jogadorAtual)
+//    			escolherPecaPC(jogadores, jogadorAtual);
 			} else {
 				escolha = menuPrincipalJogador();
 				switch (escolha) {
