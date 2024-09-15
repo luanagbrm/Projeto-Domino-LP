@@ -842,7 +842,7 @@ void fclearBuffer()
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES]) {
+int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES],int pc) {
 	
 	
     int totalPecas = 0;  // inicializa a variável totalPecas
@@ -907,7 +907,9 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 	int ladoE = limitesMesa.ladoE;
 	int maoNumQtd[7];
 	
-	qtdNumMao(maoNumQtd , jogadores);
+//	qtdNumMao(maoNumQtd , jogadores);
+	qtdNumMao(maoNumQtd, jogadores, pc);
+
 	
 	
 	//ve se o lado D e o melhor lado
