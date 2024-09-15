@@ -714,7 +714,7 @@ int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
 		do {
 			if(modoJogo == 1 && jogadorAtual == 1){
 				preferenciaJogadaComputador(jogadores, jogadorAtual);
-//    			escolherPecaPC(jogadores, jogadorAtual);
+
 			} else {
 				escolha = menuPrincipalJogador();
 				switch (escolha) {
@@ -912,7 +912,7 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 	
 	//condicao para comprar cartas
 	
-	while(realizarCompraCartas(domino) != 0) 
+	do
 	{
 		for (int k = 0; k < jogadores[pc].numPieces; k++) {
             if (jogadores[pc].pecasMao[k].ladoA == ladoD || jogadores[pc].pecasMao[k].ladoB == ladoD) {
@@ -923,7 +923,7 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
                 return 0;
             }
         }
-	}
+	}while(realizarCompraCartas(domino) != 0);
 
 	verificarPassarVez();
 	
