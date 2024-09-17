@@ -842,10 +842,12 @@ void fclearBuffer()
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+//FUNCIONALIDADES PARA JOGAR CONTRA O COMPUTADOR (SOLO)
+
 int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES],int pc) {
 	
 	
-    int totalPecas = 0;  // inicializa a variável totalPecas
+    int totalPecas = 0;  // inicializa a variavel totalPecas
     int auxiliar;  // variavel auxiliar para a troca de valores no vetor
 
     // inicializa o array qtd com zero
@@ -876,7 +878,7 @@ int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES],int pc) {
         }
     }
 
-    return totalPecas;  // retorna o total de peças
+    return totalPecas;  // retorna o total de pecas
 }
 //verifica se o pc pode jogar, se ele nao poder deve comprar
 int pcCompraOuJoga(Jogador jogadores[NUM_JOGADORES], int pc, int ladoD, int ladoE) {
@@ -910,7 +912,16 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 //	qtdNumMao(maoNumQtd , jogadores);
 	qtdNumMao(maoNumQtd, jogadores, pc);
 
-	
+//    //joga pecas duplas primeiro
+//    for (int i = 0; i < jogadores[pc].numPieces; i++) {
+//        if (jogadores[pc].pecasMao[i].ladoA == jogadores[pc].pecasMao[i].ladoB) {
+//            if (jogadores[pc].pecasMao[i].ladoA == ladoD || jogadores[pc].pecasMao[i].ladoA == ladoE) {
+//                checarLadoValida(jogadores, pc, i, (jogadores[pc].pecasMao[i].ladoA == ladoD) ? 'D' : 'E');
+//                return 0;
+//            }
+//        }
+//    }
+//	
 	
 	//ve se o lado D e o melhor lado
 	if(maoNumQtd[ladoD] >= maoNumQtd[ladoE]){
@@ -926,7 +937,7 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 	for(int i = 0; i < jogadores[pc].numPieces; i++){
 		
 		if((jogadores[pc].pecasMao[i].ladoA == ladoE || jogadores[pc].pecasMao[i].ladoB == ladoE)){
-				checarLadoValida(jogadores,pc,i,'D');
+				checarLadoValida(jogadores,pc,i,'E');
 				
 				return 0;
 			}

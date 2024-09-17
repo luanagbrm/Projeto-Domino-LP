@@ -79,7 +79,7 @@ int menuPrincipal() {
     limparTela();
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo (2 jogadores)\n");
-    printf("2. Iniciar Novo Jogo (Contra jogadores)\n");
+    printf("2. Iniciar Novo Jogo (Contra Pc)\n");
     printf("3. Continuar jogo interrompido\n");
     printf("4. Regras do Jogo\n");
     printf("5. Salvar Jogo (Necessario ter um jogo em andamento)\n");
