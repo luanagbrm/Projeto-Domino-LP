@@ -1,62 +1,4 @@
-nt qtdNumMao(int qtd[7], int qtdOrd[7], Jogador jogadores[NUM_JOGADORES],int pc) {
-    int totalPecas = 0;  // inicializa a variavel totalPecas
-    int auxiliar;  // variavel auxiliar para a troca de valores no vetor
-    
-    int vetorTemp[7];
-
-    // inicializa o array qtd com zero
-    for (int k = 0; k < 7; k++) {
-        vetorTemp[k] = 0;
-        qtdOrd[k] = 0;
-    }
-    
-    mostrarPecasJogadorAtual(jogadores, 1);
-    printf("\n");
-    
-    // conta a quantidade de vezes que cada num aparece 
-    for (int cont = 0; cont < jogadores[1].numPieces; cont++) {
-        if (jogadores[1].pecasMao[cont].ladoA >= 0 && jogadores[1].pecasMao[cont].ladoA <= 6) {
-            vetorTemp[jogadores[1].pecasMao[cont].ladoA] = vetorTemp[jogadores[1].pecasMao[cont].ladoA] + 1;  
-            totalPecas = totalPecas + 1;  
-        }
-        if (jogadores[1].pecasMao[cont].ladoB >= 0 && jogadores[1].pecasMao[cont].ladoB <= 6) {
-            vetorTemp[jogadores[1].pecasMao[cont].ladoB] = vetorTemp[jogadores[1].pecasMao[cont].ladoB] + 1;  
-            totalPecas = totalPecas + 1;  
-        }
-    }
-    
-    for(int i = 0; i < 7; i++){
-    	qtd[i] = vetorTemp[i];
-	}
-	
-	mostrarArray(qtd);
-    
-    // ordena o array em ordem decrescente
-    for (int k = 0; k < 7; k++) {
-        for (int i = k + 1; i < 7; i++) {
-            if (vetorTemp[k] < vetorTemp[i]) {
-                auxiliar = vetorTemp[k];
-                vetorTemp[k] = vetorTemp[i];
-                vetorTemp[i] = auxiliar;
-            }
-        }
-   	}
-   	mostrarArray(vetorTemp);
-   
-	int j = 0;   
-   	for(int i = 0; i < 7; i++){
-		for(int k = 0; k < 7 && j < 7; k++){
-			if(qtd[i] == vetorTemp[k]){
-				qtdOrd[i] = k;  
-			}
-		}
-	}
-	
-   	mostrarArray(qtdOrd);
-
-    return totalPecas;  // retorna o total de pecas
-}
-
+#include <stdio.h>
 
 // na view
 void mostrarArray(int arr[]){
@@ -65,4 +7,58 @@ void mostrarArray(int arr[]){
 	}
 	
 	printf("\n");
+}
+
+//vetor qtd: recebe a quantidade de ocorrencias de um numero na mao do jogador, sendo o indice do vetor o respectivo numero, ou seja:
+//na posicao 0, estara a quantidade de pecas do computador que possuem o numero 0. na posicao 1, a ocorrencia de pecas de numero 1 e assim sucessivamente
+
+//vetor qtdOrd: recebe o indice do vetor qtd de acordo com a quantidade de ocorrencias, sendo o primeiro elemento desse vetor o numero que obteve a maior quantidade de ocorrencias
+// ate o ultimo, que seria o numero que possui o menor numero de ocorrencias
+
+int qtdNumMao(int qtd[7], int qtdOrd[7]) {
+    int auxiliar;  // variavel auxiliar para a troca de valores no vetor
+
+    
+    for (int k = 0; k < 7; k++) {
+        qtd[k] = 0; //inicializa todas as posicoes do array como 0
+        qtdOrd[k] = k; //inicializa o array com seu determinado indice
+    }
+    
+    mostrarPecasJogadorAtual(jogadores, 1);
+    printf("\n");
+    
+    // conta a quantidade de vezes que cada num aparece na mao do computador,
+    // gerando um array cujo o indice indica o num da peca e o conteudo de cada posiçao
+    // a ocorrencia desse numero na mao do jogador
+    for (int cont = 0; cont < jogadores[1].numPieces; cont++) {
+        qtd[jogadores[1].pecasMao[cont].ladoA]++; 
+        qtd[jogadores[1].pecasMao[cont].ladoB]++;
+    }
+    
+	mostrarArray(qtd);
+    
+    // armazena o numero das pecas do jogador considerando a sua ocorrencia, sendo
+    // a primeira posicao o numero da peca que ele possui em maior quantidade e o ultimo em menor 
+    // quantidade
+    for (int k = 0; k < 7; k++) {
+        for (int i = k + 1; i < 7; i++) {
+            if (qtd[qtdOrd[k]] < qtd[qtdOrd[i]]) {
+                auxiliar = qtdOrd[k];
+                qtdOrd[k] = qtdOrd[i];
+                qtdOrd[i] = auxiliar;
+            }
+        }
+   	}
+   	
+   	mostrarArray(qtdOrd);
+
+    return 1;  // retorna o total de pecas
+}
+
+int main(){
+    int qtd[7];
+    int qtdOrd[7];
+    qtdNumMao(qtd,qtdOrd);
+    
+    return 0;
 }
