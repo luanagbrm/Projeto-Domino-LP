@@ -34,8 +34,9 @@ int qtdNumMao(int qtd[7], int qtdOrd[7]) {
         qtd[jogadores[1].pecasMao[cont].ladoA]++; 
         qtd[jogadores[1].pecasMao[cont].ladoB]++;
     }
-    
-	mostrarArray(qtd);
+
+    printf("Array com a quantidade de cada numero\n");
+    mostrarArray(qtd);
     
     // armazena o numero das pecas do jogador considerando a sua ocorrencia, sendo
     // a primeira posicao o numero da peca que ele possui em maior quantidade e o ultimo em menor 
@@ -49,7 +50,8 @@ int qtdNumMao(int qtd[7], int qtdOrd[7]) {
             }
         }
    	}
-   	
+
+	printf("\nArray cujo cada elemento representa o numero da peca, em ordem decrescente, sendo o primeiro elemento o numero que aparece mais vezes na mao do computador\n");
    	mostrarArray(qtdOrd);
 
     return 1;  // retorna o total de pecas
