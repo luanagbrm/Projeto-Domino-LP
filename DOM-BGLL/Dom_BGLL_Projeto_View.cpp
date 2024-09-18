@@ -267,10 +267,10 @@ void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB){
 void exibirMensagemVencedor(int status){
 	if(status == 1){
 		limparTela();
-		printf("JOGADOR 1 E' O VENCEDOR DA PARTIDA!\n");
+		printf("O JOGADOR 2 VENCEU A PARTIDA PARTIDA!\n");
 	} else {
 		limparTela();
-		printf("JOGADOR 2 E' O VENCEDOR DA PARTIDA!\n");
+		printf("O JOGADOR 2 VENCEU A PARTIDA PARTIDA!\n");
 	}
 }
 
