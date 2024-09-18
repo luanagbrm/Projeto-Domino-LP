@@ -186,14 +186,14 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	int qtdValidas = qtdJogadaValida(jogadores, jogador, pos);
 	
 	if(qtdValidas == 0){
-		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+//		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return -1; //Nao ha possibilidade de qualquer jogada valida
 	}
 		
 	if(qtdValidas == 1){
 		checarUnicaValida(jogadores, jogadorAtual, pos); //Ha apenas uma jogada valida, logo, o jogo ha fara' automaticamente
-		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+//		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return 0;
 	}
@@ -203,17 +203,17 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 		fclearBuffer();
 		char lado = receberLadoJogada();
 		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
-			exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+//			exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 			exibirMensagemJogada(qtdValidas);
 			menuPrincipalJogador();
 			return -1;
 		}
-		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+//		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return 1;
 	}
 	
-	exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+//	exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 	exibirMensagemJogada(-1);
 	return -1;
 }
