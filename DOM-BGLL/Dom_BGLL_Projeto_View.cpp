@@ -261,6 +261,10 @@ void mensagemRecuperarJogo(int status) {
     }
 }
 
+void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB){
+    printf("A ultima peca jogada foi [%d | %d]", ultimaPecaA, ultimaPecaB);
+}
+
 //FUNCOES DE MESNSAGENS APOS A FINALIZACAO DE UMA PARTIDA
 
 void exibirMensagemVencedor(int status){

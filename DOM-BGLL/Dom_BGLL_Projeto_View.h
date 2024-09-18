@@ -33,5 +33,6 @@ int mostrarRegras();
 void mensagemRecuperarJogo(int status);
 void limparTela();
 void limparBuffer();
+void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB);
 
 #endif

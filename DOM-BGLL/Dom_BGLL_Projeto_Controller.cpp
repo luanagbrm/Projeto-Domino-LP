@@ -18,6 +18,9 @@ FILE *pecas; //arquivo onde serao armazenadas todas as pecas do jogo
 FILE *sitJogoSalvo; //situacao das variaveis globais no momento do salvamento do jogo
 FILE *dataHoraSalvo; //arquivo para armazenar a data e a hora em que o jogo foi salvo por ultimo
 
+int ultimaPecaA = -8;
+int ultimaPecaB = -8;
+
 //FUNCOES INICIAIS PARA ANTES DO INICIO DA PRIMEIRA JOGADA
 
 void gerarSeed(){
@@ -183,12 +186,14 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	int qtdValidas = qtdJogadaValida(jogadores, jogador, pos);
 	
 	if(qtdValidas == 0){
+		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return -1; //Nao ha possibilidade de qualquer jogada valida
 	}
 		
 	if(qtdValidas == 1){
 		checarUnicaValida(jogadores, jogadorAtual, pos); //Ha apenas uma jogada valida, logo, o jogo ha fara' automaticamente
+		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return 0;
 	}
@@ -198,14 +203,17 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 		fclearBuffer();
 		char lado = receberLadoJogada();
 		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
-			exibirMensagemJogada(0);
+			exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+			exibirMensagemJogada(qtdValidas);
 			menuPrincipalJogador();
 			return -1;
 		}
+		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return 1;
 	}
 	
+	exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 	exibirMensagemJogada(-1);
 	return -1;
 }
@@ -443,6 +451,8 @@ void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int
 	domino[posicaoOriginal].status = 'M'; //Altera o status da peca para 'M' no array original
 	mesa[posicaoJogada].ladoE = jogadores[jogador].pecasMao[pos].ladoA;
 	mesa[posicaoJogada].ladoD = jogadores[jogador].pecasMao[pos].ladoB;
+	ultimaPecaA = mesa[posicaoJogada].ladoE;
+	ultimaPecaB = mesa[posicaoJogada].ladoD;
 	qtdPecasMesa++; //Incrementa a variavel de controle da mesa
 	removerPecaJogada(&jogadores[jogador], pos);
 	definirJogadorAtual();
