@@ -56,3 +56,13 @@ nt qtdNumMao(int qtd[7], int qtdOrd[7], Jogador jogadores[NUM_JOGADORES],int pc)
 
     return totalPecas;  // retorna o total de pecas
 }
+
+
+// na view
+void mostrarArray(int arr[]){
+	for(int i = 0; i < 7; i++){
+		printf("%d \t", arr[i]);
+	}
+	
+	printf("\n");
+}
