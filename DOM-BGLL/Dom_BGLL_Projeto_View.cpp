@@ -200,22 +200,19 @@ void limparTela(){
 //FUNCOES DE MESNSAGENS DURANTE A PARTIDA DO JOGO
 
 void exibirMensagemJogada(int status){
+	
+	int ultimaPecaA;
+	int  ultimaPecaB;
+	
 	if(status == 0){
 		limparTela();
 		printf("Nao ha jogada possivel com essa peca\n");
 		return;
 	}
 	
-	if(status == 1){
+	if(status == 1 || status > 1 ){
 		limparTela();
-		printf("Como havia apenas uma possibilidade de jogada, a peca foi jogada automaticamente\n");
-		return;
-	}
-	
-	if(status > 1){
-		limparTela();
-		printf("Peca jogada na extremidade escolhida\n");
-		return;
+		exibirMensagemPeca( ultimaPecaA, ultimaPecaB);
 	}
 	
 	if(status == -1){
@@ -262,7 +259,7 @@ void mensagemRecuperarJogo(int status) {
 }
 
 void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB){
-    printf("A ultima peca jogada foi [%d | %d]", ultimaPecaA, ultimaPecaB);
+    printf("A ultima peca jogada foi [%d | %d]\n", ultimaPecaA, ultimaPecaB);
 }
 
 //FUNCOES DE MESNSAGENS APOS A FINALIZACAO DE UMA PARTIDA
