@@ -878,15 +878,15 @@ int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES],int pc) {
     }
 
     // ordena o array em ordem decrescente
-    for (int k = 0; k < 7; k++) {
-        for (int i = k + 1; i < 7; i++) {
-            if (qtd[k] < qtd[i]) {
-                auxiliar = qtd[k];
-                qtd[k] = qtd[i];
-                qtd[i] = auxiliar;
-            }
-        }
-    }
+    // for (int k = 0; k < 7; k++) {
+    //     for (int i = k + 1; i < 7; i++) {
+    //         if (qtd[k] < qtd[i]) {
+    //             auxiliar = qtd[k];
+    //             qtd[k] = qtd[i];
+    //             qtd[i] = auxiliar;
+    //         }
+    //     }
+    // }
 
     return totalPecas;  // retorna o total de pecas
 }
@@ -985,4 +985,46 @@ int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC){
 	} while (1);
 
 	return 1;
+}
+
+int qtdNumMao(int qtd[7], int qtdOrd[7]) {
+    int auxiliar;  // variavel auxiliar para a troca de valores no vetor
+
+    
+    for (int k = 0; k < 7; k++) {
+        qtd[k] = 0; //inicializa todas as posicoes do array como 0
+        qtdOrd[k] = k; //inicializa o array com seu determinado indice
+    }
+    
+    mostrarPecasJogadorAtual(jogadores, 1);
+    //printf("\n");
+    
+    // conta a quantidade de vezes que cada num aparece na mao do computador,
+    // gerando um array cujo o indice indica o num da peca e o conteudo de cada posiçao
+    // a ocorrencia desse numero na mao do jogador
+    for (int cont = 0; cont < jogadores[1].numPieces; cont++) {
+        qtd[jogadores[1].pecasMao[cont].ladoA]++; 
+        qtd[jogadores[1].pecasMao[cont].ladoB]++;
+    }
+
+   // printf("Array com a quantidade de cada numero\n");
+    mostrarArray(qtd);
+    
+    // armazena o numero das pecas do jogador considerando a sua ocorrencia, sendo
+    // a primeira posicao o numero da peca que ele possui em maior quantidade e o ultimo em menor 
+    // quantidade
+    for (int k = 0; k < 7; k++) {
+        for (int i = k + 1; i < 7; i++) {
+            if (qtd[qtdOrd[k]] < qtd[qtdOrd[i]]) {
+                auxiliar = qtdOrd[k];
+                qtdOrd[k] = qtdOrd[i];
+                qtdOrd[i] = auxiliar;
+            }
+        }
+   	}
+
+	//printf("\nArray cujo cada elemento representa o numero da peca, em ordem decrescente, sendo o primeiro elemento o numero que aparece mais vezes na mao do computador\n");
+   	mostrarArray(qtdOrd);
+
+    return 1;  // retorna o total de pecas
 }

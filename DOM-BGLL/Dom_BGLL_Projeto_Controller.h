@@ -68,5 +68,6 @@ int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC);
 int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES],int pc);
 int pcCompraOuJoga(Jogador jogadores[NUM_JOGADORES], int pc, int ladoD, int ladoE);
 int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc);
+int qtdNumMao(int qtd[7], int qtdOrd[7]);
 
 #endif

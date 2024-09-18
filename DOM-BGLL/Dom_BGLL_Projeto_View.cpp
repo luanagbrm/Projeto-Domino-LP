@@ -294,3 +294,11 @@ int exibirOpcoesJogoFinalizado(){
 	
 	return -1;
 }
+
+void mostrarArray(int arr[]){
+	for(int i = 0; i < 7; i++){
+		printf("%d \t", arr[i]);
+	}
+	
+	printf("\n");
+}
