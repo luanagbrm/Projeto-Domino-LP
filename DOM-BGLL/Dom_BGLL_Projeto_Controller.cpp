@@ -823,7 +823,7 @@ void jogar(){
                 break;
             }
             case 3: {
-            	if(ultCompra[0] == -2 || qtdPecasMesa == 0){
+            	if(ultCompra[0] == -2 && qtdPecasMesa == 0){
             		interacoesMenu(8);
             		break;
 				}
