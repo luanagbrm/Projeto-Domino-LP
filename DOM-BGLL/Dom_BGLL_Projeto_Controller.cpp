@@ -342,10 +342,9 @@ int verificarVencedorJogoFechado(){
 	if(verificarJogoFechado() == 0){
 		if(jogadores[0].numPieces > jogadores[1].numPieces)
 			return 2; //Primeiro verifica a quantidade de pecas de cada jogador
-		else if (jogadores[1].numPieces > jogadores[0].numPieces)
-			return 1;
-		else 
-			return somarValorPecas(); //Caso a quantidade de pecas for identica, faz a soma dos lados de todas as pecas na mao do jogador
+		if (jogadores[1].numPieces > jogadores[0].numPieces)
+			return 1; 
+		return somarValorPecas(); //Caso a quantidade de pecas for identica, faz a soma dos lados de todas as pecas na mao do jogador
 	}
 	
 	return -1;
@@ -404,6 +403,13 @@ int comprarCartas(Carta totalPieces[NUM_PECAS]) {
 	                totalPieces[k].status = '1' + jogadorAtual;
 	                jogadores[jogadorAtual].pecasMao[(jogadores[jogadorAtual].numPieces) - 1].pos = k;
 					qtdPecasDisponivel--;
+					
+					//Guarda quais eram as extremidades da mesa, em partidas contra o computador, nas situacoes em que o jogador compra
+					if(modoJogo == 1 && jogadorAtual == 0){
+						ultCompra[0] = limitesMesa.ladoD;
+						ultCompra[1] = limitesMesa.ladoE;
+					}
+					
 	                return 1; // Compra feita
 	        }
 	    }
@@ -417,8 +423,10 @@ int comprarCartas(Carta totalPieces[NUM_PECAS]) {
 int realizarCompraCartas(Carta totalPieces[NUM_PECAS]){
 	int status = comprarCartas(totalPieces);
 	
-	statusCompra(status);
+	if(modoJogo == 0)
+		statusCompra(status);
 	
+	limparTela();
 	return status;
 }
 
@@ -431,10 +439,10 @@ void jogarLadoEsquerdo(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int pos) {
 }
 
 void inverterPeca(Jogador jogadores[NUM_JOGADORES], int numJogador, int pos){
-  int p;
-  p = jogadores[numJogador].pecasMao[pos].ladoA;
-  jogadores[numJogador].pecasMao[pos].ladoA = jogadores[numJogador].pecasMao[pos].ladoB;
-  jogadores[numJogador].pecasMao[pos].ladoB = p;
+	int p;
+	p = jogadores[numJogador].pecasMao[pos].ladoA;
+	jogadores[numJogador].pecasMao[pos].ladoA = jogadores[numJogador].pecasMao[pos].ladoB;
+	jogadores[numJogador].pecasMao[pos].ladoB = p;
 }
 
 void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int pos, char lado) {
@@ -462,7 +470,6 @@ void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int
 		limitesMesa.ladoE = mesa[posicaoJogada].ladoD;
 	}
 	
-	definirVencedor();
 	limparTela();
 }
 
@@ -530,7 +537,7 @@ int salvarMesa(){
 // Funcao para salvar o estado do jogo em um arquivo binario
 int salvarSitJogo(){
 	//Dados do jogo 
-	sitSalva.jogadorComp = 0;
+	sitSalva.jogadorComp = modoJogo;
     sitSalva.jogadorJogo = jogadorAtual;
     sitSalva.mesaDJogo = limitesMesa.ladoD;
     sitSalva.mesaEJogo = limitesMesa.ladoE;
@@ -720,11 +727,10 @@ int continuarJogo() {
 
 int menuJogador(Jogador jogadores[NUM_JOGADORES], Carta domino[NUM_PECAS]) {
     int escolha = 9;
-    
 		do {
+			definirVencedor();
 			if(modoJogo == 1 && jogadorAtual == 1){
-				preferenciaJogadaComputador(jogadores, jogadorAtual);
-
+				preferenciaJogadaComputador(jogadores, 1);
 			} else {
 				escolha = menuPrincipalJogador();
 				switch (escolha) {
@@ -811,10 +817,16 @@ void jogar(){
             }
             case 2: {
             	modoJogo = 1;
+            	ultCompra[0] = -2;
+				ultCompra[1] = -2;
                	novoJogo();
                 break;
             }
             case 3: {
+            	if(ultCompra[0] == -2 || qtdPecasMesa == 0){
+            		interacoesMenu(8);
+            		break;
+				}
             	limparTela();
                	menuJogador(jogadores,domino);
                 break;
@@ -833,6 +845,10 @@ void jogar(){
                 	break;
 				}
             case 6:
+            	if(ano == 0){
+            		interacoesMenu(8);
+            		break;	
+				}
             	continuarJogo();
             	break;
             case 0:
@@ -853,107 +869,204 @@ void fclearBuffer()
 }
 
 //FUNCIONALIDADES PARA JOGAR CONTRA O COMPUTADOR (SOLO)
-
-int qtdNumMao(int qtd[7], Jogador jogadores[NUM_JOGADORES],int pc) {
-	
-	
-    int totalPecas = 0;  // inicializa a variavel totalPecas
+int qtdNumMao(int qtd[7], int qtdOrd[7]) {
     int auxiliar;  // variavel auxiliar para a troca de valores no vetor
 
-    // inicializa o array qtd com zero
+    
     for (int k = 0; k < 7; k++) {
-        qtd[k] = 0;
+        qtd[k] = 0; //inicializa todas as posicoes do array como 0
+        qtdOrd[k] = k; //inicializa o array com seu determinado indice
     }
-
-    // conta a quantidade de vezes que cada num aparece 
+    
+    // conta a quantidade de vezes que cada num aparece na mao do computador,
+    // gerando um array cujo o indice indica o num da peca e o conteudo de cada posicao
+    // e' a ocorrencia desse numero na mao do jogador
     for (int cont = 0; cont < jogadores[1].numPieces; cont++) {
-        if (jogadores[1].pecasMao[cont].ladoA >= 0 && jogadores[1].pecasMao[cont].ladoA <= 6) {
-            qtd[jogadores[1].pecasMao[cont].ladoA] = qtd[jogadores[1].pecasMao[cont].ladoA] + 1;  
-            totalPecas = totalPecas + 1;  
-        }
-        if (jogadores[1].pecasMao[cont].ladoB >= 0 && jogadores[1].pecasMao[cont].ladoB <= 6) {
-            qtd[jogadores[1].pecasMao[cont].ladoB] =  qtd[jogadores[1].pecasMao[cont].ladoB] + 1;  
-            totalPecas = totalPecas + 1;  
-        }
+        qtd[jogadores[1].pecasMao[cont].ladoA]++; 
+        qtd[jogadores[1].pecasMao[cont].ladoB]++;
     }
 
-    // ordena o array em ordem decrescente
-    // for (int k = 0; k < 7; k++) {
-    //     for (int i = k + 1; i < 7; i++) {
-    //         if (qtd[k] < qtd[i]) {
-    //             auxiliar = qtd[k];
-    //             qtd[k] = qtd[i];
-    //             qtd[i] = auxiliar;
-    //         }
-    //     }
-    // }
-
-    return totalPecas;  // retorna o total de pecas
-}
-//verifica se o pc pode jogar, se ele nao poder deve comprar
-int pcCompraOuJoga(Jogador jogadores[NUM_JOGADORES], int pc, int ladoD, int ladoE) {
-	
-	
-	//condicao para comprar cartas
-	do
-	{
-		for (int k = 0; k < jogadores[pc].numPieces; k++) {
-            if (jogadores[pc].pecasMao[k].ladoA == ladoD || jogadores[pc].pecasMao[k].ladoB == ladoD) {
-                checarLadoValida(jogadores, pc, k, 'D');
-                return 0;
-            } else if (jogadores[pc].pecasMao[k].ladoA == ladoE || jogadores[pc].pecasMao[k].ladoB == ladoE) {
-                checarLadoValida(jogadores, pc, k, 'E');
-                return 0;
+    // armazena o numero das pecas do jogador considerando a sua ocorrencia, sendo
+    // a primeira posicao o numero da peca que ele possui em maior quantidade e o ultimo em menor quantidade
+    for (int k = 0; k < 7; k++) {
+        for (int i = k + 1; i < 7; i++) {
+            if (qtd[qtdOrd[k]] < qtd[qtdOrd[i]]) {
+                auxiliar = qtdOrd[k];
+                qtdOrd[k] = qtdOrd[i];
+                qtdOrd[i] = auxiliar;
             }
         }
-	}while(realizarCompraCartas(domino) != 0);
+   	}
 
-	verificarPassarVez();
-	
-	return 0;
+    return 1; 
 }
+
+//A partir do valor da extremidade armazenado no momento da ultima compra do jogador 1,
+//joga uma peca que deixe o valor que fez o jogador comprar anteriormente como extremidade da mesa
+//- "deixar numeros que o outro jogador nao possue como extremidades da mesa faz com que ele seja obrigado a comprar mais pecas"
+int forcarCompraPC(int ladoD, int ladoE, int qtdLadoD, int qtdLadoE, int qtd[]){
+	
+	//Se nenhuma compra tiver sido feita ate o momento, nao prossegue com a funcao
+	if(ultCompra[0] == -2 || ultCompra[1] == -2)
+		return 0;
+	
+	int maior = ladoD, menor = ladoE;
+	char maiorLado = 'D', menorLado = 'E';
+	int maiorCompra, menorCompra;
+	
+	if(qtdLadoE >= qtdLadoD){
+		maior = ladoE;
+		menor = ladoD;
+		maiorLado = 'E';
+		menorLado = 'D';
+	}
+	
+	//Define qual das extremidades possui o numero que aparece mais vezes na mao do computador
+	if(qtd[ultCompra[0]] > qtd[ultCompra[1]]){
+		maiorCompra = ultCompra[0];
+		menorCompra = ultCompra[1];
+	} else {
+		maiorCompra = ultCompra[1];
+		menorCompra = ultCompra[0];
+	}
+	
+	//primeiro, busca a peca que cumpre o papel e, simultaneamente, possui o numero em maior quantidade na mao do computador
+	for(int i = 0; i < jogadores[1].numPieces; i++){
+		if(jogadores[1].pecasMao[i].ladoA == maior || jogadores[1].pecasMao[i].ladoB == maior) {
+			if(jogadores[1].pecasMao[i].ladoA == maiorCompra || jogadores[1].pecasMao[i].ladoB == maiorCompra){
+				checarLadoValida(jogadores,1,i,maiorLado);
+				return 1;
+			}
+		} 
+	}
+	
+	//caso nao encontre, busca pela que esta presente em menor quantidade
+	for(int i = 0; i < jogadores[1].numPieces; i++){
+		if(jogadores[1].pecasMao[i].ladoA == menor || jogadores[1].pecasMao[i].ladoB == menor){
+		  	if(jogadores[1].pecasMao[i].ladoA == menorCompra || jogadores[1].pecasMao[i].ladoB == menorCompra){
+				checarLadoValida(jogadores,1,i,menorLado);
+				return 1;
+			} 
+		}
+	}
+	
+	return 0; //nenhuma peca na mao do jogador possui numero igual as extremidades no momento da ultima compra
+}
+
+//busca por pecas duplas que possuam os numeros da extremidade da mesa
+// - "pecas duplas representam apenas um numero, logo, para garantir uma mao variada, e' melhor joga-las antes das demais de mesmo numero"
+int buscarDuplaPC(int ladoD, int ladoE, int qtdLadoD, int qtdLadoE){
+	int maior = ladoD, menor = ladoE;
+	char maiorLado = 'D', menorLado = 'E';
+	
+	//verifica qual numero dentre os presentes nas extremidades esta presente em maior quantidade na mao do computador
+	if(qtdLadoE >= qtdLadoD){
+		maior = ladoE;
+		menor = ladoD;
+		maiorLado = 'E';
+		menorLado = 'D';
+	}
+	
+	//primeiro, busca pela peca dupla com o numero em maior qtd
+	for(int i = 0; i < jogadores[1].numPieces; i++){
+		if(jogadores[1].pecasMao[i].ladoA == maior && jogadores[1].pecasMao[i].ladoB == maior){
+				checarLadoValida(jogadores,1,i,maiorLado);
+				return 1;
+		}
+	}
+	
+	//caso nao encontre, busca pela peca dupla com numero em menor qtd
+	for(int i = 0; i < jogadores[1].numPieces; i++){
+		if(jogadores[1].pecasMao[i].ladoA == menor && jogadores[1].pecasMao[i].ladoB == menor){
+				checarLadoValida(jogadores,1,i,menorLado);
+				return 1;
+		}
+	}
+	
+	return 0; //nao ha pecas duplas com o mesmo numero de nenhuma das extremidades
+	
+}
+
+//faz uma jogada priorizando os numeros que o computador possui em maior qtd para garantir que ele possua a mao mais variada possivel
+int jogadaQtdPC(int ladoD, int ladoE, int qtdLadoD, int qtdLadoE, int qtdOrd[]){
+	int maior = ladoD, menor = ladoE;
+	char maiorLado = 'D', menorLado = 'E';
+	
+	
+	if(qtdLadoE > qtdLadoD){
+		maior = ladoE;
+		menor = ladoD;
+		maiorLado = 'E';
+		menorLado = 'D';
+	}
+	
+	//primeiro, busca pela peca que possua um numero igual ao da extremidade em maior qtd na mao
+	// e, simultaneamente, outro que esteja em maior quantidade no geral
+	for(int k = 0; k < 7; k++){
+		for(int i = 0; i < jogadores[1].numPieces; i++){
+			if(jogadores[1].pecasMao[i].ladoA == maior || jogadores[1].pecasMao[i].ladoB == maior){
+				if(jogadores[1].pecasMao[i].ladoA == qtdOrd[k] || jogadores[1].pecasMao[i].ladoB == qtdOrd[k]){
+					checarLadoValida(jogadores,1,i,maiorLado);
+					return 1;
+				}
+			}
+		}
+	}
+	
+	//caso nao encontre, busca pela peca com numero igual ao da extremidade em menor qtd sob as mesmas condicoes
+	for(int k = 0; k < 7; k++){
+		for(int i = 0; i < jogadores[1].numPieces; i++){
+			if(jogadores[1].pecasMao[i].ladoA == menor || jogadores[1].pecasMao[i].ladoB == menor){
+				if(jogadores[1].pecasMao[i].ladoA == qtdOrd[k] || jogadores[1].pecasMao[i].ladoB == qtdOrd[k]){
+					checarLadoValida(jogadores,1,i,menorLado);
+					return 1;
+				}
+			}
+			
+		}
+	}
+	
+	return 0; //nao ha nenhuma jogada possivel
+}
+
+
 //funcao para escolher a melhor jogada do pc
 int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 	
 	int ladoD = limitesMesa.ladoD;
 	int ladoE = limitesMesa.ladoE;
-	int maoNumQtd[7];
-	
-//	qtdNumMao(maoNumQtd , jogadores);
-	qtdNumMao(maoNumQtd, jogadores, pc);
+	int qtd[7]; //vetor contendo as quantidades de cada numero
+	int qtdOrd[7]; //vetor contendo os numeros que aparecem mais vezes na mao do jogador, em ordem decrescente
+	qtdNumMao(qtd, qtdOrd);
 
-//    //joga pecas duplas primeiro
-//    for (int i = 0; i < jogadores[pc].numPieces; i++) {
-//        if (jogadores[pc].pecasMao[i].ladoA == jogadores[pc].pecasMao[i].ladoB) {
-//            if (jogadores[pc].pecasMao[i].ladoA == ladoD || jogadores[pc].pecasMao[i].ladoA == ladoE) {
-//                checarLadoValida(jogadores, pc, i, (jogadores[pc].pecasMao[i].ladoA == ladoD) ? 'D' : 'E');
-//                return 0;
-//            }
-//        }
-//    }
-//	
-	
-	//ve se o lado D e o melhor lado
-	if(maoNumQtd[ladoD] >= maoNumQtd[ladoE]){
-		for(int j = 0; j < jogadores[pc].numPieces;j++){
-			
-			if((jogadores[pc].pecasMao[j].ladoA == ladoD || jogadores[pc].pecasMao[j].ladoB == ladoD)){
-				checarLadoValida(jogadores,pc,j,'D');
-				
-				return 0;
-			}
-		}
-	}
-	for(int i = 0; i < jogadores[pc].numPieces; i++){
+	while (1) {
+		//primeiro, tenta jogar uma peca que priorize deixar uma peca que o outro jogador teoricamente nao possue como extremidade da mesa
+        if (forcarCompraPC(ladoD, ladoE, qtd[ladoD], qtd[ladoE], qtd) == 1) {
+            return 1;
+        }
 		
-		if((jogadores[pc].pecasMao[i].ladoA == ladoE || jogadores[pc].pecasMao[i].ladoB == ladoE)){
-				checarLadoValida(jogadores,pc,i,'E');
-				
-				return 0;
-			}
-	}
+		//caso nao encontre, busca por uma peca dupla com o valor de uma das extremidades
+        if (buscarDuplaPC(ladoD, ladoE, qtd[ladoD], qtd[ladoE]) == 1) {
+            return 1;
+        }
+		
+		//caso tambem nao encontre, busca por uma peca qualquer que possa ser jogada, dando prioridade para numeros que o computador tenha em maior quantidade
+        if (jogadaQtdPC(ladoD, ladoE, qtd[ladoD], qtd[ladoE], qtdOrd) == 1) {
+            return 1;
+        }
+		
+		//caso nao haja nenhuma jogada possivel, o computador compra uma nova peca e tenta jogar novamente seguindo a mesma ordem de prioridade 
+        if(realizarCompraCartas(domino) != 0){
+			realizarCompraCartas(domino);
+			qtdNumMao(qtd, qtdOrd); //atualiza os vetores de quantidade
+		} else {
+			verificarPassarVez(); //caso nao haja mais jogadas validas nem pecas para comprar, passa a vez para o jogador 1
+			return 0;
+		}
+
+        qtdNumMao(qtd, qtdOrd);
+    }
 	
-	pcCompraOuJoga(jogadores,pc,ladoD,ladoE);
 	
 	return 0;
 }
@@ -987,44 +1100,4 @@ int escolherPecaPC(Jogador jogadores[NUM_JOGADORES], int PC){
 	return 1;
 }
 
-int qtdNumMao(int qtd[7], int qtdOrd[7]) {
-    int auxiliar;  // variavel auxiliar para a troca de valores no vetor
 
-    
-    for (int k = 0; k < 7; k++) {
-        qtd[k] = 0; //inicializa todas as posicoes do array como 0
-        qtdOrd[k] = k; //inicializa o array com seu determinado indice
-    }
-    
-    mostrarPecasJogadorAtual(jogadores, 1);
-    //printf("\n");
-    
-    // conta a quantidade de vezes que cada num aparece na mao do computador,
-    // gerando um array cujo o indice indica o num da peca e o conteudo de cada posiçao
-    // a ocorrencia desse numero na mao do jogador
-    for (int cont = 0; cont < jogadores[1].numPieces; cont++) {
-        qtd[jogadores[1].pecasMao[cont].ladoA]++; 
-        qtd[jogadores[1].pecasMao[cont].ladoB]++;
-    }
-
-   // printf("Array com a quantidade de cada numero\n");
-    mostrarArray(qtd);
-    
-    // armazena o numero das pecas do jogador considerando a sua ocorrencia, sendo
-    // a primeira posicao o numero da peca que ele possui em maior quantidade e o ultimo em menor 
-    // quantidade
-    for (int k = 0; k < 7; k++) {
-        for (int i = k + 1; i < 7; i++) {
-            if (qtd[qtdOrd[k]] < qtd[qtdOrd[i]]) {
-                auxiliar = qtdOrd[k];
-                qtdOrd[k] = qtdOrd[i];
-                qtdOrd[i] = auxiliar;
-            }
-        }
-   	}
-
-	//printf("\nArray cujo cada elemento representa o numero da peca, em ordem decrescente, sendo o primeiro elemento o numero que aparece mais vezes na mao do computador\n");
-   	mostrarArray(qtdOrd);
-
-    return 1;  // retorna o total de pecas
-}

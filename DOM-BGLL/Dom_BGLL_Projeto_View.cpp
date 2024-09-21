@@ -29,18 +29,24 @@ void mostrarPecasJogadorAtual(Jogador jogadores[NUM_JOGADORES], int numJogador){
 		if(jogadores[numJogador].pecasMao[k].status != 'M')
 			printf("%d.[%d|%d] ", k+1, jogadores[numJogador].pecasMao[k].ladoA,jogadores[numJogador].pecasMao[k].ladoB);
     }
-
     printf("\n");
+}
+
+void ajustarLinhaMesa(){
+	printf("\n");
+	for(int i = 0; i < qtdPecasMesa; i++){
+		printf("-----");
+	}
+	printf("\n");
 }
 
 //Mostra todas as pecas da mesa
 void mostrarPecasMesa(Mesa mesa[]){
-   	printf("\nMesa do Jogo: \n\n");
-   	printf("-------------------\n");
+   	printf("\nMesa do Jogo: \n");
+   	ajustarLinhaMesa();
     for(int k  = 0; k < qtdPecasMesa; k++)
         printf("[%d|%d]", mesa[k].ladoE, mesa[k].ladoD);
-	printf("\n-------------------");
-    printf("\n");
+	ajustarLinhaMesa();
 }
 
 //Define o numero de jogadores de acordo com o informado pelo usuario
@@ -267,10 +273,10 @@ void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB){
 void exibirMensagemVencedor(int status){
 	if(status == 1){
 		limparTela();
-		printf("O JOGADOR 2 VENCEU A PARTIDA PARTIDA!\n");
+		printf("O JOGADOR 1 VENCEU A PARTIDA!\n");
 	} else {
 		limparTela();
-		printf("O JOGADOR 2 VENCEU A PARTIDA PARTIDA!\n");
+		printf("O JOGADOR 2 VENCEU A PARTIDA!\n");
 	}
 }
 

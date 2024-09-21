@@ -69,8 +69,11 @@ int modoJogo;
 int ano = 0, mes, dia, hora, minutos;
 sitJogo sitSalva;
 dataHora dataSalvo;
+int ultCompra[2] = {-2,-2};
 
 void criarCarta(Carta domino[NUM_PECAS]);
 void iniciaMesa(Mesa mesa[28]);
+
+
 
 #endif
