@@ -716,7 +716,7 @@ int continuarJogo() {
 
     if (status != 0) {
         menuJogador(jogadores, domino);
-        return -1; // Indica que houve um erro ao recuperar o jogo
+        return -1;
     }
 
     jogoSalvo();
@@ -825,6 +825,7 @@ void jogar(){
             case 3: {
             	if(ultCompra[0] == -2 && qtdPecasMesa == 0){
             		interacoesMenu(8);
+            		mostrarMensagemMenu(3);
             		break;
 				}
             	limparTela();
@@ -839,6 +840,7 @@ void jogar(){
             	//Somente permite salvar o jogo caso algum jogo ja tenha sido iniciado
             	if(qtdPecasMesa == 0){
             		interacoesMenu(8);
+            		mostrarMensagemMenu(2);
             		break;
 				} else {
 					salvarJogo();
@@ -847,6 +849,7 @@ void jogar(){
             case 6:
             	if(ano == 0){
             		interacoesMenu(8);
+            		mostrarMensagemMenu(1);
             		break;	
 				}
             	continuarJogo();
