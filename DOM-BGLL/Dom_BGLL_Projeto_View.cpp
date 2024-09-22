@@ -239,6 +239,7 @@ void statusCompra(int status){
 }
 
 void exibirMensagemPassarVez(int status){
+	
 	if(status == 1){
 		limparTela();
 		printf("Passada a vez para Jogador %d\n", jogadorAtual + 1);
@@ -268,6 +269,23 @@ void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB){
     printf("A ultima peca jogada foi [%d | %d]\n", ultimaPecaA, ultimaPecaB);
 }
 
+void mostrarMensagemMenu(int status){
+	
+	switch(status){
+		case 1:
+				printf("Não há jogo salvo para ser recuperado.");
+			break;
+		case 2:
+				printf("Não é possível salvar um jogo sem ter iniciado. ");
+			break;
+		case 3:
+				printf("Não é possível continuar o jogo sem ter iniciado.");
+			break;
+		default:
+    	        printf("Status desconhecido.\n");
+        	    break;
+    	}
+}
 //FUNCOES DE MESNSAGENS APOS A FINALIZACAO DE UMA PARTIDA
 
 void exibirMensagemVencedor(int status){
