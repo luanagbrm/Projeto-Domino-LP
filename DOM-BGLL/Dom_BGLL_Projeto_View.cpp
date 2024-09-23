@@ -273,18 +273,20 @@ void mostrarMensagemMenu(int status){
 	
 	switch(status){
 		case 1:
-				printf("Não há jogo salvo para ser recuperado.");
-			break;
+				printf("Nao ha jogo salvo para ser recuperado (ENTER para voltar ao menu)\n");
+			    break;
 		case 2:
-				printf("Não é possível salvar um jogo sem ter iniciado. ");
-			break;
+				printf("Nao e' possivel salvar um jogo sem ter iniciado (ENTER para voltar ao menu)\n ");
+			    break;
 		case 3:
-				printf("Não é possível continuar o jogo sem ter iniciado.");
-			break;
+				printf("Nao e' possivel continuar o jogo sem ter iniciado (ENTER para volatr ao menu)\n");
+			    break;
 		default:
-    	        printf("Status desconhecido.\n");
+    	        printf("Status desconhecido (ENTER para voltar ao menu)\n");
         	    break;
     	}
+    fflush(stdin);
+    getchar();
 }
 //FUNCOES DE MESNSAGENS APOS A FINALIZACAO DE UMA PARTIDA
 

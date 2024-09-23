@@ -824,8 +824,8 @@ void jogar(){
             }
             case 3: {
             	if(ultCompra[0] == -2 && qtdPecasMesa == 0){
-            		interacoesMenu(8);
             		mostrarMensagemMenu(3);
+            		interacoesMenu(8);
             		break;
 				}
             	limparTela();
@@ -839,8 +839,8 @@ void jogar(){
             case 5:
             	//Somente permite salvar o jogo caso algum jogo ja tenha sido iniciado
             	if(qtdPecasMesa == 0){
-            		interacoesMenu(8);
-            		mostrarMensagemMenu(2);
+            	    mostrarMensagemMenu(2);
+					interacoesMenu(8);
             		break;
 				} else {
 					salvarJogo();
@@ -848,9 +848,8 @@ void jogar(){
 				}
             case 6:
             	if(ano == 0){
-            		interacoesMenu(8);
-            		mostrarMensagemMenu(1);
-            		break;	
+            	    mostrarMensagemMenu(1);
+					interacoesMenu(8);
 				}
             	continuarJogo();
             	break;
