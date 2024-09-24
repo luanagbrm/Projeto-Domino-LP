@@ -1,6 +1,6 @@
 /*
-DOM-BGLL - Projeto Domino - Etapa 5
-10/09/2024 - Grupo:BGLL
+DOM-BGLL - Projeto Domino - Etapa 6
+23/09/2024 - Grupo:BGLL
 
 Nome dos integrantes:
 
@@ -279,7 +279,7 @@ void mostrarMensagemMenu(int status){
 				printf("Nao e' possivel salvar um jogo sem ter iniciado (ENTER para voltar ao menu)\n ");
 			    break;
 		case 3:
-				printf("Nao e' possivel continuar o jogo sem ter iniciado (ENTER para volatr ao menu)\n");
+				printf("Nao e' possivel continuar o jogo sem ter iniciado (ENTER para voltar ao menu)\n");
 			    break;
 		default:
     	        printf("Status desconhecido (ENTER para voltar ao menu)\n");
@@ -319,12 +319,4 @@ int exibirOpcoesJogoFinalizado(){
 	}while(opcao != 0);
 	
 	return -1;
-}
-
-void mostrarArray(int arr[]){
-	for(int i = 0; i < 7; i++){
-		printf("%d \t", arr[i]);
-	}
-	
-	printf("\n");
 }
