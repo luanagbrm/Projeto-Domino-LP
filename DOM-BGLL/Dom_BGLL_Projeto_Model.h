@@ -70,7 +70,10 @@ int ano = 0, mes, dia, hora, minutos;
 sitJogo sitSalva;
 dataHora dataSalvo;
 int ultCompra[2] = {-2,-2};
-
+int ultJogada[2] = {-2,-2};
+int ultimaPecaA = -8;
+int ultimaPecaB = -8;
+int motVitoria = 0;
 void criarCarta(Carta domino[NUM_PECAS]);
 void iniciaMesa(Mesa mesa[28]);
 

@@ -18,9 +18,6 @@ FILE *pecas; //arquivo onde serao armazenadas todas as pecas do jogo
 FILE *sitJogoSalvo; //situacao das variaveis globais no momento do salvamento do jogo
 FILE *dataHoraSalvo; //arquivo para armazenar a data e a hora em que o jogo foi salvo por ultimo
 
-int ultimaPecaA = -8;
-int ultimaPecaB = -8;
-
 //FUNCOES INICIAIS PARA ANTES DO INICIO DA PRIMEIRA JOGADA
 
 void gerarSeed(){
@@ -186,14 +183,12 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 	int qtdValidas = qtdJogadaValida(jogadores, jogador, pos);
 	
 	if(qtdValidas == 0){
-//		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return -1; //Nao ha possibilidade de qualquer jogada valida
 	}
 		
 	if(qtdValidas == 1){
 		checarUnicaValida(jogadores, jogadorAtual, pos); //Ha apenas uma jogada valida, logo, o jogo ha fara' automaticamente
-//		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 		exibirMensagemJogada(qtdValidas);
 		return 0;
 	}
@@ -203,17 +198,15 @@ int verificarJogada(Mesa mesa[], Jogador jogadores[NUM_JOGADORES], int jogador, 
 		fclearBuffer();
 		char lado = receberLadoJogada();
 		if(checarLadoValida(jogadores, jogadorAtual, pos, lado) == -1){
-//			exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 			exibirMensagemJogada(qtdValidas);
 			menuPrincipalJogador();
 			return -1;
 		}
-//		exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
+		
 		exibirMensagemJogada(qtdValidas);
 		return 1;
 	}
 	
-//	exibirMensagemPeca(ultimaPecaA, ultimaPecaB);
 	exibirMensagemJogada(-1);
 	return -1;
 }
@@ -284,7 +277,6 @@ int primeiroJogador(Jogador jogadores[NUM_JOGADORES], Mesa mesa[28]) {
 
 int verificarPassarVez(){
 	verificarDisponiveis();
-	
 	
 	
 	if(qtdPecasDisponivel <= 0 && verificarSeJogadaValida() == 0){
@@ -376,6 +368,7 @@ void verificarOpcaoUsuario(int opcao){
 
 void definirVencedor(){
 	if(verificarMaoVazia() != -1){ //Primeiro, verifica se algum dos jogadores nao tem pecas na mao
+		motVitoria = 1;
 		exibirMensagemVencedor(verificarMaoVazia());
 		int opcao = exibirOpcoesJogoFinalizado();
 		verificarOpcaoUsuario(opcao);
@@ -384,6 +377,7 @@ void definirVencedor(){
 	
 	//Caso ainda tenha, verifica se o jogo esta' fechado
 	if(verificarVencedorJogoFechado() != -1){
+		motVitoria = 2;
 		exibirMensagemVencedor(verificarVencedorJogoFechado());
 		int opcao = exibirOpcoesJogoFinalizado();
 		verificarOpcaoUsuario(opcao);
@@ -423,10 +417,10 @@ int comprarCartas(Carta totalPieces[NUM_PECAS]) {
 int realizarCompraCartas(Carta totalPieces[NUM_PECAS]){
 	int status = comprarCartas(totalPieces);
 	
-	if(modoJogo == 0)
+	
+	if(modoJogo == 0 || modoJogo == 1 && jogadorAtual == 0)
 		statusCompra(status);
 	
-	limparTela();
 	return status;
 }
 
@@ -459,8 +453,8 @@ void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int
 	domino[posicaoOriginal].status = 'M'; //Altera o status da peca para 'M' no array original
 	mesa[posicaoJogada].ladoE = jogadores[jogador].pecasMao[pos].ladoA;
 	mesa[posicaoJogada].ladoD = jogadores[jogador].pecasMao[pos].ladoB;
-	ultimaPecaA = mesa[posicaoJogada].ladoE;
-	ultimaPecaB = mesa[posicaoJogada].ladoD;
+	ultimaPecaA = jogadores[jogador].pecasMao[pos].ladoA;
+	ultimaPecaB = jogadores[jogador].pecasMao[pos].ladoB;
 	qtdPecasMesa++; //Incrementa a variavel de controle da mesa
 	removerPecaJogada(&jogadores[jogador], pos);
 	definirJogadorAtual();
@@ -471,6 +465,7 @@ void jogarPeca(Mesa mesa[28], Jogador jogadores[NUM_JOGADORES], int jogador, int
 	}
 	
 	limparTela();
+	exibirMensagemPeca();
 }
 
 void removerPecaJogada(Jogador *jogador, int pos) {
@@ -825,12 +820,12 @@ void jogar(){
             case 3: {
             	if(ultCompra[0] == -2 && qtdPecasMesa == 0){
             		mostrarMensagemMenu(3);
-            		interacoesMenu(8);
             		break;
+				} else {
+					limparTela();
+               		menuJogador(jogadores,domino);
+                	break;
 				}
-            	limparTela();
-               	menuJogador(jogadores,domino);
-                break;
             }
             case 4:{
             	mostrarRegras();
@@ -840,7 +835,6 @@ void jogar(){
             	//Somente permite salvar o jogo caso algum jogo ja tenha sido iniciado
             	if(qtdPecasMesa == 0){
             	    mostrarMensagemMenu(2);
-					interacoesMenu(8);
             		break;
 				} else {
 					salvarJogo();
@@ -849,10 +843,11 @@ void jogar(){
             case 6:
             	if(ano == 0){
             	    mostrarMensagemMenu(1);
-					interacoesMenu(8);
+					break;
+				} else {
+					continuarJogo();
+            		break;
 				}
-            	continuarJogo();
-            	break;
             case 0:
             	interacoesMenu(opcao);
                 exit(0);
@@ -1062,7 +1057,7 @@ int preferenciaJogadaComputador(Jogador jogadores[NUM_JOGADORES], int pc){
 			realizarCompraCartas(domino);
 			qtdNumMao(qtd, qtdOrd); //atualiza os vetores de quantidade
 		} else {
-			verificarPassarVez(); //caso nao haja mais jogadas validas nem pecas para comprar, passa a vez para o jogador 1
+			passarVez(); //caso nao haja mais jogadas validas nem pecas para comprar, passa a vez para o jogador 1
 			return 0;
 		}
 

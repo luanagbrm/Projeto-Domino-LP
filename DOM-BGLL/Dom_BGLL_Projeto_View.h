@@ -34,6 +34,6 @@ void mostrarMensagemMenu(int status);
 void mensagemRecuperarJogo(int status);
 void limparTela();
 void limparBuffer();
-void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB);
+void exibirMensagemPeca();
 void mostrarArray(int arr[]);
 #endif

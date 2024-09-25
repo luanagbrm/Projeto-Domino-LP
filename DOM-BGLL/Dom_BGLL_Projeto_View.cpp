@@ -42,10 +42,13 @@ void ajustarLinhaMesa(){
 
 //Mostra todas as pecas da mesa
 void mostrarPecasMesa(Mesa mesa[]){
+	printf("\n----------------------------------------\n");	
    	printf("\nMesa do Jogo: \n");
    	ajustarLinhaMesa();
+   	printf("\n");
     for(int k  = 0; k < qtdPecasMesa; k++)
         printf("[%d|%d]", mesa[k].ladoE, mesa[k].ladoD);
+    printf("\n");
 	ajustarLinhaMesa();
 }
 
@@ -85,7 +88,7 @@ int menuPrincipal() {
     limparTela();
     printf("\n--- Menu Principal ---\n");
     printf("1. Iniciar Novo Jogo (2 jogadores)\n");
-    printf("2. Iniciar Novo Jogo (Contra Pc)\n");
+    printf("2. Iniciar Novo Jogo (Contra Computador)\n");
     printf("3. Continuar jogo interrompido\n");
     printf("4. Regras do Jogo\n");
     printf("5. Salvar Jogo (Necessario ter um jogo em andamento)\n");
@@ -163,7 +166,7 @@ int receberPosicaoPeca() {
             return -1; 
         } else if (posicao < 1 || posicao > numPieces) {
             printf("Posicao invalida. Por favor, insira um numero entre 1 e %d.\n", numPieces);
-            posicao = -1; // Define um número inválido para repetir o loop
+            posicao = -1; // Define um numero invalido para repetir o loop
         }
     } while (posicao < 1 || posicao > numPieces); // Loop ate que uma posicao valida seja fornecida
 	
@@ -207,25 +210,24 @@ void limparTela(){
 
 void exibirMensagemJogada(int status){
 	
-	int ultimaPecaA;
-	int  ultimaPecaB;
-	
 	if(status == 0){
 		limparTela();
-		printf("Nao ha jogada possivel com essa peca\n");
+		printf("\nNao ha jogada possivel com essa peca\n");
 		return;
 	}
 	
 	if(status == 1 || status > 1 ){
 		limparTela();
-		exibirMensagemPeca( ultimaPecaA, ultimaPecaB);
+		exibirMensagemPeca();	
 	}
 	
 	if(status == -1){
 		limparTela();
-		printf("Jogada invalida\n");
+		printf("\nJogada invalida\n");
 		return;
-	}	
+	}
+	
+	
 }
 
 void statusCompra(int status){
@@ -234,20 +236,19 @@ void statusCompra(int status){
 		printf("\nCompra feita com sucesso\n");
 	} else {
 		limparTela();
-		printf("Nao ha pecas para comprar");
+		printf("\nNao ha pecas para comprar\n");
 	}	
 }
 
 void exibirMensagemPassarVez(int status){
-	
 	if(status == 1){
 		limparTela();
-		printf("Passada a vez para Jogador %d\n", jogadorAtual + 1);
+		printf("\nPassada a vez para Jogador %d\n", jogadorAtual + 1);
 	} else if (status == -1){
 		limparTela();
-		printf("Ainda ha pecas para compra, nao e' permitido passar\n");
+		printf("\nAinda ha pecas para compra, nao e' permitido passar\n");
 	} else {
-		printf("Problema desconhecido. Nos informe, por favor\n");
+		printf("\nProblema desconhecido. Nos informe, por favor\n");
 	}
 }
 
@@ -265,8 +266,13 @@ void mensagemRecuperarJogo(int status) {
     }
 }
 
-void exibirMensagemPeca(int ultimaPecaA, int ultimaPecaB){
-    printf("A ultima peca jogada foi [%d | %d]\n", ultimaPecaA, ultimaPecaB);
+void exibirMensagemPeca(){
+	if(modoJogo == 1 && jogadorAtual == 0) {
+		printf("\nA ultima peca jogada pelo computador foi [%d|%d]\n", ultimaPecaA, ultimaPecaB);
+	} else if (modoJogo == 0) {
+    	printf("\nA ultima peca jogada pelo jogador %d foi [%d|%d]\n", 1 + ((jogadorAtual + 1) % NUM_JOGADORES), ultimaPecaA, ultimaPecaB);
+    }
+    
 }
 
 void mostrarMensagemMenu(int status){
@@ -297,6 +303,14 @@ void exibirMensagemVencedor(int status){
 	} else {
 		limparTela();
 		printf("O JOGADOR 2 VENCEU A PARTIDA!\n");
+	}
+	
+	if(motVitoria == 1){
+		printf("Tipo de vitoria: nao possuia mais cartas\n\n");
+	} else if(motVitoria == 2){
+		printf("Tipo de vitoria: Jogo fechado\n");
+		printf("Quantidade de pecas do jogador 1: %d\n", jogadores[0].numPieces);
+		printf("Quantidade de pecas do jogador 2: %d\n\n", jogadores[1].numPieces);
 	}
 }
 
