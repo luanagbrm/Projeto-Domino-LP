@@ -55,3 +55,14 @@ para prosseguir jogando.
 
 <b>REQ20:</b>  No caso de apenas um jogador jogando contra o computador (jogador 2), o sistema deverá simular um comportamento inteligente como um jogador real, sempre dentro das regras normais do jogo; um jogador nunca tem acesso as peças do seu adversário, nem as ainda disponíveis, somente pode deduzir... e aí está a inteligência a ser implementada.
 
+## FUNCIONALIDADES ADICIONADAS PELO GRUPO
+### Data e hora do save
+- A data e hora em que o jogo foi salvo, são salvos junto a partida em si. Trazendo tanto uma confirmação da operação, quanto uma maior ciência sobre o que vai ser recuperado.
+### Inteligência do jogador computador:
+#### - Preferência de jogada:
+- A jogada do computador sempre priorizará jogar a peça com o número de maior ocorrência entre as suas peças, considerando os os movimentos possíveis.
+- Toda vez que o jogador 1 (pessoa) compra uma peça, o computador armazena quais eram os limites da mesa no momento da compra e, nas suas jogadas, busca deixar esses valores nas extremidades, o que forçaria o jogador 1 a comprar peças.
+- Caso não tenha havido compra ou o computador não tenha nenhuma peça que possa ser jogada de acordo com a função anterior, ele então busca por uma peça dupla para ser jogada, uma vez que uma peça dupla apresenta apenas uma possibilidade de jogada, o que se torna desvantajoso em comparação a peças que possuem dois números distintos.
+- Caso não seja possível jogar com nenhuma das especificações anteriores, o computador tenta fazer uma jogada com o número que o computador possui em maior quantidade na mão.
+
+
